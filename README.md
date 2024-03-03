@@ -37,3 +37,31 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Dev Notes
 Tutorial: https://dev.to/franciscomendes10866/build-a-full-stack-app-with-nextjs-tailwind-trpc-and-prisma-orm-4ail
+
+``
+//////////////////////////////////////////////////////////////
+
+Tutorial #2: https://vercel.com/guides/nextjs-prisma-postgres
+
+//////////////////////////////////////////////////////////////
+``
+
+## Generate Tailwind Pallete
+``
+https://uicolors.app/create
+``
+
+## The best SVG optimizer and minifier
+``
+https://svgomg.net/
+``
+
+## Icons
+``
+https://fontawesome.com/search?q=user&o=r&m=free&s=solid%2Cregular
+``
+
+## Favicon
+``
+https://realfavicongenerator.net/
+``
