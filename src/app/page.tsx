@@ -1,80 +1,46 @@
-"use client";
+// import React from "react";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// export default function Home() {
+//   return (
+//     <div className="min-h-screen">
+//       <h3>Bienvenido a QuiniSports</h3>
+//     </div>
+//   );
+// }
 
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+// import CountUp from "react-countup";
+// import VisibilitySensor from "react-visibility-sensor";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import HomeHeader from "@/components/_/headers/HomeHeader";
+import AboutSectionOne from "@/components/pages/home/About/AboutSectionOne";
+import AboutSectionTwo from "@/components/pages/home/About/AboutSectionTwo";
+import Blog from "@/components/pages/home/Blog";
+import Brands from "@/components/pages/home/Brands";
+import ScrollUp from "@/components/pages/home/Common/ScrollUp";
+import Contact from "@/components/pages/home/Contact";
+import Features from "@/components/pages/home/Features";
+import Hero from "@/components/pages/home/Hero";
+import Pricing from "@/components/pages/home/Pricing";
+import Testimonials from "@/components/pages/home/Testimonials";
+import Video from "@/components/pages/home/Video";
+import Image from "next/image";
+import Link from "next/link";
 
-import React from "react";
-import HomeHeader from "./components/headers/HomeHeader";
-import HomeFooter from "./components/footers/HomeFooter";
-import EventCard from "./components/general/EventCard";
-
-export default function Home() {
-  const [date, setDate] = React.useState<Date>();
-
+export default function Main() {
   return (
-    <div className="min-h-screen">
+    <>
       <HomeHeader />
-      <main className="max-w-7xl min-h-screen mx-auto">
-        <section>
-          <div className="flex flex-row justify-between items-center my-4">
-            <div className=" flex items-center">
-              <h2 className="text-2xl font-semibold">Eventos</h2>
-              <h4 className="text-slate-600 ml-2">| Puntos Acumulados: 5Pts</h4>
-            </div>
-            <div className="flex justify-end ">
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Futboll Nacional" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <div className="ml-4">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn("w-[280px] justify-start text-left font-normal", !date && "text-muted-foreground")}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {date ? format(date, "PPP") : <span>Fecha</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <EventCard />
-            <EventCard />
-            <EventCard />
-            <EventCard />
-            <EventCard />
-            <EventCard />
-            <EventCard />
-            <EventCard />
-            <EventCard />
-          </div>
-        </section>
-      </main>
-      <HomeFooter />
-    </div>
+      <ScrollUp />
+      <Hero />
+      <Features />
+      <Video />
+      <Brands />
+      <AboutSectionOne />
+      {/* <AboutSectionTwo /> */}
+      <Testimonials />
+      {/* <Pricing /> */}
+      {/* <Blog /> */}
+      <Contact />
+    </>
   );
 }
