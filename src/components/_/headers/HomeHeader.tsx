@@ -4,10 +4,9 @@ import React, { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons/faCircleUser";
-import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 import { usePathname } from "next/navigation";
+import { SquareUserRound, Star } from "lucide-react";
+import { UserNav } from "@/components/template/layout/user-nav";
 
 const posts = [
   { id: "events", slug: "/eventos", title: "Eventos" },
@@ -28,8 +27,8 @@ const HomeHeader = ({ children }: Props) => {
   console.log("🚀 >>  HomeHeader >>  pathname:", pathname);
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 ">
+      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <svg width="112" height="45" viewBox="0 0 112 45" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="111.977" height="45" fill="white" />
@@ -40,10 +39,10 @@ const HomeHeader = ({ children }: Props) => {
             <path
               d="M4.9834 37.1013H45.0997L57.9942 6.72757L70.6022 37.1013H107.566"
               stroke="black"
-              stroke-width="3.48917"
+              strokeWidth="3.48917"
             />
-            <line x1="77.559" y1="5.2267" x2="4.36571" y2="39.1324" stroke="white" stroke-width="1.74458" />
-            <line x1="80.4248" y1="9.23833" x2="12.9289" y2="40.5048" stroke="white" stroke-width="1.74458" />
+            <line x1="77.559" y1="5.2267" x2="4.36571" y2="39.1324" stroke="white" strokeWidth="1.74458" />
+            <line x1="80.4248" y1="9.23833" x2="12.9289" y2="40.5048" stroke="white" strokeWidth="1.74458" />
           </svg>
         </a>
         <button
@@ -63,9 +62,9 @@ const HomeHeader = ({ children }: Props) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M1 1h15M1 7h15M1 13h15"
             />
           </svg>
@@ -85,12 +84,14 @@ const HomeHeader = ({ children }: Props) => {
           </ul>
 
           <Button variant="default" className="text-white py-2 px-3 mx-6">
-            <FontAwesomeIcon className="size-4 cursor-pointer mr-2" icon={faStar} />
+            <Star className="size-4 cursor-pointer mr-2" />
             Puntos:
             <span className="font-black ml-1">{userPoints}</span>
           </Button>
+          {/* <SquareUserRound className="size-8 cursor-pointer" /> */}
 
-          <FontAwesomeIcon className="size-8 cursor-pointer" icon={faCircleUser} />
+          <UserNav />
+          {/* <ThemeToggle /> */}
         </div>
       </div>
     </nav>

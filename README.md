@@ -137,7 +137,7 @@ https://svgomg.net/
 
 
 ### Icons
-https://fontawesome.com/search?q=user&o=r&m=free&s=solid%2Cregular
+https://lucide.dev/icons/
 
 ### Favicon
 https://realfavicongenerator.net/

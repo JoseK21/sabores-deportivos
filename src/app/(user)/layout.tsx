@@ -1,3 +1,5 @@
+import HomeFooter from "@/components/_/footers/HomeFooter";
+import HomeHeader from "@/components/_/headers/HomeHeader";
 import Header from "@/components/template/layout/header";
 import Sidebar from "@/components/template/layout/sidebar";
 import type { Metadata } from "next";
@@ -28,11 +30,11 @@ export const metadata: Metadata = {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Header />
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar />
-        <main className="w-full pt-16">{children}</main>
+      <HomeHeader />
+      <div className="flex h-screen overflow-hidden max-w-7xl mx-auto">
+        <main className="min-h-screen w-full">{children}</main>
       </div>
+      <HomeFooter />
     </>
   );
 }

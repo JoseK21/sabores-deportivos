@@ -25,10 +25,10 @@ const Hero = () => {
                   <path
                     d="M36.5234 185.762H193.19L243.547 67.1428L292.785 185.762H437.142"
                     stroke="black"
-                    stroke-width="13.4286"
+                    strokeWidth="13.4286"
                   />
-                  <line x1="319.935" y1="61.2367" x2="15.5541" y2="202.237" stroke="white" stroke-width="6.71429" />
-                  <line x1="331.125" y1="76.9033" x2="26.7445" y2="217.903" stroke="white" stroke-width="6.71429" />
+                  <line x1="319.935" y1="61.2367" x2="15.5541" y2="202.237" stroke="white" strokeWidth="6.71429" />
+                  <line x1="331.125" y1="76.9033" x2="26.7445" y2="217.903" stroke="white" strokeWidth="6.71429" />
                   <defs>
                     <linearGradient
                       id="paint0_linear_132_12248"

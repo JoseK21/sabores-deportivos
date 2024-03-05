@@ -30,7 +30,15 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      console.log("🚀 >>  redirect >>  baseUrl:", baseUrl, { url });
+      if (url === "" || url === "/") return "/login";
+
+      return url;
+    },
+  },
   pages: {
-    signIn: "/", //sigin page
+    signIn: "/login", //sigin page
   },
 };
