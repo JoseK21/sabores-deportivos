@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import UserAuthForm from "@/components/template/forms/user-auth-form";
-import Logo from "@/components/_/general/logo";
+import Logo from "@/components/_/general/Logo";
 
 export const metadata: Metadata = {
   title: "QuiniSports | Master",
