@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import Team from "./Team";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
+import TeamInfo from "./TeamInfo";
 
 import {
   Dialog,
@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Team } from "@/types/team";
 
 interface Props {
-  team1: TeamI;
-  team2: TeamI;
-  // any props that come into the component
+  team1: Team;
+  team2: Team;
 }
 
 const EventCard = ({ team1, team2 }: Props) => {
@@ -31,9 +31,9 @@ const EventCard = ({ team1, team2 }: Props) => {
       </CardHeader>
       <CardContent className="flex items-center">
         <div className="flex items-center rounded-md border p-4 justify-between w-full">
-          <Team {...team1} />
+          <TeamInfo {...team1} />
           <span className="text-sm font-semibold leading-none text-center">VS</span>
-          <Team {...team2} />
+          <TeamInfo {...team2} />
         </div>
       </CardContent>
       <CardFooter>

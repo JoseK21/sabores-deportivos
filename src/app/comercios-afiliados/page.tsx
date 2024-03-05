@@ -10,8 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Buisiness } from "@/types/business";
 
-const places: AffiliateBusinessI[] = [
+const places: Buisiness[] = [
   {
     id: "1",
     name: "La Cervecería de Barrio",

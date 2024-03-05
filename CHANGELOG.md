@@ -1,0 +1,4 @@
+## Cambios por hacer
+
+1. Remover next-themes y manejar todo con tailwind
+2. Analizar remover @tanstack/react-table
