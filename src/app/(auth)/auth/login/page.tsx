@@ -53,7 +53,7 @@ export default function AuthenticationPage() {
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="hidden h-full justify-between flex-col bg-muted p-10 text-white dark:border-r lg:flex bg-zinc-900 z-20">
         <div className="flex items-center">
-          <Logo width={240} fillLabel="#FFF" fill="#FFF" />
+          <Logo width={210} fillLabel="#FFF" fill="#FFF" />
         </div>
         <div>
           <blockquote className="space-y-2">
@@ -69,9 +69,9 @@ export default function AuthenticationPage() {
       <div className="p-4 lg:p-8 h-full flex items-center">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">Crea una cuenta</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Inicio de Sesión</h1>
             <p className="text-sm text-muted-foreground">
-              Ingrese su correo electrónico a continuación para crear su cuenta
+              Ingrese su correo electrónico y contraseña, luego clic en Iniciar Sesión.
             </p>
           </div>
           <UserAuthForm />

@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 interface Props {
   children?: ReactNode;
@@ -9,17 +11,16 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <>
-      <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList>
-          <TabsTrigger value="history">Historial</TabsTrigger>
-          <TabsTrigger value="menu">Menu</TabsTrigger>
-          <TabsTrigger value="schedule-location">Horario y Ubicacion</TabsTrigger>
-        </TabsList>
-        <TabsContent value="history">Historial - Make changes to your account here.</TabsContent>
-        <TabsContent value="menu">Menu</TabsContent>
-        <TabsContent value="schedule-location">Ubicacion....</TabsContent>
-      </Tabs>
-      <main className="max-w-7xl min-h-screen mx-auto">{children}</main>
+      <div className="mt-6 text-gray-700">
+        <Button asChild variant="secondary">
+          <Link href="/comercios-afiliados">
+            <ArrowLeft size={20} />
+            <span className="ml-4 ">Atras</span>
+          </Link>
+        </Button>
+      </div>
+
+      <main className="max-w-7xl min-h-screen">{children}</main>
     </>
   );
 };

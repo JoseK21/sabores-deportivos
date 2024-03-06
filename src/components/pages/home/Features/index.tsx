@@ -8,7 +8,7 @@ const Features = () => {
       <section id="features" className="bg-primary/[.03] py-16 md:py-20 lg:py-28">
         <div className="container">
           <SectionTitle
-            title="Ofremos"
+            title="Ofrecemos"
             paragraph="En QUINISPORTS, no solo nos esforzamos por brindarte emocionantes experiencias deportivas, sino también por ofrecerte una amplia gama de beneficios y características que hacen que tu participación sea aún más gratificante."
             center
           />

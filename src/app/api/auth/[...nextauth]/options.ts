@@ -32,6 +32,7 @@ export const options: NextAuthOptions = {
         return {
           id: userFound.id,
           name: userFound.name,
+          role: userFound.role,
           email: userFound.email,
         };
       },

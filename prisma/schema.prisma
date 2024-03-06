@@ -16,11 +16,20 @@ model Post {
   authorId  String?
 }
 
+enum Role {
+  master
+  client
+  admin_rest
+  cashier_rest
+  waiter_rest
+}
+
 model User {
   id        String   @id @default(cuid())
-  name      String?
-  password  String?
-  email     String?  @unique
+  role      Role
+  name      String
+  password  String
+  email     String  @unique
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
   posts     Post[]
