@@ -1,0 +1,80 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect } from "react";
+
+const HomePage = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  //   let i = 0;
+
+  //   const redirect = useCallback(() => {
+  //     console.log("🚀 >>  useEffect >>  status:", status);
+
+  //     if (status === "loading") {
+  //       if (session) {
+  //         console.log("🚀 >>  useEffect >>  session:", session);
+  //         // Si el usuario está autenticado, redirige a la ruta correspondiente a su rol
+  //         router.push(`/eventos`);
+  //       } else {
+  //         // Si el usuario no está autenticado, redirige al login
+  //         router.push("/auth/login");
+  //       }
+  //     } else {
+  //       if (status === "authenticated") {
+  //         // TODO acording to role
+  //         router.push(`/eventos`);
+  //       } else if (status === "unauthenticated") {
+  //         // TODO acording to role
+  //         router.push(`/auth/login`);
+  //       }
+  //     }
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   }, [status, session]);
+
+  //   useEffect(() => {
+  //     i++;
+  //     console.log("🚀 >>  useEffect >>>> ", i);
+  //     redirect();
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   }, [redirect, i]);
+
+  //   setTimeout(() => {
+  //     redirect();
+  //   }, 30);
+
+  useEffect(() => {
+    if (status === "loading") {
+      if (session) {
+        console.log("🚀 >>  useEffect >>  session:", session);
+        // Si el usuario está autenticado, redirige a la ruta correspondiente a su rol
+        router.push(`/eventos`);
+      } else {
+        // Si el usuario no está autenticado, redirige al login
+        router.push("/login");
+      }
+    } else {
+      if (status === "authenticated") {
+        // TODO acording to role
+        router.push(`/eventos`);
+      } else if (status === "unauthenticated") {
+        // TODO acording to role
+        router.push(`/login`);
+      }
+    }
+
+    return () => {};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
+  if (status === "loading") {
+    return <div>Cargando....</div>;
+  }
+
+  // Este componente no renderiza nada ya que la redirección se maneja en useEffect
+  return <div>....</div>;
+};
+
+export default HomePage;

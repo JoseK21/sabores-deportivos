@@ -49,7 +49,7 @@ const AboutSectionOne = () => {
             <div className="w-full px-4 lg:w-1/2">
               <div className="wow fadeInUp relative mx-auto aspect-[25/24] max-w-[500px] lg:mr-0" data-wow-delay=".2s">
                 <Image
-                  src="/img1.jpeg"
+                  src="/assets/img1.jpeg"
                   alt="about-image"
                   fill
                   className="mx-auto max-w-full lg:mr-0"

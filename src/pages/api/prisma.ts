@@ -1,5 +1,5 @@
+import prisma from "@/lib/prisma";
 import { GetStaticProps } from "next";
-import prisma from "../../lib/prisma";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
