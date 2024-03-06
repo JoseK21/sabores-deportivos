@@ -13,7 +13,7 @@ export default function GoogleSignInButton() {
       className="w-full"
       variant="outline"
       type="button"
-      onClick={() => signIn("google", { callbackUrl: callbackUrl ?? "/login" })}
+      onClick={() => signIn("google", { callbackUrl: callbackUrl ?? "/auth/login" })}
     >
       <div className="mr-4">
         <svg viewBox="0 0 48 48" width="24" height="24" preserveAspectRatio="xMidYMid meet">

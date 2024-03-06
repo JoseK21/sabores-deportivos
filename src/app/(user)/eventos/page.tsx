@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-import React from "react";
+import { useState } from "react";
 import HomeHeader from "../../../components/_/headers/HomeHeader";
 import HomeFooter from "../../../components/_/footers/HomeFooter";
 import EventCard from "../../../components/_/general/EventCard";
@@ -123,7 +123,7 @@ const LEAGUES = [
 ];
 
 export default function Home() {
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = useState<Date>();
 
   return (
     <main>

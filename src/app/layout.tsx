@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 import Providers from "@/components/template/layout/providers";
@@ -12,8 +13,10 @@ export default async function RootLayout({
   const session = await getServerSession();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="overflow-hidden">
+      {/* className="overflow-hidden" */}
+      <body>
         <Providers session={session}>
+          <Navbar />
           <Toaster />
           {children}
         </Providers>
