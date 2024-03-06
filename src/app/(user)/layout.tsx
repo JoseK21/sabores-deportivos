@@ -1,5 +1,5 @@
-import HomeFooter from "@/components/_/footers/HomeFooter";
-import HomeHeader from "@/components/_/headers/HomeHeader";
+import HomeFooter from "@/components/quinisports/footers/HomeFooter";
+import HomeHeader from "@/components/quinisports/headers/HomeHeader";
 import Header from "@/components/template/layout/header";
 import Sidebar from "@/components/template/layout/sidebar";
 import type { Metadata } from "next";

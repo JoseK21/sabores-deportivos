@@ -1,6 +1,6 @@
 import React from "react";
 
-import HomeHeader from "@/components/_/headers/HomeHeader";
+import HomeHeader from "@/components/quinisports/headers/HomeHeader";
 import AboutSectionOne from "@/components/pages/home/About/AboutSectionOne";
 import Brands from "@/components/pages/home/Brands";
 import ScrollUp from "@/components/pages/home/Common/ScrollUp";

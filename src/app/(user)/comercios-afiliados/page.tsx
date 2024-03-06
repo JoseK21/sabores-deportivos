@@ -1,4 +1,4 @@
-import ComercioCard from "@/components/_/general/ComercioCard";
+import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import React from "react";
 
 import {

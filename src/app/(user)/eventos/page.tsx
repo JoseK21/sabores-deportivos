@@ -11,9 +11,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 import { useState } from "react";
-import HomeHeader from "../../../components/_/headers/HomeHeader";
-import HomeFooter from "../../../components/_/footers/HomeFooter";
-import EventCard from "../../../components/_/general/EventCard";
+import HomeHeader from "../../../components/quinisports/headers/HomeHeader";
+import HomeFooter from "../../../components/quinisports/footers/HomeFooter";
+import EventCard from "../../../components/quinisports/general/EventCard";
 
 const TEAMS = [
   {
