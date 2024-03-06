@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Logo from "./_/general/Logo";
 
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = useState(false);
