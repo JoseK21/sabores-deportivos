@@ -1,7 +1,3 @@
-import HomeFooter from "@/components/quinisports/footers/HomeFooter";
-import HomeHeader from "@/components/quinisports/headers/HomeHeader";
-import Header from "@/components/template/layout/header";
-import Sidebar from "@/components/template/layout/sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SquareUserRound, Star } from "lucide-react";
 import { UserNav } from "@/components/template/layout/user-nav";
+import Logo from "../general/Logo";
 
 const posts = [
   { id: "events", slug: "/eventos", title: "Eventos" },
@@ -30,20 +31,7 @@ const HomeHeader = ({ children }: Props) => {
     <nav className="bg-white border-gray-200 dark:bg-gray-900 ">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <svg width="112" height="45" viewBox="0 0 112 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="111.977" height="45" fill="white" />
-            <path
-              d="M58.5671 31.3704L56.9195 35.6686H51.9766L56.0956 38.5341L54.448 42.8322L58.5671 39.9668L62.6862 42.8322L61.0385 38.5341L65.1576 35.6686H60.2147L58.5671 31.3704Z"
-              fill="#31973B"
-            />
-            <path
-              d="M4.9834 37.1013H45.0997L57.9942 6.72757L70.6022 37.1013H107.566"
-              stroke="black"
-              strokeWidth="3.48917"
-            />
-            <line x1="77.559" y1="5.2267" x2="4.36571" y2="39.1324" stroke="white" strokeWidth="1.74458" />
-            <line x1="80.4248" y1="9.23833" x2="12.9289" y2="40.5048" stroke="white" strokeWidth="1.74458" />
-          </svg>
+          <Logo height={45} showLabel={false} />
         </a>
         <button
           data-collapse-toggle="navbar-default"

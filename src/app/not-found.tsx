@@ -12,13 +12,13 @@ export default function NotFound() {
       <span className="bg-gradient-to-b from-foreground to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent">
         Error 404
       </span>
-      <h2 className="my-2 font-heading text-2xl font-bold">Something&apos;s missing</h2>
+      <h2 className="my-2 font-heading text-2xl font-bold">Pagina no encontrada</h2>
       <p>Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
       <div className="mt-8 flex justify-center gap-2">
-        <Button onClick={() => router.back()} variant="default" size="lg">
+        <Button onClick={() => router.back()} variant="ghost" size="lg">
           Atras
         </Button>
-        <Button onClick={() => router.push("/auth/login")} variant="ghost" size="lg">
+        <Button onClick={() => router.push("/auth/login")} variant="default" size="lg">
           Ir al Incio
         </Button>
       </div>
