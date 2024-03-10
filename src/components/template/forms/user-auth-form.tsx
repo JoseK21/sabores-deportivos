@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import GoogleSignInButton from "../google-auth-button";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Introduzca una dirección de correo electrónico válida" }),
@@ -25,6 +26,8 @@ export default function UserAuthForm() {
   const callbackUrl = searchParams ? searchParams.get("callbackUrl") : null;
 
   const [loading, setLoading] = useState(false);
+
+  const [displayPassword, setDisplayPassword] = useState(false);
 
   const defaultValues = {
     email: "jcnv21@gmail.com",
@@ -51,7 +54,7 @@ export default function UserAuthForm() {
     if (res?.error) {
       alert(res.error);
     } else {
-      router.push("/auth/login");
+      router.push("/master");
     }
   };
 
@@ -78,9 +81,19 @@ export default function UserAuthForm() {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Contraseña</FormLabel>
+                <FormLabel className=" flex items-end w-min">
+                  Contraseña
+                  <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
+                    {displayPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </div>
+                </FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Introduce la contraseña..." disabled={loading} {...field} />
+                  <Input
+                    type={displayPassword ? "text" : "password"}
+                    placeholder="Introduce la contraseña..."
+                    disabled={loading}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

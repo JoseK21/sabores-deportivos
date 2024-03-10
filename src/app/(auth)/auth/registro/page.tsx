@@ -11,6 +11,7 @@ import { useState } from "react";
 import Logo from "@/components/quinisports/general/Logo";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Role } from "@/app/enum";
+import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({
   email: z
@@ -77,6 +78,8 @@ function RegisterPage() {
       setLoading(false);
     }
   };
+
+  const [displayPassword, setDisplayPassword] = useState(false);
 
   return (
     <div className="w-full h-screen ">
@@ -148,9 +151,19 @@ function RegisterPage() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contraseña</FormLabel>
+                    <FormLabel>
+                      Contraseña
+                      <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
+                        {displayPassword ? <Eye /> : <EyeOff />}
+                      </div>
+                    </FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Introduce la contraseña..." disabled={loading} {...field} />
+                      <Input
+                        type={displayPassword ? "text" : "password"}
+                        placeholder="Introduce la contraseña..."
+                        disabled={loading}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

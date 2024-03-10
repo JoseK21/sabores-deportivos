@@ -142,6 +142,8 @@ https://lucide.dev/icons/
 ### Favicon
 https://realfavicongenerator.net/
 
+### Optimization Image Online
+https://squoosh.app/
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
