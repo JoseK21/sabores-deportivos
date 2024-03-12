@@ -51,6 +51,7 @@ model User {
   name         String
   password     String
   email        String         @unique
+  imageUrl     String?
   createdAt    DateTime       @default(now()) @map(name: "created_at")
   updatedAt    DateTime       @updatedAt @map(name: "updated_at")
   ClaimedPrize ClaimedPrize[]
