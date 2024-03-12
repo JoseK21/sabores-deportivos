@@ -145,6 +145,9 @@ https://realfavicongenerator.net/
 ### Optimization Image Online
 https://squoosh.app/
 
+### Create Skeleton SVG
+https://skeletonreact.com/
+
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

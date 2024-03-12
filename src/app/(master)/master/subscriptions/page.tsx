@@ -8,15 +8,15 @@ export default function page() {
   return (
     <>
       <div className="flex-1 space-y-4  p-4 md:p-8 pt-6">
-        <BreadCrumb items={breadcrumbItems} />
+        {/* <BreadCrumb items={breadcrumbItems} /> */}
         <UserClient
           data={users}
           columns={columns}
-          path="/master/admins"
+          path="/master/subscriptions"
           placeholder="Filtro por nombre..."
-          headerTitle={`Administradores (${users.length})`}
-          textRowsSelected="administradore(s) seleccionados"
-          description="Administrar administradores del sistema"
+          headerTitle={`Subcripsiones (${users.length})`}
+          textRowsSelected="subcripsione(s) seleccionados"
+          description="Administrar subcripsiones del sistema"
         />
       </div>
     </>

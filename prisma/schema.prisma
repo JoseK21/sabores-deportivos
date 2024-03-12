@@ -4,18 +4,10 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
-model Post {
-  id        String  @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
-}
-
+// ENUMS
 enum Role {
   master
   client
@@ -24,15 +16,267 @@ enum Role {
   waiter_rest
 }
 
+enum EventStatus {
+  incoming
+  live
+  finished
+  canceled
+  pending
+  postponed
+}
+
+enum ForecastStatus {
+  pending
+  canceled
+  completed
+  lost
+  won
+}
+
+enum BusinessTypes {
+  bar
+  cafe
+  hotel
+  sportbar
+  restaurant
+  sports_club
+  shopping_center
+  recreation_center
+}
+
+// MODELES
 model User {
-  id        String   @id @default(cuid())
-  role      Role
+  id           Int            @id @default(autoincrement())
+  role         Role
+  name         String
+  password     String
+  email        String         @unique
+  createdAt    DateTime       @default(now()) @map(name: "created_at")
+  updatedAt    DateTime       @updatedAt @map(name: "updated_at")
+  ClaimedPrize ClaimedPrize[]
+}
+
+model Client {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  totalPoints   Int
+  claimedPoints Int
+  createdAt     DateTime       @default(now()) @map(name: "created_at")
+  updatedAt     DateTime       @updatedAt @map(name: "updated_at")
+  ClaimedPrize  ClaimedPrize[]
+}
+
+model ProductType {
+  id        Int      @id @default(autoincrement())
   name      String
-  password  String
-  email     String   @unique
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
-  posts     Post[]
+  Product   Product?
+}
 
-  @@map(name: "users")
+model Product {
+  id           Int            @id @default(autoincrement())
+  name         String
+  idBussiness  Int
+  description  String
+  imageUrl     String
+  type         ProductType    @relation(fields: [typeId], references: [id])
+  typeId       Int            @unique
+  createdAt    DateTime       @default(now()) @map(name: "created_at")
+  updatedAt    DateTime       @updatedAt @map(name: "updated_at")
+  ProductPrize ProductPrize[]
+}
+
+model Prize {
+  id          Int      @id @default(autoincrement())
+  name        String
+  idBussiness Int
+  description String
+  imageUrl    String
+  points      Int
+  enabled     Boolean
+  startDate   DateTime
+  endDate     DateTime
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  ProductPrize ProductPrize[]
+  ClaimedPrize ClaimedPrize[]
+}
+
+model ProductPrize {
+  id        Int @id @default(autoincrement())
+  idPrize   Int
+  idProduct Int
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  prize   Prize   @relation(fields: [idPrize], references: [id])
+  product Product @relation(fields: [idProduct], references: [id])
+}
+
+model ClaimedPrize {
+  id       Int @id @default(autoincrement())
+  idPrize  Int
+  idUser   Int
+  idClient Int
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  prize  Prize  @relation(fields: [idPrize], references: [id])
+  user   User   @relation(fields: [idUser], references: [id])
+  client Client @relation(fields: [idClient], references: [id])
+}
+
+model Sport {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  abbrName  String   @unique
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
+
+model League {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  abbrName  String   @unique
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
+
+model Team {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  abbrName  String      @unique
+  logoUrl   String
+  colors    String[]
+  createdAt DateTime    @default(now()) @map(name: "created_at")
+  updatedAt DateTime    @updatedAt @map(name: "updated_at")
+  events    Event[]     @relation("teamEvents")
+  TeamEvent TeamEvent[]
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  startTime   DateTime
+  leagueId    Int
+  sportId     Int
+  createdAt   DateTime    @default(now()) @map(name: "created_at")
+  updatedAt   DateTime    @updatedAt @map(name: "updated_at")
+  status      EventStatus
+  teams       Team[]      @relation("teamEvents")
+  TeamEvent   TeamEvent[]
+}
+
+model TeamEvent {
+  id        Int      @id @default(autoincrement())
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    Int
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@unique([teamId, eventId])
+}
+
+model Forecast {
+  id         String         @id @default(cuid())
+  idBusiness Int
+  idClient   Int
+  idEvent    Int
+  date       DateTime // Tue Mar 12 2024 16:15:48 GMT-0600 (Central Standard Time)
+  status     ForecastStatus
+  team1Score Int
+  team2Score Int
+  createdAt  DateTime       @default(now()) @map(name: "created_at")
+  updatedAt  DateTime       @updatedAt @map(name: "updated_at")
+
+  business Business @relation(fields: [idBusiness], references: [id])
+}
+
+model Business {
+  id            Int           @id @default(autoincrement())
+  name          String
+  type          BusinessTypes
+  logoUrl       String
+  description   String
+  coverImageUrl String
+  country       String
+  province      String?
+  canton        String?
+  district      String?
+  address       String?
+  wazeLink      String?
+  googleMapLink String?
+  facebookLink  String?
+  instagramLink String?
+  xLink         String?
+
+  createdAt           DateTime              @default(now()) @map(name: "created_at")
+  updatedAt           DateTime              @updatedAt @map(name: "updated_at")
+  Forecast            Forecast[]
+  BusinessScheduled   BusinessScheduled[]
+  BusinessGallery     BusinessGallery[]
+  BusinessAdvertising BusinessAdvertising[]
+}
+
+model BusinessScheduled {
+  id         Int @id @default(autoincrement())
+  idBusiness Int
+
+  mondayOpening    Int? // minutes, example 0: 12:00am, 720: 12:00md, 900: 3:00pm
+  mondayClose      Int?
+  tuesdayOpening   Int?
+  tuesdayClose     Int?
+  wednesdayOpening Int?
+  wednesdayClose   Int?
+  thursdayOpening  Int?
+  thursdayClose    Int?
+  fridayOpening    Int?
+  fridayClose      Int?
+  saturdayOpening  Int?
+  saturdayClose    Int?
+  sundayOpening    Int?
+  sundayClose      Int?
+
+  business Business @relation(fields: [idBusiness], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
+
+model BusinessGallery {
+  id         Int    @id @default(autoincrement())
+  idBusiness Int
+  ord        Int?
+  imageUrl   String
+
+  business Business @relation(fields: [idBusiness], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
+
+model BusinessAdvertising {
+  id         Int       @id @default(autoincrement())
+  idBusiness Int
+  title      String
+  imageUrl   String
+  href       String?
+  priority   Int?
+  enabled    Boolean
+  startDate  DateTime?
+  endDate    DateTime?
+
+  business Business @relation(fields: [idBusiness], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
 }

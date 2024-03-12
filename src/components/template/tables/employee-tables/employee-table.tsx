@@ -187,7 +187,7 @@ export function EmployeeTable<TData, TValue>({
   return (
     <>
       <Input
-        placeholder={`Search ${searchKey}...`}
+        placeholder={`Filtro por nombre...`}
         value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
           table.getColumn(searchKey)?.setFilterValue(event.target.value)
@@ -249,13 +249,13 @@ export function EmployeeTable<TData, TValue>({
       <div className="flex flex-col gap-2 sm:flex-row items-center justify-end space-x-2 py-4">
         <div className="flex items-center justify-between w-full">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} de{" "}
+            {table.getFilteredRowModel().rows.length} comercios(s) seleccionados.
           </div>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
             <div className="flex items-center space-x-2">
               <p className="whitespace-nowrap text-sm font-medium">
-                Rows per page
+                Filas por Página
               </p>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
@@ -281,7 +281,7 @@ export function EmployeeTable<TData, TValue>({
         </div>
         <div className="flex items-center justify-between sm:justify-end gap-2 w-full">
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            Página {table.getState().pagination.pageIndex + 1} de{" "}
             {table.getPageCount()}
           </div>
           <div className="flex items-center space-x-2">

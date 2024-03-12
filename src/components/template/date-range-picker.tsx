@@ -1,21 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { addDays, format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 import { useState } from "react";
 
 import { DateRange } from "react-day-picker";
 
-export function CalendarDateRangePicker({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+const DATE_FORMAT = "dd/MM/yyyy";
+
+export function CalendarDateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(2023, 0, 20),
     to: addDays(new Date(2023, 0, 20), 20),
@@ -28,25 +25,16 @@ export function CalendarDateRangePicker({
           <Button
             id="date"
             variant={"outline"}
-            className={cn(
-              "w-[260px] justify-start text-left font-normal",
-              !date && "text-muted-foreground",
-            )}
+            className={cn("w-[260px] justify-start text-left font-normal", !date && "text-muted-foreground")}
           >
-            {/* <CalendarIcon className="mr-2 h-4 w-4" /> */}
-            C
-            {date?.from ? (
-              date.to ? (
-                <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
-                </>
-              ) : (
-                format(date.from, "LLL dd, y")
-              )
-            ) : (
-              <span>Pick a date</span>
-            )}
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            <span className="pt-1">
+              {date?.from
+                ? date.to
+                  ? `${format(date.from, DATE_FORMAT)} - ${format(date.to, DATE_FORMAT)}`
+                  : format(date.from, DATE_FORMAT)
+                : "Elija una fecha"}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="end">

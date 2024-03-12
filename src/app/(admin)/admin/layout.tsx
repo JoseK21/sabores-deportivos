@@ -30,7 +30,41 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <>
       <Header />
       <div className="flex h-screen overflow-hidden">
-        <Sidebar />
+        <Sidebar
+          title="Admin"
+          items={[
+            {
+              title: "Dashboard",
+              href: "/master",
+              label: "Dashboard",
+            },
+            {
+              title: "User",
+              href: "/master/user",
+              label: "user",
+            },
+            {
+              title: "Employee",
+              href: "/master/employee",
+              label: "employee",
+            },
+            {
+              title: "Profile",
+              href: "/master/profile",
+              label: "profile",
+            },
+            {
+              title: "Kanban",
+              href: "/master/kanban",
+              label: "kanban",
+            },
+            {
+              title: "Login",
+              href: "/auth/login",
+              label: "login",
+            },
+          ]}
+        />
         <main className="w-full pt-16">{children}</main>
       </div>
     </>

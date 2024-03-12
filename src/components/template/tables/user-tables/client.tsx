@@ -10,27 +10,41 @@ import { columns } from "./columns";
 
 interface ProductsClientProps {
   data: User[];
+  headerTitle: string;
+  description: string;
+  path: string;
+  columns: any;
+  placeholder: string;
+  textRowsSelected: string;
 }
 
-export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
+export const UserClient: React.FC<ProductsClientProps> = ({
+  data,
+  headerTitle,
+  description,
+  path,
+  columns,
+  placeholder,
+  textRowsSelected,
+}) => {
   const router = useRouter();
 
   return (
     <>
       <div className="flex items-start justify-between">
-        <Heading
-          title={`Users (${data.length})`}
-          description="Manage users (Client side table functionalities.)"
-        />
-        <Button
-          className="text-xs md:text-sm"
-          onClick={() => router.push(`/master/user/new`)}
-        >
-          <Plus className="mr-2 h-4 w-4" /> Add New
+        <Heading title={headerTitle} description={description} />
+        <Button className="text-xs md:text-sm" onClick={() => router.push(`${path}/new`)}>
+          <Plus className="mr-2 h-4 w-4" /> Agregar Nuevo
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data} />
+      <DataTable
+        data={data}
+        searchKey="name"
+        columns={columns}
+        placeholder={placeholder}
+        textRowsSelected={textRowsSelected}
+      />
     </>
   );
 };
