@@ -29,11 +29,11 @@ export const requestMiddleware =
     try {
       const data = request?.body ? await request?.json?.() : {};
 
-      const value = await handler({ data, params });
+      const result = await handler({ data, params });
 
-      if (!value) return error404Response;
+      if (!result) return error404Response;
 
-      return NextResponse.json(value);
+      return NextResponse.json({ data: result, isError: false, message: "ok" }, { status: 200 });
     } catch (error: any) {
       console.log(">>> requestMiddleware error:", error);
       if (ERROR_404_PRISMA_CODES.includes(error?.code)) return error404Response;
