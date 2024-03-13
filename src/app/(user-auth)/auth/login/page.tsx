@@ -74,10 +74,8 @@ export default function AuthenticationPage() {
             <DropdownMenuContent className="w-56 gap-1">
               <DropdownMenuLabel>Accesos</DropdownMenuLabel>
               <div className="ml-2 flex flex-col">
-                <Link href="/master">Master</Link>
-                <Link href="/admin">Admin</Link>
-                <Link href="/waiter">Mesero</Link>
-                <Link href="/cashier">Cajero</Link>
+                <Link href="/qs-master/auth/login">Master</Link>
+                <Link href="/qs-staff-rest/auth/login">Acceso Staff Rest</Link>
                 <Link href="/">Cliente</Link>
               </div>
             </DropdownMenuContent>
@@ -110,7 +108,7 @@ export default function AuthenticationPage() {
           </div>
           <UserAuthForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
-            Al hacer clic en continuar, aceptas nuestra{" "}
+            Al iniciar sesión, aceptas nuestra{" "}
             <Link href="/terminos-y-condiciones" className="underline underline-offset-4 hover:text-primary">
               Términos de servicio
             </Link>{" "}

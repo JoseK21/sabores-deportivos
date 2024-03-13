@@ -25,8 +25,6 @@ const HomeHeader = ({ children }: Props) => {
 
   const pathname = usePathname();
 
-  console.log("🚀 >>  HomeHeader >>  pathname:", pathname);
-
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 ">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4">
@@ -71,10 +69,11 @@ const HomeHeader = ({ children }: Props) => {
             ))}
           </ul>
 
-          <Button variant="default" className="text-white py-2 px-3 mx-6">
-            <Star className="size-4 cursor-pointer mr-2" />
-            Puntos:
-            <span className="font-black ml-1">{userPoints}</span>
+          <Button variant="default" className="text-white py-2 px-3 mx-6 flex items-center text-sm font-semibold">
+            <Star className="size-4 cursor-pointer mr-2 -mt-1" />
+            <span>
+              Puntos: <strong>{userPoints}</strong>
+            </span>
           </Button>
           {/* <SquareUserRound className="size-8 cursor-pointer" /> */}
 

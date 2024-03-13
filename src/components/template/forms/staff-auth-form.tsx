@@ -17,9 +17,9 @@ const formSchema = z.object({
   password: z.string().min(1, { message: "Introduzca una contraseña" }),
 });
 
-type UserFormValue = z.infer<typeof formSchema>;
+type StaffFormValue = z.infer<typeof formSchema>;
 
-export default function UserAuthForm() {
+export default function StaffAuthForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -31,19 +31,17 @@ export default function UserAuthForm() {
 
   const defaultValues = { email: "", password: "" };
 
-  const form = useForm<UserFormValue>({
+  const form = useForm<StaffFormValue>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const onSubmit = async (data: UserFormValue) => {
-    console.log("🚀 >>  onSubmit >>  data:", data);
-    console.log("🚀 >>  onSubmit >>  callbackUrl:", callbackUrl);
+  const onSubmit = async (data: StaffFormValue) => {
 
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      callbackUrl: callbackUrl ?? "/auth/login",
+      callbackUrl: callbackUrl ?? "/qs-staff-rest/auth/login",
     });
 
     console.log("Res: ", res);
@@ -101,24 +99,7 @@ export default function UserAuthForm() {
             Inicia sesión
           </Button>
         </form>
-
-        <span className="text-sm text-muted-foreground text-center">
-          No tienes una cuenta?
-          <Link href={"/auth/registro"} className="ml-2 text-blue-500 ">
-            Registrar
-          </Link>
-        </span>
       </Form>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-background px-2 text-muted-foreground">O CONTINUAR CON</span>
-        </div>
-      </div>
-      <GoogleSignInButton />
     </>
   );
 }

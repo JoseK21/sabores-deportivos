@@ -7,9 +7,9 @@ export { default } from "next-auth/middleware";
 //   return NextResponse.redirect(new URL('/home', request.url))
 // }
 
-// export const config = { matcher: ["/master/:path*", "/admin/:path*"] };
+export const config = { matcher: ["/#/:path*"] };
 
-export const config = { matcher: [] };
+// export const config = { matcher: [] };
 
 // export function middleware(request: NextRequest) {
 //   const pathname = request.nextUrl.pathname;

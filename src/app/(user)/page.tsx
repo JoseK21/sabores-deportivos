@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Gift, LandPlot, Users } from "lucide-react";
+import { ChevronRight, Gift, LandPlot, Users } from "lucide-react";
 import Image from "next/image";
 
 const listUser = [
@@ -41,17 +41,14 @@ export default function Page() {
                 Proporcione una red para todas sus necesidades de forma fácil y divertida utilizando LaslesVPN y
                 descubra nuestras funciones interesantes.
               </p>
-              <Button onClick={() => router.push(`/eventos`)}>Ver Eventos</Button>
+              <Button onClick={() => router.push(`/eventos`)} className=" font-bold flex items-center">
+                Ver Eventos
+                <ChevronRight className="ml-2" />
+              </Button>
             </div>
             <div className="flex w-full">
               <div className="h-full w-full">
-                <Image
-                  width={612}
-                  height={383}
-                  quality={100}
-                  src="/home.jpeg"
-                  alt="VPN Illustrasi"
-                />
+                <Image width={612} height={383} quality={100} src="/home.jpeg" alt="VPN Illustrasi" />
               </div>
             </div>
           </div>
