@@ -1,8 +1,9 @@
 import { Role } from "@/app/enum";
 
 export type User = {
-  id: string;
+  id: number;
   name: string;
   email: string;
+  password: string;
   role: Role;
 };

@@ -10,7 +10,6 @@ datasource db {
 // ENUMS
 enum Role {
   master
-  client
   admin_rest
   cashier_rest
   waiter_rest
@@ -44,7 +43,7 @@ enum BusinessTypes {
   recreation_center
 }
 
-// MODELES
+// MODELS
 model User {
   id           Int            @id @default(autoincrement())
   role         Role
@@ -96,7 +95,7 @@ model Prize {
   description String
   imageUrl    String
   points      Int
-  enabled     Boolean
+  enabled     Boolean  @default(true)
   startDate   DateTime
   endDate     DateTime
 
@@ -272,7 +271,7 @@ model BusinessAdvertising {
   imageUrl   String
   href       String?
   priority   Int?
-  enabled    Boolean
+  enabled    Boolean   @default(true)
   startDate  DateTime?
   endDate    DateTime?
 
