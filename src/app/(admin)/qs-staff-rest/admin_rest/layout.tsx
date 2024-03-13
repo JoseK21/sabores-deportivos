@@ -35,27 +35,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           items={[
             {
               title: "Dashboard",
-              href: "/master",
+              href: "/qs-staff-rest",
               label: "Dashboard",
             },
             {
               title: "User",
-              href: "/master/user",
+              href: "/qs-staff-rest/user",
               label: "user",
             },
             {
               title: "Employee",
-              href: "/master/employee",
+              href: "/qs-staff-rest/employee",
               label: "employee",
             },
             {
               title: "Profile",
-              href: "/master/profile",
+              href: "/qs-staff-rest/profile",
               label: "profile",
             },
             {
               title: "Kanban",
-              href: "/master/kanban",
+              href: "/qs-staff-rest/kanban",
               label: "kanban",
             },
             {

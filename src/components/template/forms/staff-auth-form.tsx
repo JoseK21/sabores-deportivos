@@ -37,20 +37,24 @@ export default function StaffAuthForm() {
   });
 
   const onSubmit = async (data: StaffFormValue) => {
+    router.push("/qs-staff-rest/admin_rest");
+    // router.push("/qs-staff-rest/cashier_rest");
+    // router.push("/qs-staff-rest/waiter_rest");
 
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      callbackUrl: callbackUrl ?? "/qs-staff-rest/auth/login",
-    });
+    return;
+    // const res = await signIn("credentials", {
+    //   email: data.email,
+    //   password: data.password,
+    //   callbackUrl: callbackUrl ?? "/qs-staff-rest/auth/login",
+    // });
 
-    console.log("Res: ", res);
+    // console.log("Res: ", res);
 
-    if (res?.error) {
-      alert(res.error);
-    } else {
-      router.push("/master");
-    }
+    // if (res?.error) {
+    //   alert(res.error);
+    // } else {
+    //   router.push("/master");
+    // }
   };
 
   return (
@@ -95,10 +99,24 @@ export default function StaffAuthForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button disabled={true} className="ml-auto w-full" type="submit">
             Inicia sesión
           </Button>
         </form>
+
+        {process.env.NODE_ENV === "development" && (
+          <div className="flex">
+            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/admin_rest")}>
+              Admin
+            </Button>
+            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/cashier_rest")}>
+              Cajero
+            </Button>
+            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/waiter_rest")}>
+              Mesero
+            </Button>
+          </div>
+        )}
       </Form>
     </>
   );

@@ -35,27 +35,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           items={[
             {
               title: "Dashboard",
-              href: "/master",
+              href: "/qs-master",
               label: "Dashboard",
             },
             {
               title: "Administradores",
-              href: "/master/admins",
+              href: "/qs-master/admins",
               label: "admins",
             },
             {
               title: "Comercios",
-              href: "/master/business",
+              href: "/qs-master/business",
               label: "Comercios",
             },
             {
               title: "Suscripciones",
-              href: "/master/subscriptions",
+              href: "/qs-master/subscriptions",
               label: "subscriptions",
             },
             {
               title: "Anuncios",
-              href: "/master/ads",
+              href: "/qs-master/ads",
               label: "ads",
             },
           ]}

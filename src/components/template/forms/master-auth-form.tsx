@@ -97,10 +97,16 @@ export default function MasterAuthForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button disabled={true} className="ml-auto w-full" type="submit">
             Inicia sesión
           </Button>
         </form>
+
+        {process.env.NODE_ENV === "development" && (
+          <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-master")}>
+            Master
+          </Button>
+        )}
       </Form>
     </>
   );
