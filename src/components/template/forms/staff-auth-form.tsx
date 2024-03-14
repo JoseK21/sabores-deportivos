@@ -37,9 +37,10 @@ export default function StaffAuthForm() {
   });
 
   const onSubmit = async (data: StaffFormValue) => {
-    router.push("/qs-staff-rest/admin_rest");
+    // router.push("/qs-staff-rest/admin_rest");
     // router.push("/qs-staff-rest/cashier_rest");
     // router.push("/qs-staff-rest/waiter_rest");
+    // router.push("/qs-staff-rest/bartender_rest");
 
     return;
     // const res = await signIn("credentials", {
@@ -114,6 +115,9 @@ export default function StaffAuthForm() {
             </Button>
             <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/waiter_rest")}>
               Mesero
+            </Button>
+            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/bartender_rest")}>
+              Bartender
             </Button>
           </div>
         )}

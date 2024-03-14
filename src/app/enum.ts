@@ -3,6 +3,7 @@ export enum Role {
   admin_rest = "admin_rest",
   cashier_rest = "cashier_rest",
   waiter_rest = "waiter_rest",
+  bartender_rest = "bartender_rest",
 }
 
 export enum EventStatus {

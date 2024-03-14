@@ -7,14 +7,18 @@ export { default } from "next-auth/middleware";
 //   return NextResponse.redirect(new URL('/home', request.url))
 // }
 
-export const config = { matcher: ["/#/:path*"] };
+// export const config = { matcher: ["/qs-master", "/qs-master/:path*"] };
 
-// export const config = { matcher: [] };
+export const config = { matcher: [] };
 
 // export function middleware(request: NextRequest) {
 //   const pathname = request.nextUrl.pathname;
 
 //   console.log("🚀 >>  middleware >>  pathname:", pathname);
+
+//   if (pathname.includes("qs-master")) {
+//     return NextResponse.rewrite(new URL("/qs-master/login", request.url));
+//   }
 
 //   if (pathname.startsWith("/")) {
 //     return NextResponse.rewrite(new URL("/auth/login", request.url));

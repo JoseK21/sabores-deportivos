@@ -1,19 +1,21 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
+  DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuShortcut,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+
 export function UserNav() {
   // Validar que es una persona logeada
   const { data: session } = useSession();
@@ -60,7 +62,9 @@ export function UserNav() {
     </DropdownMenu>
   ) : (
     <Button asChild variant="outline">
-      <Link href="/auth/login" className="font-semibold">Iniciar Session</Link>
+      <Link href="/auth/login" className="font-semibold">
+        Iniciar Session
+      </Link>
     </Button>
   );
 }

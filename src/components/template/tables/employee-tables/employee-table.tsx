@@ -280,7 +280,7 @@ export function EmployeeTable<TData, TValue>({
           </div>
         </div>
         <div className="flex items-center justify-between sm:justify-end gap-2 w-full">
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-32 items-center justify-center text-sm font-medium text-right">
             Página {table.getState().pagination.pageIndex + 1} de{" "}
             {table.getPageCount()}
           </div>

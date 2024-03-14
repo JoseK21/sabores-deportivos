@@ -31,31 +31,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <Header />
       <div className="flex h-screen overflow-hidden">
         <Sidebar
-          title="Admin"
+          title="Cajero Rest"
           items={[
             {
               title: "Dashboard",
-              href: "/master",
+              href: "/qs-staff-rest/cashier-rest",
               label: "Dashboard",
             },
             {
               title: "User",
-              href: "/master/user",
+              href: "/qs-staff-rest/cashier-rest/user",
               label: "user",
             },
             {
               title: "Employee",
-              href: "/master/employee",
+              href: "/qs-staff-rest/cashier-rest/employee",
               label: "employee",
             },
             {
               title: "Profile",
-              href: "/master/profile",
+              href: "/qs-staff-rest/cashier-rest/profile",
               label: "profile",
             },
             {
               title: "Kanban",
-              href: "/master/kanban",
+              href: "/qs-staff-rest/cashier-rest/kanban",
               label: "kanban",
             },
             {

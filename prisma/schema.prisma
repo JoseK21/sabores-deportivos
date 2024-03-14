@@ -13,6 +13,7 @@ enum Role {
   admin_rest
   cashier_rest
   waiter_rest
+  bartender_rest
 }
 
 enum EventStatus {
