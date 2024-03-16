@@ -3,10 +3,19 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
 
 import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
+import type { Adapter } from "next-auth/adapters";
 import { NextAuthOptions } from "next-auth";
 
 export const options: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma) as Adapter,
+  // debug: true,
+  secret: (process.env.NEXTAUTH_SECRET as string) ?? "",
+  session: {
+    strategy: "jwt",
+    maxAge: 2592000, // 30 days
+  },
   providers: [
     GoogleProvider({
       clientId: (process.env.GOOGLE_CLIENT_ID as string) ?? "",
@@ -42,6 +51,12 @@ export const options: NextAuthOptions = {
     // }),
   ],
   pages: {
-    signIn: "/auth/login",
+    // signIn: "/auth/login",
+    // --- DEFAULT VALUES ---
+    // signIn: '/auth/signin',
+    // signOut: '/auth/signout',
+    // error: '/auth/error',
+    // verifyRequest: '/auth/verify-request',
+    // newUser: '/auth/new-user'
   },
 };

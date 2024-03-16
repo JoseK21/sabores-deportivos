@@ -15,18 +15,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/dist/server/api-utils";
+import { getFirstChars } from "@/utils/string";
 
 export function UserNav() {
   // Validar que es una persona logeada
   const { data: session } = useSession();
 
+  console.log("🚀 >>  UserNav >>  session:", session);
+
   return session ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={session?.user?.image ?? ""} alt={"foto-perfil"} />
-            <AvatarFallback>{"J"}</AvatarFallback>
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full focus-visible:shadow-none focus-visible:ring-0">
+          <Avatar className="h-8 w-8 border border-primary-600">
+            <AvatarImage src={session?.user?.image ?? ""} alt={"foto-perfil"} referrerPolicy="no-referrer" />
+            <AvatarFallback>{getFirstChars(session?.user?.name ?? "-")}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -38,23 +42,13 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Perfil
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Facturacion
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Configuración
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>
+        {/* <DropdownMenuGroup>
+          <DropdownMenuItem>Puntos Obtenidos</DropdownMenuItem>
+          <DropdownMenuItem>Facturacion</DropdownMenuItem>
+          <DropdownMenuItem>Configuración</DropdownMenuItem>
+        </DropdownMenuGroup> */}
+        {/* <DropdownMenuSeparator /> */}
+        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/eventos" })}>
           Cerrar Sesión
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

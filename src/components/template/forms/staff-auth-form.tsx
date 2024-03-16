@@ -3,13 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import GoogleSignInButton from "../google-auth-button";
-import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({
@@ -116,7 +113,11 @@ export default function StaffAuthForm() {
             <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/waiter_rest")}>
               Mesero
             </Button>
-            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/bartender_rest")}>
+            <Button
+              className="ml-auto w-full"
+              type="button"
+              onClick={() => router.push("/qs-staff-rest/bartender_rest")}
+            >
               Bartender
             </Button>
           </div>

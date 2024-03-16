@@ -7,7 +7,7 @@ const TeamInfo = ({ id, name, abbr, logoUrl, colors }: Team) => {
   return (
     <div className="p-4 flex flex-col items-center justify-center self-start min-w-14 max-w-20">
       <Avatar>
-        <AvatarImage src={logoUrl} />
+        <AvatarImage src={logoUrl} alt={getFirstChars(name)} />
         <AvatarFallback>{getFirstChars(name)}</AvatarFallback>
       </Avatar>
 

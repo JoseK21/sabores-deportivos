@@ -11,6 +11,7 @@ import * as z from "zod";
 import GoogleSignInButton from "../google-auth-button";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import FacebookSignInButton from "../facebook-auth-button";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Introduzca una dirección de correo electrónico válida" }),
@@ -118,7 +119,11 @@ export default function UserAuthForm() {
           <span className="bg-background px-2 text-muted-foreground">O CONTINUAR CON</span>
         </div>
       </div>
-      <GoogleSignInButton />
+      <div className="space-y-2 w-full">
+        <GoogleSignInButton />
+
+        <FacebookSignInButton />
+      </div>
     </>
   );
 }

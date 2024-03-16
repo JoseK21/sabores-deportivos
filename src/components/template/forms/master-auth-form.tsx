@@ -8,8 +8,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import GoogleSignInButton from "../google-auth-button";
-import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({

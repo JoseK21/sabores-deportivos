@@ -8,12 +8,15 @@ export default function GoogleSignInButton() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams ? searchParams.get("callbackUrl") : null;
 
+  console.log("🚀 >>  GoogleSignInButton >>  callbackUrl:", callbackUrl);
+
   return (
     <Button
       className="w-full"
       variant="outline"
       type="button"
-      onClick={() => signIn("google", { callbackUrl: callbackUrl ?? "/auth/login" })}
+      onClick={() => signIn("google", { callbackUrl: "/" })}
+      // onClick={() => signIn("google", { callbackUrl: callbackUrl ?? "/auth/login" })}
     >
       <div className="mr-4">
         <svg viewBox="0 0 48 48" width="24" height="24" preserveAspectRatio="xMidYMid meet">
