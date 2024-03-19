@@ -1,4 +1,5 @@
 export enum Role {
+  unknowen = "",
   master = "master",
   admin_rest = "admin_rest",
   cashier_rest = "cashier_rest",

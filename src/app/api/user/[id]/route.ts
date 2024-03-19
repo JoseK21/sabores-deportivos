@@ -4,7 +4,7 @@ import { requestMiddleware } from "@/middlewares/requestMiddleware";
 import { pick } from "lodash";
 
 export const GET = requestMiddleware(async ({ params }) => {
-  const user = await prisma.user.findFirst({
+  const user = await prisma.userSystem.findFirst({
     where: { id: Number(params.id) },
   });
 
@@ -12,7 +12,7 @@ export const GET = requestMiddleware(async ({ params }) => {
 });
 
 export const PUT = requestMiddleware(async ({ data, params }) => {
-  const user = await prisma.user.update({
+  const user = await prisma.userSystem.update({
     where: { id: Number(params.id) },
     data,
   });
@@ -21,7 +21,7 @@ export const PUT = requestMiddleware(async ({ data, params }) => {
 });
 
 export const DELETE = requestMiddleware(async ({ params }) => {
-  const user = await prisma.user.delete({
+  const user = await prisma.userSystem.delete({
     where: { id: Number(params.id) },
   });
 

@@ -51,7 +51,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     ? "Edit a product."
     : "Para crear su currículum, primero necesitamos información básica sobre usted.";
   const toastMessage = initialData ? "Product updated." : "Product created.";
-  const action = initialData ? "Save changes" : "Create";
+  const action = initialData ? "Guardar Cambios" : "Crear";
   const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState({});

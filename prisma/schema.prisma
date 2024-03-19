@@ -46,14 +46,17 @@ enum BusinessTypes {
 
 // MODELS
 model UserSystem {
-  id           Int            @id @default(autoincrement())
-  role         Role
-  name         String
-  password     String
-  email        String         @unique
-  imageUrl     String?
-  createdAt    DateTime       @default(now()) @map(name: "created_at")
-  updatedAt    DateTime       @updatedAt @map(name: "updated_at")
+  id         Int      @id @default(autoincrement())
+  role       Role
+  name       String
+  password   String
+  businessId Int
+  email      String   @unique
+  imageUrl   String?
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @updatedAt @map(name: "updated_at")
+  business   Business @relation(fields: [businessId], references: [id])
+
   ClaimedPrize ClaimedPrize[]
 }
 
@@ -265,6 +268,7 @@ model Business {
   BusinessScheduled   BusinessScheduled[]
   BusinessGallery     BusinessGallery[]
   BusinessAdvertising BusinessAdvertising[]
+  UserSystem          UserSystem[]
 }
 
 model BusinessScheduled {

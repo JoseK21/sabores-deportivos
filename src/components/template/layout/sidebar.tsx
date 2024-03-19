@@ -1,8 +1,17 @@
+"use client";
+
 import { DashboardNav } from "@/components//template/dashboard-nav";
 import { cn } from "@/lib/utils";
-import { NavItem } from "@/types/nav-items";
+import { useRoleStore } from "@/store/zustand";
+import { Role } from "@/app/enum";
+import { MENU_BY_ROLE } from "@/app/(staff-rest)/qs-staff-rest/constants";
 
-export default function Sidebar({ title, items }: { title: string; items: NavItem[] }) {
+export default function Sidebar() {
+  // TODO: Fix store in server
+  const role = useRoleStore((state) => state.role) || Role.master;
+
+  const { title, items } = { ...(MENU_BY_ROLE[role] || MENU_BY_ROLE[Role.unknowen]) };
+
   return (
     <nav className={cn(`relative hidden h-screen border-r pt-16 lg:block w-72`)}>
       <div className="space-y-4 py-4">

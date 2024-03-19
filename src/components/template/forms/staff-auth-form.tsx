@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Eye, EyeOff } from "lucide-react";
+import { useRoleStore } from "@/store/zustand";
+import { Role } from "@/app/enum";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Introduzca una dirección de correo electrónico válida" }),
@@ -19,6 +21,8 @@ type StaffFormValue = z.infer<typeof formSchema>;
 export default function StaffAuthForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const setRole = useRoleStore((state) => state.set);
 
   const callbackUrl = searchParams ? searchParams.get("callbackUrl") : null;
 
@@ -34,16 +38,16 @@ export default function StaffAuthForm() {
   });
 
   const onSubmit = async (data: StaffFormValue) => {
-    // router.push("/qs-staff-rest/admin_rest");
-    // router.push("/qs-staff-rest/cashier_rest");
-    // router.push("/qs-staff-rest/waiter_rest");
-    // router.push("/qs-staff-rest/bartender_rest");
+    // router.push("/qs-staff-rest");
+    // router.push("/qs-staff-rest");
+    // router.push("/qs-staff-rest");
+    // router.push("/qs-staff-rest");
 
     return;
     // const res = await signIn("credentials", {
     //   email: data.email,
     //   password: data.password,
-    //   callbackUrl: callbackUrl ?? "/qs-staff-rest/auth/login",
+    //   callbackUrl: callbackUrl ?? "/qs-staff-rest/login",
     // });
 
     // console.log("Res: ", res);
@@ -104,21 +108,16 @@ export default function StaffAuthForm() {
 
         {process.env.NODE_ENV === "development" && (
           <div className="flex">
-            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/admin_rest")}>
-              Admin
-            </Button>
-            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/cashier_rest")}>
-              Cajero
-            </Button>
-            <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-staff-rest/waiter_rest")}>
-              Mesero
-            </Button>
             <Button
               className="ml-auto w-full"
               type="button"
-              onClick={() => router.push("/qs-staff-rest/bartender_rest")}
+              onClick={() => {
+                setRole(Role.master);
+
+                router.push("/qs-staff-rest/dashboard-master");
+              }}
             >
-              Bartender
+              Staff Rest..
             </Button>
           </div>
         )}

@@ -53,7 +53,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
   const title = initialData ? "Edit product" : "Create product";
   const description = initialData ? "Edit a product." : "Add a new product";
   const toastMessage = initialData ? "Product updated." : "Product created.";
-  const action = initialData ? "Save changes" : "Create";
+  const action = initialData ? "Guardar Cambios" : "Crear";
 
   const defaultValues = initialData
     ? initialData
