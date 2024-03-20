@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     canonical: "https://www.quinisports.com",
   },
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/apple-tourch-icon.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   robots: {
     index: false,
@@ -74,8 +74,7 @@ export default function AuthenticationPage() {
             <DropdownMenuContent className="w-56 gap-1">
               <DropdownMenuLabel>Accesos</DropdownMenuLabel>
               <div className="ml-2 flex flex-col">
-                <Link href="/qs-master/auth/login">Master</Link>
-                <Link href="/qs-staff-rest/auth/login">Acceso Staff Rest</Link>
+                <Link href="/qs-admin/auth/login">Admin</Link>
                 <Link href="/">Cliente</Link>
               </div>
             </DropdownMenuContent>

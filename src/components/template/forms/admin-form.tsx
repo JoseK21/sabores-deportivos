@@ -82,7 +82,7 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
         if (res) {
           router.refresh();
-          router.push(`/qs-staff-rest/admin`);
+          router.push(`/qs-admin/admin`);
 
           toast({
             variant: "destructive",

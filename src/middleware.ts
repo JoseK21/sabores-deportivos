@@ -7,7 +7,7 @@ export { default } from "next-auth/middleware";
 //   return NextResponse.redirect(new URL('/home', request.url))
 // }
 
-// export const config = { matcher: ["/qs-master", "/qs-master/:path*"] };
+// export const config = { matcher: ["/qs-admin", "/qs-admin/:path*"] };
 
 export const config = { matcher: [] };
 
@@ -16,8 +16,8 @@ export const config = { matcher: [] };
 
 //   console.log("🚀 >>  middleware >>  pathname:", pathname);
 
-//   if (pathname.includes("qs-master")) {
-//     return NextResponse.rewrite(new URL("/qs-master/login", request.url));
+//   if (pathname.includes("qs-admin")) {
+//     return NextResponse.rewrite(new URL("/qs-admin/login", request.url));
 //   }
 
 //   if (pathname.startsWith("/")) {

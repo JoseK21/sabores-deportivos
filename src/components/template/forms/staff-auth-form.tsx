@@ -38,16 +38,16 @@ export default function StaffAuthForm() {
   });
 
   const onSubmit = async (data: StaffFormValue) => {
-    // router.push("/qs-staff-rest");
-    // router.push("/qs-staff-rest");
-    // router.push("/qs-staff-rest");
-    // router.push("/qs-staff-rest");
+    // router.push("/qs-admin");
+    // router.push("/qs-admin");
+    // router.push("/qs-admin");
+    // router.push("/qs-admin");
 
     return;
     // const res = await signIn("credentials", {
     //   email: data.email,
     //   password: data.password,
-    //   callbackUrl: callbackUrl ?? "/qs-staff-rest/login",
+    //   callbackUrl: callbackUrl ?? "/qs-admin/login",
     // });
 
     // console.log("Res: ", res);
@@ -114,7 +114,7 @@ export default function StaffAuthForm() {
               onClick={() => {
                 setRole(Role.master);
 
-                router.push("/qs-staff-rest/dashboard-master");
+                router.push("/qs-admin/dashboard-master");
               }}
             >
               Staff Rest..

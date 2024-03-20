@@ -4,7 +4,7 @@ import { DashboardNav } from "@/components//template/dashboard-nav";
 import { cn } from "@/lib/utils";
 import { useRoleStore } from "@/store/zustand";
 import { Role } from "@/app/enum";
-import { MENU_BY_ROLE } from "@/app/(staff-rest)/qs-staff-rest/constants";
+import { MENU_BY_ROLE } from "@/app/(admin)/qs-admin/constants";
 
 export default function Sidebar() {
   // TODO: Fix store in server

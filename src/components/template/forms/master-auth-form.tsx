@@ -41,7 +41,7 @@ export default function MasterAuthForm() {
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      callbackUrl: callbackUrl ?? "/qs-master/auth/login",
+      callbackUrl: callbackUrl ?? "/qs-admin/auth/login",
     });
 
     console.log("Res: ", res);
@@ -101,8 +101,8 @@ export default function MasterAuthForm() {
         </form>
 
         {process.env.NODE_ENV === "development" && (
-          <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-master")}>
-            Master
+          <Button className="ml-auto w-full" type="button" onClick={() => router.push("/qs-admin")}>
+            Acceso directo
           </Button>
         )}
       </Form>

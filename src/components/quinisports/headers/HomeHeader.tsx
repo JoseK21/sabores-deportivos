@@ -17,10 +17,11 @@ const posts = [
 
 interface Props {
   children?: ReactNode;
+  session: any;
   // any props that come into the component
 }
 
-const HomeHeader = ({ children }: Props) => {
+const HomeHeader = ({ children, session }: Props) => {
   const userPoints = 23;
 
   const pathname = usePathname();
@@ -77,7 +78,7 @@ const HomeHeader = ({ children }: Props) => {
           </Button>
           {/* <SquareUserRound className="size-8 cursor-pointer" /> */}
 
-          <UserNav />
+          <UserNav session={session} />
           {/* <ThemeToggle /> */}
         </div>
       </div>

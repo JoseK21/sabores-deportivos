@@ -13,21 +13,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/dist/server/api-utils";
 import { getFirstChars } from "@/utils/string";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
 
-export function UserNav() {
+export async function UserNav({ session }: { session: any }) {
   // Validar que es una persona logeada
-  const { data: session } = useSession();
 
-  console.log("🚀 >>  UserNav >>  session:", session);
+  console.log("🚀 >> getServerSession UserNav >>  session:", session);
 
   return session ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full focus-visible:shadow-none focus-visible:ring-0">
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full focus-visible:shadow-none focus-visible:ring-0"
+        >
           <Avatar className="h-8 w-8 border border-primary-600">
             <AvatarImage src={session?.user?.image ?? ""} alt={"foto-perfil"} referrerPolicy="no-referrer" />
             <AvatarFallback>{getFirstChars(session?.user?.name ?? "-")}</AvatarFallback>

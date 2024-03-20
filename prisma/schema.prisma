@@ -9,6 +9,7 @@ datasource db {
 
 // ENUMS
 enum Role {
+  client
   master
   admin_rest
   cashier_rest
@@ -45,21 +46,6 @@ enum BusinessTypes {
 }
 
 // MODELS
-model UserSystem {
-  id         Int      @id @default(autoincrement())
-  role       Role
-  name       String
-  password   String
-  businessId Int
-  email      String   @unique
-  imageUrl   String?
-  createdAt  DateTime @default(now()) @map(name: "created_at")
-  updatedAt  DateTime @updatedAt @map(name: "updated_at")
-  business   Business @relation(fields: [businessId], references: [id])
-
-  ClaimedPrize ClaimedPrize[]
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -93,10 +79,15 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  role          Role      @default(client)
   totalPoints   Int?      @default(0)
   claimedPoints Int?      @default(0)
-  accounts      Account[]
-  sessions      Session[]
+  password      String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
+  accounts Account[]
+  sessions Session[]
 
   ClaimedPrize ClaimedPrize[]
 }
@@ -161,18 +152,16 @@ model ProductPrize {
 }
 
 model ClaimedPrize {
-  id           Int    @id @default(autoincrement())
-  idPrize      Int
-  idUser       String
-  idUserSystem Int
+  id      Int    @id @default(autoincrement())
+  idPrize Int
+  idUser  String
+  idUserS String
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
   prize Prize @relation(fields: [idPrize], references: [id])
   user  User  @relation(fields: [idUser], references: [id])
-
-  userSystem UserSystem @relation(fields: [idUserSystem], references: [id])
 }
 
 model Sport {
@@ -262,13 +251,13 @@ model Business {
   instagramLink String?
   xLink         String?
 
-  createdAt           DateTime              @default(now()) @map(name: "created_at")
-  updatedAt           DateTime              @updatedAt @map(name: "updated_at")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
   Forecast            Forecast[]
   BusinessScheduled   BusinessScheduled[]
   BusinessGallery     BusinessGallery[]
   BusinessAdvertising BusinessAdvertising[]
-  UserSystem          UserSystem[]
 }
 
 model BusinessScheduled {

@@ -1,6 +1,8 @@
 import HomeFooter from "@/components/quinisports/footers/HomeFooter";
 import HomeHeader from "@/components/quinisports/headers/HomeHeader";
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/options";
 
 export const metadata: Metadata = {
   title: "QuiniSports | Clientes",
@@ -11,9 +13,9 @@ export const metadata: Metadata = {
     "Quinielas deportivas, Pronósticos deportivos, Premios en quinielas, Emoción del deporte, Plataforma deportiva en línea",
   metadataBase: new URL("https://www.quinisports.com"),
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/apple-tourch-icon.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   openGraph: {
     type: "website",
@@ -30,10 +32,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession(authOptions);
+  console.log("🚀 >>  DashboardLayout >>  session:", session);
+
   return (
     <>
-      <HomeHeader />
+      <HomeHeader session={session} />
       <div className="flex overflow-hidden max-w-7xl mx-auto">
         <main className="min-h-screen w-full">{children}</main>
       </div>
