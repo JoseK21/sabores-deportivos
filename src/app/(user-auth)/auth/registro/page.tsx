@@ -1,17 +1,18 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import Logo from "@/components/quinisports/general/Logo";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Role } from "@/app/enum";
+import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { UserRole } from "@/app/enum";
+import Logo from "@/components/quinisports/general/Logo";
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   email: z
@@ -22,7 +23,7 @@ const formSchema = z.object({
   password: z.string({
     required_error: "Contraseña requerido.",
   }),
-  role: z.nativeEnum(Role),
+  role: z.nativeEnum(UserRole),
   name: z.string({
     required_error: "Nombre requerido.",
   }),
@@ -38,7 +39,7 @@ function RegisterPage() {
     email: "jcnv21@gmail.com",
     password: "",
     name: "",
-    role: Role.admin_rest,
+    role: UserRole.admin_rest,
   };
 
   const form = useForm<UserFormValue>({

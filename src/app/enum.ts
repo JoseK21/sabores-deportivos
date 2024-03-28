@@ -1,11 +1,16 @@
-export enum Role {
-  unknowen = "",
+export enum UserRole {
   client = "client",
   master = "master",
   admin_rest = "admin_rest",
   cashier_rest = "cashier_rest",
   waiter_rest = "waiter_rest",
   bartender_rest = "bartender_rest",
+}
+
+export enum UserStatus {
+  actived = "actived",
+  suspented = "suspented",
+  deactivated = "deactivated",
 }
 
 export enum EventStatus {

@@ -1,4 +1,4 @@
-import { NavItem, SidebarNavItem } from "@/types/nav-items";
+import { NavItem } from "@/types/nav-items";
 
 export type User = {
   id: number;
@@ -8,7 +8,8 @@ export type User = {
   verified: boolean;
   status: string;
 };
-export const users: User[] = [
+
+export const data: User[] = [
   {
     id: 1,
     name: "Candice Schiner",

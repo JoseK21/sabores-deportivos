@@ -18,13 +18,13 @@ import { DataTable } from "@/components/ui/data-table";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogTitle, DialogFooter, DialogHeader, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Role } from "@/app/enum";
+import { UserRole } from "@/app/enum";
 
-const ROLES: { value: Role; label: string }[] = [
-  { value: Role.admin_rest, label: "Adminitrador" },
-  { value: Role.cashier_rest, label: "Cajero" },
-  { value: Role.waiter_rest, label: "Mesero" },
-  { value: Role.bartender_rest, label: "Bartender" },
+const ROLES: { value: UserRole; label: string }[] = [
+  { value: UserRole.admin_rest, label: "Adminitrador" },
+  { value: UserRole.cashier_rest, label: "Cajero" },
+  { value: UserRole.waiter_rest, label: "Mesero" },
+  { value: UserRole.bartender_rest, label: "Bartender" },
 ];
 
 const FormSchema = z.object({

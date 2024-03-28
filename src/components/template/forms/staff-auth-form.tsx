@@ -9,7 +9,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useRoleStore } from "@/store/zustand";
-import { Role } from "@/app/enum";
+import { UserRole } from "@/app/enum";
+import { signIn } from "next-auth/react";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Introduzca una dirección de correo electrónico válida" }),
@@ -38,25 +39,20 @@ export default function StaffAuthForm() {
   });
 
   const onSubmit = async (data: StaffFormValue) => {
-    // router.push("/qs-admin");
-    // router.push("/qs-admin");
-    // router.push("/qs-admin");
-    // router.push("/qs-admin");
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+    });
 
-    return;
-    // const res = await signIn("credentials", {
-    //   email: data.email,
-    //   password: data.password,
-    //   callbackUrl: callbackUrl ?? "/qs-admin/login",
-    // });
+    console.log("Res: ", res);
 
-    // console.log("Res: ", res);
-
-    // if (res?.error) {
-    //   alert(res.error);
-    // } else {
-    //   router.push("/master");
-    // }
+    if (res?.error) {
+      alert(res.error);
+    } else {
+      console.log("Res: ", res);
+      // todo send to correct dashboard
+      router.push("/qs-admin/dashboard-admin");
+    }
   };
 
   return (
@@ -101,26 +97,26 @@ export default function StaffAuthForm() {
             )}
           />
 
-          <Button disabled={true} className="ml-auto w-full" type="submit">
+          <Button className="ml-auto w-full" type="submit">
             Inicia sesión
           </Button>
         </form>
 
-        {process.env.NODE_ENV === "development" && (
+        {/* {process.env.NODE_ENV === "development" && (
           <div className="flex">
             <Button
               className="ml-auto w-full"
               type="button"
               onClick={() => {
-                setRole(Role.master);
+                setRole(UserRole.master);
 
-                router.push("/qs-admin/dashboard-master");
+                router.push("/qs-adminr");
               }}
             >
               Staff Rest..
             </Button>
           </div>
-        )}
+        )} */}
       </Form>
     </>
   );

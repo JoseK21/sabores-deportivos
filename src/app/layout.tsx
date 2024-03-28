@@ -7,13 +7,14 @@ const fontSystem = Noto_Sans_Bengali({ subsets: ["latin"] });
 import Providers from "@/components/template/layout/providers";
 import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/options";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en" suppressHydrationWarning>

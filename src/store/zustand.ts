@@ -1,4 +1,4 @@
-import { Role } from "@/app/enum";
+import { UserRole } from "@/app/enum";
 import { create } from "zustand";
 
 type CartStore = {
@@ -16,13 +16,13 @@ export const useCartStore = create<CartStore>((set) => ({
 }));
 
 type RolStore = {
-  role: Role;
+  role: UserRole;
   remove: () => void;
-  set: (newRole: Role) => void;
+  set: (newRole: UserRole) => void;
 };
 
 export const useRoleStore = create<RolStore>((set) => ({
-  role: Role.unknowen,
-  remove: () => set(() => ({ role: Role.unknowen })),
-  set: (newRole: Role) => set(() => ({ role: newRole })),
+  role: UserRole.client,
+  remove: () => set(() => ({ role: UserRole.client })),
+  set: (newRole: UserRole) => set(() => ({ role: newRole })),
 }));

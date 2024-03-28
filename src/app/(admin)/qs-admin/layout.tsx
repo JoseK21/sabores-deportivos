@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { Role } from "@/app/enum";
+import { UserRole } from "@/app/enum";
 import Header from "@/components/template/layout/header";
 import Sidebar from "@/components/template/layout/sidebar";
 import type { Metadata } from "next";
@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "QuiniSports | Master",
+  title: "QuiniSports",
   description:
     "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
   authors: [{ name: "JDataByte" }],
@@ -35,7 +35,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!session) {
     redirect("/qs-admin/auth/login");
-  } else if (session?.user.role == Role.client) {
+  } else if (session?.user.role == UserRole.client) {
     redirect("/");
   }
 
@@ -43,7 +43,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     <>
       <Header session={session} />
       <div className="flex h-screen overflow-hidden">
-        <Sidebar />
+        <Sidebar role={session?.user.role} />
         <main className="w-full pt-16">{children}</main>
       </div>
     </>

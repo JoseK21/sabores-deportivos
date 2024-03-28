@@ -12,15 +12,15 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchKey: string;
   placeholder: string;
-  textRowsSelected: string;
+  textRowsSelected?: string;
 }
 
 export function DataTable<TData, TValue>({
-  columns,
   data,
-  placeholder,
-  textRowsSelected,
+  columns,
   searchKey,
+  placeholder,
+  textRowsSelected = "",
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -77,8 +77,12 @@ export function DataTable<TData, TValue>({
       </ScrollArea>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
-          {textRowsSelected}.
+          {textRowsSelected && (
+            <div>
+              {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
+              {textRowsSelected}.
+            </div>
+          )}
         </div>
         <div className="space-x-2">
           <Button

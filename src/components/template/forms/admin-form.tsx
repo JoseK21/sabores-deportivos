@@ -1,7 +1,5 @@
 "use client";
 
-import { ROLES } from "@/app/constants";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Heading } from "@/components/ui/heading";
@@ -14,9 +12,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import FileUpload from "../file-upload";
 import { useToast } from "@/components/ui/use-toast";
-import { Role } from "@/app/enum";
+import { UserRole } from "@/app/enum";
 import axios from "axios";
 
 // const ImgSchema = z.object({
@@ -63,7 +60,7 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
   const defaultValues = initialData
     ? initialData
-    : { name: "", description: "", price: 0, imageUrl: "", role: Role.admin_rest };
+    : { name: "", description: "", price: 0, imageUrl: "", role: UserRole.admin_rest };
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
@@ -216,36 +213,6 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-
-            {/* <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rol</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue defaultValue={field.value} placeholder="Seleccione un rol" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {ROLES.map((role) => (
-                        <SelectItem key={role.value} value={role.value}>
-                          {role.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}

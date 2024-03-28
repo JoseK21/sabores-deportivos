@@ -3,7 +3,6 @@
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -13,18 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { redirect } from "next/dist/server/api-utils";
+import { signOut } from "next-auth/react";
 import { getFirstChars } from "@/utils/string";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { getServerSession } from "next-auth";
 
 export async function UserNav({ session }: { session: any }) {
-  // Validar que es una persona logeada
-
-  console.log("🚀 >> getServerSession UserNav >>  session:", session);
-
   return session ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,17 +33,13 @@ export async function UserNav({ session }: { session: any }) {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{session?.user?.name ?? "-"}</p>
+            <p className="text-sm font-medium leading-none">
+              {session?.user?.name ?? "-"} | {session?.user?.role ?? ""}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">{session?.user?.email || "-"}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuGroup>
-          <DropdownMenuItem>Puntos Obtenidos</DropdownMenuItem>
-          <DropdownMenuItem>Facturacion</DropdownMenuItem>
-          <DropdownMenuItem>Configuración</DropdownMenuItem>
-        </DropdownMenuGroup> */}
-        {/* <DropdownMenuSeparator /> */}
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/eventos" })}>
           Cerrar Sesión
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
@@ -61,7 +49,7 @@ export async function UserNav({ session }: { session: any }) {
   ) : (
     <Button asChild variant="outline">
       <Link href="/auth/login" className="font-semibold">
-        Iniciar Session
+        Iniciar Sesión
       </Link>
     </Button>
   );

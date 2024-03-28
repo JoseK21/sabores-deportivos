@@ -7,7 +7,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import type { Adapter } from "next-auth/adapters";
 import { NextAuthOptions } from "next-auth";
-import { Role } from "@/app/enum";
+import { UserRole } from "@/app/enum";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
           name: `${profile.given_name} ${profile.family_name}`,
           email: profile.email,
           image: profile.picture,
-          role: profile.role ? profile.role : Role.client,
+          role: profile.role ? profile.role : UserRole.client,
         };
       },
     }),
@@ -38,26 +38,26 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "text", placeholder: "jsmith" },
+        role: { label: "Rol", type: "text", placeholder: "role" },
         password: { label: "Password", type: "password", placeholder: "*****" },
       },
       async authorize(credentials, req) {
         console.log("credentials: ", credentials);
 
-        const userFound = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: {
             email: credentials?.email,
           },
         });
 
         // validar contrasena
-        if (!userFound) throw new Error("No user found");
+        if (!user) throw new Error("No user found");
 
-        return {
-          id: userFound.id,
-          name: userFound.name,
-          role: userFound.role as Role,
-          email: userFound.email,
-        };
+        if (user && user.password === credentials?.password) {
+          return { id: user.id, name: user.name, email: user.email, role: user.role as UserRole };
+        } else {
+          return null;
+        }
       },
     }),
   ],

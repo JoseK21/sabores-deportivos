@@ -1,8 +1,9 @@
-// import ThemeToggle from "@/components/layout/ThemeToggle/theme-toggle";
 import { cn } from "@/lib/utils";
+
+import Logo from "@/components/quinisports/general/Logo";
+
 import { MobileSidebar } from "./mobile-sidebar";
 import { UserNav } from "./user-nav";
-import Logo from "@/components/quinisports/general/Logo";
 
 export default function Header({ session }: { session: any }) {
   return (

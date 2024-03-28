@@ -6,15 +6,13 @@ import { Button } from "@/components/ui/button";
 
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 export const metadata: Metadata = {
-  title: "QuiniSports | Master",
+  title: "QuiniSports | User Login",
   description:
     "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
   authors: [{ name: "JDataByte" }],

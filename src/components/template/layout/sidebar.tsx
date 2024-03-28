@@ -2,15 +2,11 @@
 
 import { DashboardNav } from "@/components//template/dashboard-nav";
 import { cn } from "@/lib/utils";
-import { useRoleStore } from "@/store/zustand";
-import { Role } from "@/app/enum";
 import { MENU_BY_ROLE } from "@/app/(admin)/qs-admin/constants";
+import { UserRole } from "@/app/enum";
 
-export default function Sidebar() {
-  // TODO: Fix store in server
-  const role = useRoleStore((state) => state.role) || Role.master;
-
-  const { title, items } = { ...(MENU_BY_ROLE[role] || MENU_BY_ROLE[Role.unknowen]) };
+export default function Sidebar({ role }: { role: UserRole }) {
+  const { title, items } = { ...(MENU_BY_ROLE[role] || { title: "", items: [] }) };
 
   return (
     <nav className={cn(`relative hidden h-screen border-r pt-16 lg:block w-72`)}>

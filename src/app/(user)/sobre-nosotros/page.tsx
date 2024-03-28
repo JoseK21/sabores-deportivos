@@ -1,6 +1,5 @@
 import React from "react";
 
-import HomeHeader from "@/components/quinisports/headers/HomeHeader";
 import AboutSectionOne from "@/components/pages/home/About/AboutSectionOne";
 import Brands from "@/components/pages/home/Brands";
 import ScrollUp from "@/components/pages/home/Common/ScrollUp";
@@ -13,7 +12,6 @@ import Video from "@/components/pages/home/Video";
 const Page = () => {
   return (
     <main>
-      <HomeHeader />
       <ScrollUp />
       <Hero />
       <Features />

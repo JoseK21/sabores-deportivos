@@ -1,5 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { Role } from "@prisma/client";
+import { UserRole } from "@/app/enum";
+
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -8,7 +9,7 @@ export default async function AuthAdminRest({ children }: { children: React.Reac
 
   console.log("🚀 >>  AuthAdminRest >>  session?.user.role:", session?.user.role);
 
-  if (session?.user.role == Role.client) {
+  if (session?.user.role == UserRole.client) {
     redirect("/");
   }
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SquareUserRound, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { UserNav } from "@/components/template/layout/user-nav";
 import Logo from "../general/Logo";
 
@@ -21,7 +21,7 @@ interface Props {
   // any props that come into the component
 }
 
-const HomeHeader = ({ children, session }: Props) => {
+const HomeHeader = ({ session }: Props) => {
   const userPoints = 23;
 
   const pathname = usePathname();
