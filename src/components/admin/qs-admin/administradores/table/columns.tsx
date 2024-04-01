@@ -1,41 +1,32 @@
 "use client";
 
-import { User } from "@/constants/data";
-
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
 import { CellAction } from "@/components/template/tables/user-tables/cell-action";
 
+import { User } from "@/types/user";
+import { USER_STATUS } from "@/app/constants";
+import { AdminCell } from "./cell-action";
+
 export const columns: ColumnDef<User>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       checked={table.getIsAllPageRowsSelected()}
-  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //       aria-label="Select all"
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //       aria-label="Select row"
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
   {
     accessorKey: "name",
     header: "Nombre",
   },
   {
+    accessorKey: "email",
+    header: "Correo",
+  },
+  {
     accessorKey: "status",
     header: "Estado",
+    cell: ({ row }) => {
+      const statusLabel = USER_STATUS.find(({ value }) => value === row.original.status)?.label || "-";
+
+      return <span>{statusLabel}</span>;
+    },
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <AdminCell data={row.original} />,
   },
 ];

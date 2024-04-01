@@ -26,7 +26,7 @@ const FormSchema = z.object({
     .email(),
 });
 
-export default function FormAdmin() {
+export default function FormEmployee() {
   const [displayPassword, setDisplayPassword] = useState(false);
 
   // Usar setLoading si ocupo cargar algo aqui desde el api

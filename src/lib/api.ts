@@ -45,14 +45,17 @@ export const putApi = async (url: string, data: any, cancelToken?: CancelToken):
   }
 };
 
-export const deleteApi = async (url: string, data?: any, cancelToken?: CancelToken): Promise<any | ApiResponse> => {
+export const deleteApi = async (url: string, cancelToken?: CancelToken): Promise<any | ApiResponse> => {
   try {
+    console.log("🚀 >>  deleteApi >>  url:", url);
     const response: AxiosResponse = await axios.delete(`${api}${url}`, {
-      ...(data ? { headers: HEADERS, data } : {}),
+      headers: HEADERS,
+      data: {},
       cancelToken,
     });
     return response.data;
   } catch (error: any) {
+    console.log("🚀 >>  deleteApi >>  error:", error);
     return { isError: true, error: error?.response?.data || error };
   }
 };

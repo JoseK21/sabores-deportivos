@@ -12,14 +12,14 @@ export const GET = requestMiddleware(async () => {
     },
   });
 
-  return admins.map((admin) => pick(admin, ["id", "name", "role", "email"]));
+  return admins; // admins.map((admin) => pick(admin, ["id", "name", "role", "email", "status", "password"]));
 });
 
 export const POST = requestMiddleware(async ({ data }: { data: User }) => {
   if (data.role === UserRole.admin_rest) {
-    const newuser = await prisma.user.create({ data });
+    const newAdminUser = await prisma.user.create({ data });
 
-    return pick(newuser, ["id", "name", "role", "imageUrl"]);
+    return newAdminUser; // pick(newAdminUser, ["id", "name", "role", "image", "status", "password"]);
   } else {
     throw new Error("UserRole must be admin");
   }

@@ -12,9 +12,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { UserRole } from "@/app/enum";
-import { postApi } from "@/lib/api";
-import { USER_STATUS } from "@/app/constants";
+import { UserRole, UserStatus } from "@/app/enum";
+import { postApi, putApi } from "@/lib/api";
+import { ADMIN_ROLES, USER_STATUS } from "@/app/constants";
+import { useAdminsStore } from "@/store/adminsStore";
+import { User } from "@/types/user";
+import { getObjectDiff } from "@/utils/object";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -26,6 +29,7 @@ function mapErrorCode(code: string): string {
 }
 
 const FormSchema = z.object({
+  id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
   role: z.string().min(3, { message: "Rol minimo de 3 letras" }),
   status: z.string().min(1, { message: "Estado requerido" }),
@@ -37,43 +41,113 @@ const FormSchema = z.object({
     .email(),
 });
 
-export default function FormAdmin({ setOpen }: { setOpen: (open: boolean) => void }) {
+const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
+  if (isEdition) {
+    return loading ? "Actualizando.." : "Actualizar";
+  } else {
+    return loading ? "Creando.." : "Guardar";
+  }
+};
+
+export default function FormAdmin({
+  data,
+  setOpen,
+  isEdition = false,
+}: {
+  data?: User;
+  isEdition?: boolean;
+  setOpen: (open: boolean) => void;
+}) {
+  const { admins, setData } = useAdminsStore();
   const [displayPassword, setDisplayPassword] = useState(false);
 
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      role: "Administrador",
-    },
+    defaultValues: isEdition
+      ? data || ({} as User)
+      : {
+          name: "",
+          email: "",
+          password: "",
+          status: UserStatus.deactivated,
+          role: UserRole.admin_rest,
+        },
   });
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    setLoading(true);
-    data.role = UserRole.admin_rest;
+  async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
+    console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
 
-    console.log("🚀 >>  onSubmit >>  data:", data)
-    
-    const response = await postApi("/api/user", data);
+    try {
+      console.log("🚀 >>  onSubmit >>  isEdition:", isEdition);
 
-    setLoading(false);
+      setLoading(true);
 
-    setOpen(response.isError);
+      if (isEdition) {
+        const dataToEdit = getObjectDiff(dataForm, data ?? ({} as User));
 
-    toast({
-      duration: 7000,
-      variant: response.isError ? "destructive" : "success",
-      title: response.isError ? "Administrador no agregado!" : "Nuevo administrador agregado!",
-      description: response.isError
-        ? `${mapErrorCode(response?.error?.code)}`
-        : `Se agregó el administrador ${data.name}`,
-    });
+        console.log("🚀 >>  onSubmit >>  dataForm:", dataToEdit, data);
+
+        const response = await putApi(`/api/admin/${dataForm.id}`, dataForm);
+
+        setOpen(response.isError);
+
+        console.log("🚀 >>  onSubmit >>  response.data:", response.data);
+
+        if (response.data) {
+          const updateAdmin = admins.map((admin) => {
+            if (admin.id === response.data.id) {
+              return response.data;
+            }
+
+            return admin;
+          });
+          setData(updateAdmin);
+        }
+
+        toast({
+          duration: 7000,
+          variant: response.isError ? "destructive" : "success",
+          title: response.isError ? "Administrador no actualizado!" : "Administrador actualizado!",
+          description: response.isError
+            ? `${mapErrorCode(response?.error?.code)}`
+            : `Se actualizó el administrador ${dataForm.name}`,
+        });
+        setLoading(false);
+      } else {
+        console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
+
+        const response = await postApi("/api/admin", dataForm);
+
+        setOpen(response.isError);
+
+        if (response.data) {
+          setData([...admins, response.data]);
+        }
+
+        toast({
+          duration: 7000,
+          variant: response.isError ? "destructive" : "success",
+          title: response.isError ? "Administrador no agregado!" : "Nuevo administrador agregado!",
+          description: response.isError
+            ? `${mapErrorCode(response?.error?.code)}`
+            : `Se agregó el administrador ${dataForm.name}`,
+        });
+        setLoading(false);
+      }
+    } catch (error: any) {
+      console.log("🚀 >>  onSubmit >>  error:", error);
+      setLoading(false);
+      toast({
+        duration: 7000,
+        variant: "destructive",
+        title: "Hubo un error! por favor contactar con soporte",
+        description: "Error desconocido",
+      });
+    }
   }
 
   return (
@@ -114,9 +188,23 @@ export default function FormAdmin({ setOpen }: { setOpen: (open: boolean) => voi
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Rol</FormLabel>
-                <FormControl>
-                  <Input disabled placeholder="Rol" {...field} autoComplete="new-rol" />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione un rol" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {ADMIN_ROLES.map(({ label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {/* <FormControl>
+                  <Input disabled placeholder="Rol" {...field} value="Administrsdor" autoComplete="new-rol" />
+                </FormControl> */}
                 <FormMessage />
               </FormItem>
             )}
@@ -161,8 +249,8 @@ export default function FormAdmin({ setOpen }: { setOpen: (open: boolean) => voi
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {USER_STATUS.map(({ label, status }) => (
-                      <SelectItem key={status} value={status}>
+                    {USER_STATUS.map(({ label, value }) => (
+                      <SelectItem key={value} value={value}>
                         {label}
                       </SelectItem>
                     ))}
@@ -175,7 +263,7 @@ export default function FormAdmin({ setOpen }: { setOpen: (open: boolean) => voi
         <DialogFooter>
           <Button type="submit" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {loading ? "Creando.." : "Guardar"}
+            {_getLabelBottom(loading, isEdition)}
           </Button>
         </DialogFooter>
       </form>
