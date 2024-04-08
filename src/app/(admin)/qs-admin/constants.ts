@@ -8,25 +8,25 @@ export const MENU_BY_ROLE = {
   [UserRole.admin_rest]: {
     title: "Admin",
     items: [
-      { title: "Dashboard", href: "/qs-admin/dashboaard-admin", label: "Dashboard" },
-      { title: "Empleados", href: "/qs-admin/employee", label: "Empleados" },
-      { title: "Premios", href: "/qs-admin/prize", label: "Premios" },
+      { title: "Dashboard", href: "/qs-admin", label: "Dashboard" },
+      { title: "Empleados", href: "/qs-admin/empleados", label: "Empleados" },
+      { title: "Premios", href: "/qs-admin/premios", label: "Premios" },
     ],
   },
   [UserRole.cashier_rest]: {
     title: "Cajero",
     items: [
       { title: "Dashboard", href: "/qs-admin/dashboaard-cashier", label: "Dashboard" },
-      { title: "Premios", href: "/qs-admin/prize", label: "Premios" },
+      { title: "Premios", href: "/qs-admin/premios", label: "Premios" },
     ],
   },
   [UserRole.waiter_rest]: {
     title: "Mesero",
-    items: [{ title: "Premios", href: "/qs-admin/prize", label: "Premios" }],
+    items: [{ title: "Premios", href: "/qs-admin/premios", label: "Premios" }],
   },
   [UserRole.bartender_rest]: {
     title: "Bartender",
-    items: [{ title: "Premios", href: "/qs-admin/prize", label: "Premios" }],
+    items: [{ title: "Premios", href: "/qs-admin/premios", label: "Premios" }],
   },
   [UserRole.master]: {
     title: "Master",

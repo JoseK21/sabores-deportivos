@@ -11,7 +11,7 @@ import {
 import { User } from "@/types/user";
 import { Album, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
-import { AdminsDialog } from "../dialog/dialog";
+import { Dialog_ } from "../dialog/dialog";
 import { deleteApi } from "@/lib/api";
 import { useAdminsStore } from "@/store/adminsStore";
 import { useToast } from "@/components/ui/use-toast";
@@ -33,7 +33,7 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
   const onConfirmRemove = async (id: string) => {
     setLoading(true);
 
-    const response = await deleteApi(`/api/admin/${id}`);
+    const response = await deleteApi(`/api/employee/${id}`);
 
     setOpenRemove(response.isError);
 
@@ -53,9 +53,9 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <AdminsDialog open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
+      <Dialog_ open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
 
-      <AdminsDialog open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
+      <Dialog_ open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
 
       <AlertModal
         text="Eliminar"

@@ -1,8 +1,8 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import { User } from "@/constants/data";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CellAction } from "@/components/template/tables/user-tables/cell-action";
+import { User } from "@/types/user";
 
 export const columns: ColumnDef<User>[] = [
   {

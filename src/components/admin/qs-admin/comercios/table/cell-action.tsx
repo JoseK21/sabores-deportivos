@@ -8,44 +8,44 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@/types/user";
+import { Business } from "@/types/business";
 import { Album, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
-import { AdminsDialog } from "../dialog/dialog";
+import { Dialog_ } from "../dialog/dialog";
 import { deleteApi } from "@/lib/api";
-import { useAdminsStore } from "@/store/adminsStore";
 import { useToast } from "@/components/ui/use-toast";
+import { useBusinessStore } from "@/store/businessStore";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
 
 interface Props {
-  data: User;
+  data: Business;
 }
 
-export const AdminCell: React.FC<Props> = ({ data }) => {
+export const Cell_: React.FC<Props> = ({ data }) => {
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
 
   const { toast } = useToast();
-  const { admins, setData } = useAdminsStore();
+  const { businesses, setData } = useBusinessStore();
   const [loading, setLoading] = useState(false);
 
-  const onConfirmRemove = async (id: string) => {
+  const onConfirmRemove = async (id: number) => {
     setLoading(true);
 
-    const response = await deleteApi(`/api/admin/${id}`);
+    const response = await deleteApi(`/api/business/${id}`);
 
     setOpenRemove(response.isError);
 
     if (response.data) {
-      setData(admins.filter((admin) => admin.id !== id));
+      setData(businesses.filter((admin) => admin.id !== id));
     }
 
     toast({
       duration: 7000,
       variant: "success",
-      title: response.isError ? "Administrador no eliminado!" : "Administrador eliminado!",
-      description: response.isError ? `${response?.error?.code}` : `Se eliminó el administrador ${response.data.name}`,
+      title: response.isError ? "Comercio no eliminado!" : "Comercio eliminado!",
+      description: response.isError ? `${response?.error?.code}` : `Se eliminó el comercio ${response.data.name}`,
     });
 
     setLoading(false);
@@ -53,9 +53,9 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <AdminsDialog open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
+      <Dialog_ open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
 
-      <AdminsDialog open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
+      <Dialog_ open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
 
       <AlertModal
         text="Eliminar"

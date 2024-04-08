@@ -10,10 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Buisiness } from "@/types/business";
+import { Business } from "@/types/business";
 import { Metadata } from "next";
 
-const places: Buisiness[] = [
+const places: Business[] = [
   {
     id: "1",
     name: "La Cervecería de Barrio",

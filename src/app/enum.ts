@@ -40,3 +40,9 @@ export enum BusinessTypes {
   shopping_center = "shopping_center",
   recreation_center = "recreation_center",
 }
+
+export enum Countries {
+  cr = "cr",
+  mx = "mx",
+  es = "es",
+}

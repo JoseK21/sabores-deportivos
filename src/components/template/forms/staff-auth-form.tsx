@@ -49,9 +49,8 @@ export default function StaffAuthForm() {
     if (res?.error) {
       alert(res.error);
     } else {
-      console.log("Res: ", res);
       // todo send to correct dashboard
-      router.push("/qs-admin/dashboard-admin");
+      router.push("/qs-admin");
     }
   };
 

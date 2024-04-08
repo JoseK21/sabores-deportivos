@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
@@ -7,6 +8,8 @@ import { Loader2 } from "lucide-react";
 interface AlertModalProps {
   isOpen: boolean;
   title: string;
+  text: string;
+  textLoading: string;
   description: string;
   onClose: () => void;
   onConfirm: () => void;
@@ -15,6 +18,8 @@ interface AlertModalProps {
 
 export const AlertModal: React.FC<AlertModalProps> = ({
   title,
+  text,
+  textLoading,
   description,
   isOpen,
   onClose,
@@ -39,7 +44,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         </Button>
         <Button disabled={loading} variant="destructive" onClick={onConfirm}>
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {loading ? "Eliminando.." : "Eliminar"}
+          {loading ? textLoading : text}
         </Button>
       </div>
     </Modal>

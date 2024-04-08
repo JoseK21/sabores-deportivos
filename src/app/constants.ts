@@ -1,4 +1,4 @@
-import { UserRole, UserStatus } from "./enum";
+import { BusinessTypes, Countries, UserRole, UserStatus } from "./enum";
 
 export const QUINISPORTS_URL = "https://wwww.quinisports.com";
 
@@ -29,4 +29,23 @@ export const USER_STATUS = [
   { value: UserStatus.actived, label: "Activo" },
   { value: UserStatus.suspented, label: "Suspendido" },
   { value: UserStatus.deactivated, label: "Desactivo" },
+];
+
+// 
+
+export const BUSINESS_TYPES = [
+  { value: BusinessTypes.bar, label: "Bar" },
+  { value: BusinessTypes.cafe, label: "Caferia" },
+  { value: BusinessTypes.hotel, label: "Hotel" },
+  { value: BusinessTypes.sportbar, label: "SportBar" },
+  { value: BusinessTypes.restaurant, label: "Restaurante" },
+  { value: BusinessTypes.sports_club, label: "Club Deportivo" },
+  { value: BusinessTypes.shopping_center, label: "Centro Comercial" },
+  { value: BusinessTypes.recreation_center, label: "Centro Recreativo" },
+];
+
+export const COUNTRIES = [
+  { value: Countries.cr, label: "Costa Rica" },
+  { value: Countries.mx, label: "Mexico" },
+  { value: Countries.es, label: "España" },
 ];

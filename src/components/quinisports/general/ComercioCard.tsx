@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Buisiness } from "@/types/business";
+import { Business } from "@/types/business";
 import { generateSlug } from "@/utils/url";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 // TODO add location to Link
-const ComercioCard = ({ id, name, photoUrl, description }: Buisiness) => {
+const ComercioCard = ({ id, name, photoUrl, description }: Business) => {
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div style={{ position: "relative", height: "200px" }}>
