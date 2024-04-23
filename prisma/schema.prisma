@@ -39,14 +39,14 @@ model User {
   email         String?        @unique
   emailVerified DateTime?
   image         String?
-  idBusiness    String?
   totalPoints   Int?           @default(0)
   claimedPoints Int?           @default(0)
   password      String?
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
-  role          UserRole       @default(client)
   status        UserStatus     @default(deactivated)
+  role          UserRole       @default(client)
+  idBusiness    String?
   accounts      Account[]
   claimedPrize  ClaimedPrize[]
   sessions      Session[]
