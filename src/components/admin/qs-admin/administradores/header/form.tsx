@@ -16,7 +16,7 @@ import { z } from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { UserRole, UserStatus } from "@/app/enum";
-import { postApi, putApi } from "@/lib/api";
+import { deleteApi, postApi, putApi } from "@/lib/api";
 import { ADMIN_ROLES, USER_STATUS } from "@/app/constants";
 import { useAdminsStore } from "@/store/adminsStore";
 import { User } from "@/types/user";
@@ -27,7 +27,7 @@ import FileInputPreview from "@/components/quinisports/FileInputPreview";
 import { cleanText } from "@/utils/string";
 import { useFetchData } from "@/hooks/useFetchData";
 import { isEmpty } from "lodash";
-import { deleteBlobFile } from "@/utils/image";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -38,23 +38,15 @@ function mapErrorCode(code: string): string {
   }
 }
 
-const MAX_FILE_SIZE = 1000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/octet-stream"];
-
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
   role: z.string().min(3, { message: "Rol minimo de 3 letras" }),
   status: z.string().min(1, { message: "Estado requerido" }),
-  // image: z.file({ required_error: "Imagen requerida" }).min(1, { message: "Imagen requerida" }),
   image: z
     .any()
-    .refine((file) => {
-      console.log("🚀 >>  file:", file);
-      console.log("🚀 >>  file?.type:", file?.type);
-
-      return file?.size <= MAX_FILE_SIZE;
-    }, `Max image size is 1MB.`)
+    .refine((file) => file?.size, "Imagen requerida")
+    .refine((file) => file?.size <= MAX_FILE_SIZE, "El tamaño max es de  1MB.")
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       "Only .jpg, .jpeg, .png and .webp formats are supported."
@@ -75,17 +67,6 @@ const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
     return loading ? "Creando.." : "Guardar";
   }
 };
-
-async function urlToFile(url: string) {
-  const response = await fetch(url);
-  const blob = await response.blob();
-
-  const fileName = url.substring(url.lastIndexOf("/") + 1);
-
-  const mimeType = blob.type;
-
-  return new File([blob], fileName, { type: mimeType });
-}
 
 export default function FormAdmin({
   data,
@@ -118,21 +99,13 @@ export default function FormAdmin({
   });
 
   useFetchData(async () => {
-    console.log("🚀 >>  useFetchData >>  isEdition:", isEdition);
-
-    console.log("🚀 >>  useFetchData >>  data?.image:", data?.image);
-    
     if (isEdition && data?.image) {
       urlToFile((data?.image as string) || "")
         .then((file) => {
-          console.log("🚀 >>  .then >>  file:", file);
           form.setValue("image", file);
-
-          console.log("Archivo creado:", file);
         })
         .catch((error) => {
           form.setValue("image", null);
-          console.error("Error al crear el archivo:", error);
         });
     }
   });
@@ -162,8 +135,8 @@ export default function FormAdmin({
           return 0;
         }
 
-        if (dataToEdit.hasOwnProperty("image")) {
-          const deletedPhoto = await deleteBlobFile((data?.image as string) || "");
+        if (dataToEdit?.image) {
+          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.image as string}`);
 
           if (deletedPhoto?.isError) {
             toast({
@@ -189,14 +162,14 @@ export default function FormAdmin({
         setOpen(response.isError);
 
         if (response.data) {
-          const updateAdmin = admins.map((admin) => {
+          const updateData = admins.map((admin) => {
             if (admin.id === response.data.id) {
               return response.data;
             }
 
             return admin;
           });
-          setData(updateAdmin);
+          setData(updateData);
         }
 
         toast({
@@ -259,9 +232,7 @@ export default function FormAdmin({
           render={({ field: { onChange, value, ...rest } }) => (
             <>
               <FormItem className="flex flex-col items-center justify-center my-3">
-                {/* <FormLabel>Imagen</FormLabel> */}
                 <FormControl>
-                  {/* Integración del componente FileInputPreview */}
                   <FileInputPreview onChange={onChange} src={form.getValues().image} name={data?.name} />
                 </FormControl>
                 <FormMessage />

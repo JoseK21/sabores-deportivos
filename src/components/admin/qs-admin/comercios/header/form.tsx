@@ -5,18 +5,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { postApi, putApi } from "@/lib/api";
+import { deleteApi, postApi, putApi } from "@/lib/api";
 import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
 import { getObjectDiff } from "@/utils/object";
 import { Business } from "@/types/business";
 import { useBusinessStore } from "@/store/businessStore";
+import FileInputPreview from "@/components/quinisports/FileInputPreview";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
+import { useFetchData } from "@/hooks/useFetchData";
+import { isEmpty } from "lodash";
+import { PutBlobResult } from "@vercel/blob";
+import { cleanText } from "@/utils/string";
+import { DISTRICTS_BY_CANTON, PROVINCE_WITH_CANTONS, PROVINCES } from "@/app/costa-rica-constants";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -28,15 +35,23 @@ function mapErrorCode(code: string): string {
 }
 
 const FormSchema = z.object({
-  id: z.number().optional(),
+  id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
-  // logoUrl: z.string().min(3, { message: "Logo requerido" }),
-  logoUrl: z.string().optional(),
+  address: z.string().min(10, { message: "La Dirección al menos de tener 3 letras" }),
+  coverImageUrl: z
+    .any()
+    .refine((file) => file?.size, "Imagen requerida")
+    .refine((file) => file?.size <= MAX_FILE_SIZE, `El tamaño max es de  1MB.`)
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    ),
   description: z.string().min(1, { message: "Descripcion requerida" }),
-  coverImageUrl: z.string().optional(),
-  // coverImageUrl: z.string().min(4, { message: "Imagen requerida" }),
+  province: z.string().min(1, { message: "Provincia requerida" }),
+  canton: z.string().min(1, { message: "Canton requerido" }),
+  district: z.string().min(1, { message: "Distrito requerido" }),
   type: z.string().min(1, { message: "Debe seleccionar un tipo de comercio" }),
-  country: z.string().min(1, { message: "Por favor indique el pais" }),
+  // country: z.string().min(1, { message: "Por favor indique el pais" }),
 });
 
 const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
@@ -58,7 +73,6 @@ export default function Form_({
 }) {
   const { businesses, setData } = useBusinessStore();
 
-  // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
@@ -66,9 +80,11 @@ export default function Form_({
       : {
           name: "",
           type: "",
-          logoUrl: "",
-          country: "",
           description: "",
+          province: "",
+          address: "",
+          canton: "",
+          district: "",
           coverImageUrl: "",
         },
   });
@@ -76,32 +92,73 @@ export default function Form_({
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
+  useFetchData(async () => {
+    if (isEdition && data?.coverImageUrl) {
+      urlToFile((data?.coverImageUrl as string) || "")
+        .then((file) => {
+          form.setValue("coverImageUrl", file);
+        })
+        .catch((error) => {
+          form.setValue("coverImageUrl", null);
+        });
+    }
+  });
+
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
     console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
 
     try {
-      console.log("🚀 >>  onSubmit >>  isEdition:", isEdition);
-
       setLoading(true);
 
       if (isEdition) {
-        const dataToEdit = getObjectDiff(dataForm, data ?? ({} as Business));
+        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Business));
 
-        console.log("🚀 >>  onSubmit >>  dataForm:", dataToEdit, data);
+        if (isEmpty(dataToEdit)) {
+          setLoading(false);
+
+          toast({
+            duration: 7000,
+            variant: "info",
+            title: "Sin cambios!",
+            description: "No ha nuevos datos por actualizar",
+          });
+
+          return 0;
+        }
+
+        if (dataToEdit?.coverImageUrl) {
+          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.coverImageUrl as string}`);
+
+          if (deletedPhoto?.isError) {
+            toast({
+              duration: 7000,
+              variant: "warning",
+              title: "Error al eliminar la foto anterior!",
+              description: "La imagen del administrator no se puso eliminar, consulte con soporte",
+            });
+          }
+
+          const responseImageUpload = await fetch(`/api/images/upload?filename=${cleanText(dataForm.name)}`, {
+            method: "POST",
+            body: dataToEdit.coverImageUrl,
+          });
+
+          const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+          dataToEdit = { ...dataToEdit, coverImageUrl: newBlob.url ?? "" };
+        }
 
         const response = await putApi(`/api/business/${dataForm.id}`, dataForm);
 
         setOpen(response.isError);
 
-        console.log("🚀 >>  onSubmit >>  response.data:", response.data);
-
         if (response.data) {
-          const updateData = businesses.map((admin) => {
-            if (admin.id === response.data.id) {
+          const updateData = businesses.map((business) => {
+            if (business.id === response.data.id) {
               return response.data;
             }
 
-            return admin;
+            return business;
           });
           setData(updateData);
         }
@@ -116,10 +173,18 @@ export default function Form_({
         });
         setLoading(false);
       } else {
-        console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
+        const file = dataForm.coverImageUrl;
 
-        const response = await postApi("/api/business", dataForm);
-        console.log("🚀 >>  onSubmit >>  response:", response);
+        const responseImageUpload = await fetch(`/api/images/upload?filename=${cleanText(dataForm.name)}`, {
+          method: "POST",
+          body: file,
+        });
+
+        const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+        const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
+
+        const response = await postApi("/api/business", updateDataForm);
 
         setOpen(response.isError);
 
@@ -152,6 +217,21 @@ export default function Form_({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
+        <FormField
+          name="coverImageUrl"
+          control={form.control}
+          render={({ field: { onChange, value, ...rest } }) => (
+            <>
+              <FormItem className="flex flex-col items-center justify-center my-3">
+                <FormControl>
+                  <FileInputPreview onChange={onChange} src={form.getValues().coverImageUrl} name={data?.name} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <FormField
             name="name"
@@ -206,27 +286,106 @@ export default function Form_({
             )}
           />
 
-          {/* Pais */}
           <FormField
+            name="province"
             control={form.control}
-            name="country"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>País</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormLabel>Provincia</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.trigger("province");
+                    form.setValue("canton", "");
+                    form.setValue("district", "");
+                  }}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccione un país" />
+                      <SelectValue placeholder="Seleccione una provincia" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {COUNTRIES.map(({ label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
+                    {PROVINCES.map((province) => (
+                      <SelectItem key={province} value={province}>
+                        {province}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="canton"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Canton</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.trigger("canton");
+                    form.setValue("district", "");
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccione un canton" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {(PROVINCE_WITH_CANTONS?.[(form.getValues().province ?? "") as string] || []).map((canton) => (
+                      <SelectItem key={canton} value={canton}>
+                        {canton}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="district"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Distrito</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccione un distrito" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {(DISTRICTS_BY_CANTON?.[(form.getValues().canton ?? "") as string] || []).map((district) => (
+                      <SelectItem key={district} value={district}>
+                        {district}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="address"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dirección</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} placeholder="Dirección" {...field} />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

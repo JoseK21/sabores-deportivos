@@ -6,11 +6,27 @@ import { Business } from "@/types/business";
 import { COUNTRIES, BUSINESS_TYPES } from "@/app/constants";
 
 import { Cell_ } from "./cell-action";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns: ColumnDef<Business>[] = [
   {
     accessorKey: "name",
     header: "Nombre",
+    cell: ({ row }) => {
+      const { name, coverImageUrl } = row.original;
+
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <Avatar>
+            <AvatarImage src={coverImageUrl ?? ""} alt={name} className=" object-cover" />
+            <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+              {name.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <span>{name}</span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "type",

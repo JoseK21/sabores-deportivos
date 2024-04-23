@@ -9,10 +9,10 @@ export type Business = {
   description: string;
   coverImageUrl: string;
   country: string;
-  province?: string;
-  canton?: string;
-  district?: string;
-  address?: string;
+  province: string;
+  canton: string;
+  district: string;
+  address: string;
   wazeLink?: string;
   googleMapLink?: string;
   facebookLink?: string;

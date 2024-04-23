@@ -62,7 +62,7 @@ model VerificationToken {
 }
 
 model ProductType {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -70,12 +70,12 @@ model ProductType {
 }
 
 model Product {
-  id           String            @id @default(cuid())
+  id           String         @id @default(cuid())
   name         String
   idBussiness  String
   description  String
   imageUrl     String
-  typeId       String            @unique
+  typeId       String         @unique
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
   type         ProductType    @relation(fields: [typeId], references: [id])
@@ -83,7 +83,7 @@ model Product {
 }
 
 model Prize {
-  id           String            @id @default(cuid())
+  id           String         @id @default(cuid())
   name         String
   idBussiness  Int
   description  String
@@ -99,7 +99,7 @@ model Prize {
 }
 
 model ProductPrize {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   idPrize   String
   idProduct String
   createdAt DateTime @default(now()) @map("created_at")
@@ -109,7 +109,7 @@ model ProductPrize {
 }
 
 model ClaimedPrize {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   idPrize   String
   idUser    String
   idUserS   String
@@ -120,7 +120,7 @@ model ClaimedPrize {
 }
 
 model Sport {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String   @unique
   abbrName  String   @unique
   createdAt DateTime @default(now()) @map("created_at")
@@ -128,7 +128,7 @@ model Sport {
 }
 
 model League {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String   @unique
   abbrName  String   @unique
   createdAt DateTime @default(now()) @map("created_at")
@@ -136,7 +136,7 @@ model League {
 }
 
 model Team {
-  id        String         @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String      @unique
   abbrName  String      @unique
   logoUrl   String
@@ -162,7 +162,7 @@ model Event {
 }
 
 model TeamEvent {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   teamId    String
   eventId   String
   createdAt DateTime @default(now()) @map("created_at")
@@ -195,10 +195,10 @@ model Business {
   description         String
   coverImageUrl       String
   country             String
-  province            String?
-  canton              String?
-  district            String?
-  address             String?
+  province            String
+  canton              String
+  district            String
+  address             String
   wazeLink            String?
   googleMapLink       String?
   facebookLink        String?
@@ -214,7 +214,7 @@ model Business {
 }
 
 model BusinessScheduled {
-  id               String      @id @default(cuid())
+  id               String   @id @default(cuid())
   idBusiness       String
   mondayOpening    Int?
   mondayClose      Int?
@@ -246,7 +246,7 @@ model BusinessGallery {
 }
 
 model BusinessAdvertising {
-  id         String       @id @default(cuid())
+  id         String    @id @default(cuid())
   idBusiness String
   title      String
   imageUrl   String

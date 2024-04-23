@@ -7,8 +7,8 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
 const FileInputPreview = ({
-  onChange,
   src,
+  onChange,
   name = "",
 }: {
   onChange: Function;
