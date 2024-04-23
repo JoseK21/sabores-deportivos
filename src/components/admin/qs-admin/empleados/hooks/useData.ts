@@ -5,7 +5,7 @@ import { useAdminsStore } from "@/store/adminsStore";
 import { User } from "@/types/user";
 import { useState } from "react";
 
-const useAdminUsersData = () => {
+const useData = () => {
   const { setData, setError } = useAdminsStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -14,9 +14,9 @@ const useAdminUsersData = () => {
 
     try {
       const newData = await getApi("api/employee");
-      const adminsData: User[] = newData?.data || [];
+      const data: User[] = newData?.data || [];
 
-      setData(adminsData);
+      setData(data);
     } catch (error: any) {
       setError(error);
     }
@@ -27,4 +27,4 @@ const useAdminUsersData = () => {
   return { isLoaded };
 };
 
-export default useAdminUsersData;
+export default useData;

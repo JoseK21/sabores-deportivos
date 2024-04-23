@@ -50,7 +50,7 @@ export default function StaffAuthForm() {
       alert(res.error);
     } else {
       // todo send to correct dashboard
-      router.push("/qs-admin");
+      router.push("/qs-admin/");
     }
   };
 

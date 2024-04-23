@@ -19,6 +19,8 @@ import { useAdminsStore } from "@/store/adminsStore";
 import { User } from "@/types/user";
 import { getObjectDiff } from "@/utils/object";
 
+const PATH_API = "/api/employee/";
+
 function mapErrorCode(code: string): string {
   switch (code) {
     case "P2002":
@@ -70,8 +72,8 @@ export default function Form_({
           name: "",
           email: "",
           password: "",
+          status: "",
           role: "",
-          status: UserStatus.deactivated,
         },
   });
 
@@ -79,33 +81,25 @@ export default function Form_({
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
-    console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
-
     try {
-      console.log("🚀 >>  onSubmit >>  isEdition:", isEdition);
-
       setLoading(true);
 
       if (isEdition) {
         const dataToEdit = getObjectDiff(dataForm, data ?? ({} as User));
 
-        console.log("🚀 >>  onSubmit >>  dataForm:", dataToEdit, data);
-
-        const response = await putApi(`/api/admin/${dataForm.id}`, dataForm);
+        const response = await putApi(`${PATH_API}${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
-        console.log("🚀 >>  onSubmit >>  response.data:", response.data);
-
         if (response.data) {
-          const updateAdmin = admins.map((admin) => {
-            if (admin.id === response.data.id) {
+          const updateEmployee = admins.map((employee) => {
+            if (employee.id === response.data.id) {
               return response.data;
             }
 
-            return admin;
+            return employee;
           });
-          setData(updateAdmin);
+          setData(updateEmployee);
         }
 
         toast({
@@ -118,9 +112,7 @@ export default function Form_({
         });
         setLoading(false);
       } else {
-        console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
-
-        const response = await postApi("/api/admin", dataForm);
+        const response = await postApi(PATH_API, dataForm);
 
         setOpen(response.isError);
 

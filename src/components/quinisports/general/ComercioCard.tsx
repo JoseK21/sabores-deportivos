@@ -10,15 +10,7 @@ const ComercioCard = ({ id, name, photoUrl, description }: Business) => {
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div style={{ position: "relative", height: "200px" }}>
-        <Image
-          fill
-          alt={name}
-          src={photoUrl}
-          sizes="100vw"
-          style={{
-            objectFit: "cover", // cover, contain, none
-          }}
-        />
+        <Image fill alt={name} src={photoUrl} className="object-cover" sizes="100vw" />
       </div>
 
       <div className="p-5">

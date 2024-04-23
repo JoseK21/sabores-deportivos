@@ -13,6 +13,10 @@ export default async function AuthAdminRest({ children }: { children: React.Reac
     redirect("/");
   }
 
+  if (session?.user.role == UserRole.master) {
+    redirect("/qs-admin");
+  }
+
   return (
     <>
       <div className="flex h-screen overflow-hidden">

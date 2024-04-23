@@ -1,16 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
-import useAdminUsersData from "./useAdminUsersData";
+import useBusinessData from "./useBusinessData";
 import { useBusinessStore } from "@/store/businessStore";
 
 export default function BusinessTable() {
   const { businesses } = useBusinessStore();
 
-  const { isLoaded } = useAdminUsersData();
+  const { isLoaded } = useBusinessData();
 
   if (isLoaded) {
     return <DataTable data={businesses} searchKey="name" columns={columns} placeholder="Filtro por nombre.." />;

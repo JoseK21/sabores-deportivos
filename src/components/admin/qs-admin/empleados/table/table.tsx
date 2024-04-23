@@ -4,13 +4,13 @@
 import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
-import useAdminUsersData from "./useAdminUsersData";
+import useData from "../hooks/useData";
 import { useAdminsStore } from "@/store/adminsStore";
 
 export default function AdminsTable() {
   const { admins } = useAdminsStore();
 
-  const { isLoaded } = useAdminUsersData();
+  const { isLoaded } = useData();
 
   if (isLoaded) {
     return <DataTable data={admins} searchKey="name" columns={columns} placeholder="Filtro por nombre.." />;

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { User } from "@/types/user";
-import { BUSINESS_TYPES, FULL_USER_ROLES, USER_STATUS } from "@/app/constants";
+import { USER_STATUS } from "@/app/constants";
 import Form_ from "../header/form";
 
 interface Props {

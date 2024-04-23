@@ -16,6 +16,7 @@ import { deleteApi } from "@/lib/api";
 import { useAdminsStore } from "@/store/adminsStore";
 import { useToast } from "@/components/ui/use-toast";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
+import { useBusinessStore } from "@/store/businessStore";
 
 interface Props {
   data: User;
@@ -27,6 +28,7 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
   const [openRemove, setOpenRemove] = useState(false);
 
   const { toast } = useToast();
+  const { businesses } = useBusinessStore();
   const { admins, setData } = useAdminsStore();
   const [loading, setLoading] = useState(false);
 
@@ -53,9 +55,23 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <AdminsDialog open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
+      <AdminsDialog
+        businesses={businesses}
+        open={openShow}
+        setOpen={setOpenShow}
+        data={data}
+        isEdition={false}
+        isShowing={true}
+      />
 
-      <AdminsDialog open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
+      <AdminsDialog
+        businesses={businesses}
+        open={openEdit}
+        setOpen={setOpenEdit}
+        data={data}
+        isEdition
+        isShowing={false}
+      />
 
       <AlertModal
         text="Eliminar"

@@ -31,7 +31,7 @@ export const USER_STATUS = [
   { value: UserStatus.deactivated, label: "Desactivo" },
 ];
 
-// 
+//
 
 export const BUSINESS_TYPES = [
   { value: BusinessTypes.bar, label: "Bar" },

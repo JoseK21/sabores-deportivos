@@ -1,6 +1,6 @@
 export type Schedule = {
-  id: number;
-  idBusiness: number;
+  id: string;
+  idBusiness: string;
 
   mondayOpening?: number;
   mondayClose?: number;

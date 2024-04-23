@@ -3,17 +3,19 @@ import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from 
 import { Plus } from "lucide-react";
 import FormAdmin from "../header/form";
 import { User } from "@/types/user";
-import { FULL_USER_ROLES, USER_STATUS } from "@/app/constants";
+import { USER_STATUS } from "@/app/constants";
+import { Business } from "@/types/business";
 
 interface Props {
   data?: User;
+  businesses?: Business[];
   open: boolean;
   isEdition: boolean;
   isShowing: boolean;
   setOpen: (open: boolean) => void;
 }
 
-export const AdminsDialog = ({ open, setOpen, data, isEdition, isShowing = false }: Props) => {
+export const AdminsDialog = ({ open, setOpen, data, isEdition, isShowing = false, businesses }: Props) => {
   if (isShowing) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -51,7 +53,7 @@ export const AdminsDialog = ({ open, setOpen, data, isEdition, isShowing = false
         <DialogHeader>
           <DialogTitle>{isEdition ? "Edición de Administrador" : "Nuevo Administrador"}</DialogTitle>
         </DialogHeader>
-        <FormAdmin setOpen={setOpen} isEdition={isEdition} data={data} />
+        <FormAdmin setOpen={setOpen} isEdition={isEdition} data={data} businesses={businesses} />
       </DialogContent>
     </Dialog>
   );

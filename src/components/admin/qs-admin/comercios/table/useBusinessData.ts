@@ -4,7 +4,7 @@ import { useBusinessStore } from "@/store/businessStore";
 import { Business } from "@/types/business";
 import { useState } from "react";
 
-const useAdminUsersData = () => {
+const useBusinessData = () => {
   const { setData, setError } = useBusinessStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -26,4 +26,4 @@ const useAdminUsersData = () => {
   return { isLoaded };
 };
 
-export default useAdminUsersData;
+export default useBusinessData;

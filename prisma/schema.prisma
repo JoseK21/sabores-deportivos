@@ -39,6 +39,7 @@ model User {
   email         String?        @unique
   emailVerified DateTime?
   image         String?
+  idBusiness    String?
   totalPoints   Int?           @default(0)
   claimedPoints Int?           @default(0)
   password      String?
@@ -47,8 +48,9 @@ model User {
   role          UserRole       @default(client)
   status        UserStatus     @default(deactivated)
   accounts      Account[]
-  ClaimedPrize  ClaimedPrize[]
+  claimedPrize  ClaimedPrize[]
   sessions      Session[]
+  business      Business?      @relation(fields: [idBusiness], references: [id])
 }
 
 model VerificationToken {
@@ -60,7 +62,7 @@ model VerificationToken {
 }
 
 model ProductType {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(cuid())
   name      String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -68,12 +70,12 @@ model ProductType {
 }
 
 model Product {
-  id           Int            @id @default(autoincrement())
+  id           String            @id @default(cuid())
   name         String
-  idBussiness  Int
+  idBussiness  String
   description  String
   imageUrl     String
-  typeId       Int            @unique
+  typeId       String            @unique
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
   type         ProductType    @relation(fields: [typeId], references: [id])
@@ -81,7 +83,7 @@ model Product {
 }
 
 model Prize {
-  id           Int            @id @default(autoincrement())
+  id           String            @id @default(cuid())
   name         String
   idBussiness  Int
   description  String
@@ -97,9 +99,9 @@ model Prize {
 }
 
 model ProductPrize {
-  id        Int      @id @default(autoincrement())
-  idPrize   Int
-  idProduct Int
+  id        String      @id @default(cuid())
+  idPrize   String
+  idProduct String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   prize     Prize    @relation(fields: [idPrize], references: [id])
@@ -107,8 +109,8 @@ model ProductPrize {
 }
 
 model ClaimedPrize {
-  id        Int      @id @default(autoincrement())
-  idPrize   Int
+  id        String      @id @default(cuid())
+  idPrize   String
   idUser    String
   idUserS   String
   createdAt DateTime @default(now()) @map("created_at")
@@ -118,7 +120,7 @@ model ClaimedPrize {
 }
 
 model Sport {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(cuid())
   name      String   @unique
   abbrName  String   @unique
   createdAt DateTime @default(now()) @map("created_at")
@@ -126,7 +128,7 @@ model Sport {
 }
 
 model League {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(cuid())
   name      String   @unique
   abbrName  String   @unique
   createdAt DateTime @default(now()) @map("created_at")
@@ -134,7 +136,7 @@ model League {
 }
 
 model Team {
-  id        Int         @id @default(autoincrement())
+  id        String         @id @default(cuid())
   name      String      @unique
   abbrName  String      @unique
   logoUrl   String
@@ -160,8 +162,8 @@ model Event {
 }
 
 model TeamEvent {
-  id        Int      @id @default(autoincrement())
-  teamId    Int
+  id        String      @id @default(cuid())
+  teamId    String
   eventId   String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -173,7 +175,7 @@ model TeamEvent {
 
 model Forecast {
   id         String         @id @default(cuid())
-  idBusiness Int
+  idBusiness String
   idClient   Int
   idEvent    Int
   date       DateTime
@@ -186,7 +188,7 @@ model Forecast {
 }
 
 model Business {
-  id                  Int                   @id @default(autoincrement())
+  id                  String                @id @default(cuid())
   name                String
   type                BusinessTypes
   logoUrl             String
@@ -208,11 +210,12 @@ model Business {
   BusinessGallery     BusinessGallery[]
   BusinessScheduled   BusinessScheduled[]
   Forecast            Forecast[]
+  User                User[]
 }
 
 model BusinessScheduled {
-  id               Int      @id @default(autoincrement())
-  idBusiness       Int
+  id               String      @id @default(cuid())
+  idBusiness       String
   mondayOpening    Int?
   mondayClose      Int?
   tuesdayOpening   Int?
@@ -233,8 +236,8 @@ model BusinessScheduled {
 }
 
 model BusinessGallery {
-  id         Int      @id @default(autoincrement())
-  idBusiness Int
+  id         String   @id @default(cuid())
+  idBusiness String
   ord        Int?
   imageUrl   String
   createdAt  DateTime @default(now()) @map("created_at")
@@ -243,8 +246,8 @@ model BusinessGallery {
 }
 
 model BusinessAdvertising {
-  id         Int       @id @default(autoincrement())
-  idBusiness Int
+  id         String       @id @default(cuid())
+  idBusiness String
   title      String
   imageUrl   String
   href       String?

@@ -1,6 +1,6 @@
 export type Advertising = {
-  id: number;
-  idBusiness: number;
+  id: string;
+  idBusiness: string;
   title: string;
   imageUrl: string;
   href?: string;

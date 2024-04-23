@@ -1,9 +1,9 @@
 // import { Product } from "./product";
 
 export type Prize = {
-  id: number;
+  id: string;
   name: string;
-  idBusiness: number;
+  idBusiness: string;
   points: number;
   description: string;
   imageUrl: string;

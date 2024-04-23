@@ -1,15 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import UserAuthForm from "@/components/template/forms/user-auth-form";
-import Logo from "@/components/quinisports/general/Logo";
-import { Button } from "@/components/ui/button";
 
-import {
-  DropdownMenu,
-  DropdownMenuLabel,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import UserAuthForm from "@/components/template/forms/user-auth-form";
+
+import Logo from "@/components/quinisports/general/Logo";
 
 export const metadata: Metadata = {
   title: "QuiniSports | User Login",
@@ -57,29 +51,8 @@ export const metadata: Metadata = {
 };
 
 export default function AuthenticationPage() {
-  const isLocalhost = process.env.NODE_ENV === "development";
-
   return (
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      {isLocalhost && (
-        <div className="flex gap-2 fixed right-0 top-0 m-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className=" bg-red-200">
-                DEBUG
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 gap-1">
-              <DropdownMenuLabel>Accesos</DropdownMenuLabel>
-              <div className="ml-2 flex flex-col">
-                <Link href="/qs-admin/auth/login">Admin</Link>
-                <Link href="/">Cliente</Link>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )}
-
       <div className="hidden h-full justify-between flex-col bg-muted p-10 text-white dark:border-r lg:flex bg-zinc-900 z-20">
         <div className="flex items-center">
           <Logo width={210} fillLabel="#FFF" fillLine="#FFF" />

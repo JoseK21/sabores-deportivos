@@ -1,7 +1,7 @@
 import { BusinessTypes } from "@/app/enum";
 
 export type Business = {
-  id: number;
+  id: string;
   name: string;
   photoUrl: string;
   type: BusinessTypes;

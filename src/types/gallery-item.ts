@@ -1,6 +1,6 @@
 export type GalleryItem = {
-  id: number;
-  idBusiness: number;
+  id: string;
+  idBusiness: string;
   ord?: number;
   imageUrl: string;
 };

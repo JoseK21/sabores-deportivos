@@ -18,11 +18,13 @@ declare module "next-auth" {
 
   interface User extends DefaultUser {
     role: UserRole;
+    // image: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     role: UserRole;
+    // image: string;
   }
 }

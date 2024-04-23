@@ -7,4 +7,6 @@ export type User = {
   password: string;
   role: UserRole;
   status: UserStatus;
+  idBusiness: string;
+  image: string;
 };
