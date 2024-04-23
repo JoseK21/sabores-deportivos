@@ -45,7 +45,7 @@ export const BUSINESS_TYPES = [
 ];
 
 export const COUNTRIES = [
-  { value: Countries.cr, label: "Costa Rica" },
-  { value: Countries.mx, label: "Mexico" },
-  { value: Countries.es, label: "España" },
+  { value: Countries.cr, label: "Costa Rica", enabled: true},
+  { value: Countries.mx, label: "Mexico", enabled: false},
+  { value: Countries.es, label: "España", enabled: false},
 ];

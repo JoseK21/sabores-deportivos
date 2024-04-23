@@ -17,6 +17,8 @@ import { signOut } from "next-auth/react";
 import { getFirstChars } from "@/utils/string";
 
 export async function UserNav({ session }: { session: any }) {
+  const src = session?.user?.image ?? "";
+
   return session ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,7 +27,7 @@ export async function UserNav({ session }: { session: any }) {
           className="relative h-8 w-8 rounded-full focus-visible:shadow-none focus-visible:ring-0"
         >
           <Avatar className="h-8 w-8 border border-primary-600">
-            <AvatarImage src={session?.user?.image ?? ""} alt={"foto-perfil"} referrerPolicy="no-referrer" />
+            <AvatarImage src={src} alt={"foto-perfil"} referrerPolicy="no-referrer" />
             <AvatarFallback>{getFirstChars(session?.user?.name ?? "-")}</AvatarFallback>
           </Avatar>
         </Button>

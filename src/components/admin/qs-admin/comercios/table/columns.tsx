@@ -13,12 +13,12 @@ export const columns: ColumnDef<Business>[] = [
     accessorKey: "name",
     header: "Nombre",
     cell: ({ row }) => {
-      const { name, coverImageUrl } = row.original;
+      const { name, logoUrl } = row.original;
 
       return (
         <div className="flex flex-row gap-2 items-center">
           <Avatar>
-            <AvatarImage src={coverImageUrl ?? ""} alt={name} className=" object-cover" />
+            <AvatarImage src={logoUrl ?? ""} alt={name} className=" object-cover" />
             <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
               {name.charAt(0).toUpperCase()}
             </AvatarFallback>

@@ -17,7 +17,7 @@ import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
 import { getObjectDiff } from "@/utils/object";
 import { Business } from "@/types/business";
 import { useBusinessStore } from "@/store/businessStore";
-import FileInputPreview from "@/components/quinisports/FileInputPreview";
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
 import { useFetchData } from "@/hooks/useFetchData";
 import { isEmpty } from "lodash";
@@ -37,10 +37,18 @@ function mapErrorCode(code: string): string {
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
-  address: z.string().min(10, { message: "La Dirección al menos de tener 3 letras" }),
+  address: z.string().min(10, { message: "La Dirección al menos de tener 10 letras" }),
   coverImageUrl: z
     .any()
     .refine((file) => file?.size, "Imagen requerida")
+    .refine((file) => file?.size <= MAX_FILE_SIZE, `El tamaño max es de  1MB.`)
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    ),
+  logoUrl: z
+    .any()
+    .refine((file) => file?.size, "Logo requerido")
     .refine((file) => file?.size <= MAX_FILE_SIZE, `El tamaño max es de  1MB.`)
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
@@ -51,7 +59,7 @@ const FormSchema = z.object({
   canton: z.string().min(1, { message: "Canton requerido" }),
   district: z.string().min(1, { message: "Distrito requerido" }),
   type: z.string().min(1, { message: "Debe seleccionar un tipo de comercio" }),
-  // country: z.string().min(1, { message: "Por favor indique el pais" }),
+  country: z.string().min(1, { message: "Por favor indique el pais" }),
 });
 
 const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
@@ -86,6 +94,7 @@ export default function Form_({
           canton: "",
           district: "",
           coverImageUrl: "",
+          logoUrl: "",
         },
   });
 
@@ -100,6 +109,15 @@ export default function Form_({
         })
         .catch((error) => {
           form.setValue("coverImageUrl", null);
+        });
+    }
+    if (isEdition && data?.logoUrl) {
+      urlToFile((data?.logoUrl as string) || "")
+        .then((file) => {
+          form.setValue("logoUrl", file);
+        })
+        .catch((error) => {
+          form.setValue("logoUrl", null);
         });
     }
   });
@@ -148,7 +166,29 @@ export default function Form_({
           dataToEdit = { ...dataToEdit, coverImageUrl: newBlob.url ?? "" };
         }
 
-        const response = await putApi(`/api/business/${dataForm.id}`, dataForm);
+        if (dataToEdit?.logoUrl) {
+          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.logoUrl as string}`);
+
+          if (deletedPhoto?.isError) {
+            toast({
+              duration: 7000,
+              variant: "warning",
+              title: "Error al eliminar la foto anterior!",
+              description: "La imagen del administrator no se puso eliminar, consulte con soporte",
+            });
+          }
+
+          const responseImageUpload = await fetch(`/api/images/upload?filename=${cleanText(dataForm.name)}`, {
+            method: "POST",
+            body: dataToEdit.logoUrl,
+          });
+
+          const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+          dataToEdit = { ...dataToEdit, logoUrl: newBlob.url ?? "" };
+        }
+
+        const response = await putApi(`/api/business/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
@@ -173,18 +213,35 @@ export default function Form_({
         });
         setLoading(false);
       } else {
-        const file = dataForm.coverImageUrl;
+        let dataToAdd = dataForm;
 
-        const responseImageUpload = await fetch(`/api/images/upload?filename=${cleanText(dataForm.name)}`, {
-          method: "POST",
-          body: file,
-        });
+        const fileCoverImage = dataToAdd.coverImageUrl;
 
-        const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+        if (fileCoverImage) {
+          const responseImageUpload = await fetch(`/api/images/upload?filename=${cleanText(dataToAdd.name)}`, {
+            method: "POST",
+            body: fileCoverImage,
+          });
 
-        const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
+          const newBlob = (await responseImageUpload.json()) as PutBlobResult;
 
-        const response = await postApi("/api/business", updateDataForm);
+          dataToAdd = { ...dataToAdd, coverImageUrl: newBlob.url ?? "" };
+        }
+
+        const fileLogo = dataToAdd.logoUrl;
+
+        if (fileLogo) {
+          const responseImageUpload = await fetch(`/api/images/upload?filename=${cleanText(dataToAdd.name)}`, {
+            method: "POST",
+            body: fileLogo,
+          });
+
+          const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+          dataToAdd = { ...dataToAdd, logoUrl: newBlob.url ?? "" };
+        }
+
+        const response = await postApi("/api/business", dataToAdd);
 
         setOpen(response.isError);
 
@@ -217,22 +274,49 @@ export default function Form_({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
-        <FormField
-          name="coverImageUrl"
-          control={form.control}
-          render={({ field: { onChange, value, ...rest } }) => (
-            <>
-              <FormItem className="flex flex-col items-center justify-center my-3">
-                <FormControl>
-                  <FileInputPreview onChange={onChange} src={form.getValues().coverImageUrl} name={data?.name} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </>
-          )}
-        />
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <FormField
+            name="coverImageUrl"
+            control={form.control}
+            render={({ field: { onChange, value, ...rest } }) => (
+              <>
+                <FormItem className="flex flex-col items-center justify-center my-3">
+                  <FormLabel>Imagen de Perfil</FormLabel>
+                  <FormControl>
+                    <FileInputPreview
+                      size={SIZES_UNIT.md}
+                      onChange={onChange}
+                      src={form.getValues().coverImageUrl}
+                      name={data?.name}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </>
+            )}
+          />
+
+          <FormField
+            name="logoUrl"
+            control={form.control}
+            render={({ field: { onChange, value, ...rest } }) => (
+              <>
+                <FormItem className="flex flex-col items-center justify-center my-3">
+                  <FormLabel>Logo</FormLabel>
+                  <FormControl>
+                    <FileInputPreview
+                      size={SIZES_UNIT.md}
+                      onChange={onChange}
+                      src={form.getValues().logoUrl}
+                      name={data?.name}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </>
+            )}
+          />
+
           <FormField
             name="name"
             control={form.control}
@@ -276,6 +360,31 @@ export default function Form_({
                   <SelectContent>
                     {BUSINESS_TYPES.map(({ label, value }) => (
                       <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="country"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>País</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccione un país" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {COUNTRIES.map(({ value, label, enabled }) => (
+                      <SelectItem key={value} value={value} disabled={!enabled}>
                         {label}
                       </SelectItem>
                     ))}

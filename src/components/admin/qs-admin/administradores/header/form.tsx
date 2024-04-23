@@ -23,7 +23,7 @@ import { User } from "@/types/user";
 import { getObjectDiff } from "@/utils/object";
 import { Business } from "@/types/business";
 import { cn } from "@/lib/utils";
-import FileInputPreview from "@/components/quinisports/FileInputPreview";
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 import { cleanText } from "@/utils/string";
 import { useFetchData } from "@/hooks/useFetchData";
 import { isEmpty } from "lodash";
@@ -233,7 +233,12 @@ export default function FormAdmin({
             <>
               <FormItem className="flex flex-col items-center justify-center my-3">
                 <FormControl>
-                  <FileInputPreview onChange={onChange} src={form.getValues().image} name={data?.name} />
+                  <FileInputPreview
+                    size={SIZES_UNIT.xl}
+                    onChange={onChange}
+                    src={form.getValues().image}
+                    name={data?.name}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

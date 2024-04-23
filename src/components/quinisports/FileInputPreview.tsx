@@ -6,11 +6,29 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
+export enum SIZES_UNIT {
+  sm,
+  md,
+  xl,
+}
+
+type SizesType = {
+  [key in SIZES_UNIT]: string;
+};
+
+const SIZES: SizesType = {
+  [SIZES_UNIT.sm]: "w-20 h-20",
+  [SIZES_UNIT.md]: "w-32 h-32",
+  [SIZES_UNIT.xl]: "w-60 h-60",
+};
+
 const FileInputPreview = ({
   src,
+  size = SIZES_UNIT.md,
   onChange,
   name = "",
 }: {
+  size: SIZES_UNIT;
   onChange: Function;
   src: string | undefined;
   name: string | undefined;
@@ -39,10 +57,14 @@ const FileInputPreview = ({
 
   return (
     <div className="flex justify-center flex-col items-center">
-      <Avatar className={`w-60 h-60 border-neutral-300 rounded-full border overflow-hidden ${imagePreview ? "" : " text-3xl"}`}>
+      <Avatar
+        className={`border-neutral-300 rounded-full border overflow-hidden ${imagePreview ? "" : " text-3xl"} ${
+          SIZES[size]
+        }`}
+      >
         <AvatarImage
-          width={240}
-          height={240}
+          // width={240}
+          // height={240}
           alt={name || ""}
           src={imagePreview ?? ""}
           className="h-full object-cover"

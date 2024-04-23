@@ -1,3 +1,5 @@
+const imagesKeys = ['coverImageUrl', 'logoUrl', 'image']
+
 export function getObjectDiff<T extends object>(updated: T, original: T): Partial<T> {
   const keys1 = Object.keys(updated) as (keyof T)[];
   const diff: Partial<T> = {};
@@ -5,7 +7,7 @@ export function getObjectDiff<T extends object>(updated: T, original: T): Partia
   keys1.forEach((key) => {
     const keyStr = key as keyof T;
 
-    if (keyStr === "image" && updated[keyStr] && (updated[keyStr] as any).type === "application/octet-stream") {
+    if (imagesKeys.includes(`${keyStr as string}`) && updated[keyStr] && (updated[keyStr] as any).type === "application/octet-stream") {
       return; // Omitir la propiedad 'image' si su tipo MIME es 'application/octet-stream'
     }
 

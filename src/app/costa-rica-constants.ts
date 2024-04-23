@@ -88,6 +88,7 @@ export const PROVINCES = Object.keys(PROVINCE_WITH_CANTONS);
 
 export const DISTRICTS_BY_CANTON: StatesByCity = {
   Acosta: ["San Ignacio", "Guaitil", "Palmichal", "Cangrejal", "Sabanillas"],
+  Alvarado: ["Pacayas", "Cervantes", "Capellades"],
   Alajuelita: ["Alajuelita", "San Josecito", "San Antonio", "Concepción", "San Felipe"],
   Aserrí: ["Aserrí", "Tarbaca", "Vuelta de Jorco", "San Gabriel", "Legua"],
   Atenas: ["Atenas", "Jesús", "Mercedes", "San Isidro", "Concepción"],
