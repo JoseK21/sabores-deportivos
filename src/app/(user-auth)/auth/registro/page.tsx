@@ -39,7 +39,7 @@ function RegisterPage() {
     email: "jcnv21@gmail.com",
     password: "",
     name: "",
-    role: UserRole.admin_rest,
+    role: UserRole.unknown,
   };
 
   const form = useForm<UserFormValue>({

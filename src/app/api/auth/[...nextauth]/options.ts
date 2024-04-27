@@ -36,8 +36,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", placeholder: "*****" },
       },
       async authorize(credentials, req) {
-        console.log("credentials: ", credentials);
-
         const user = await prisma.user.findUnique({
           where: {
             email: credentials?.email,
@@ -45,7 +43,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         // validar contrasena
-        if (!user) throw new Error("No user found");
+        if (!user) throw new Error("Usuario no encontrado");
 
         if (user && user.password === credentials?.password) {
           return {
@@ -57,7 +55,7 @@ export const authOptions: NextAuthOptions = {
             status: user.status as UserStatus,
           };
         } else {
-          return null;
+          throw new Error("Credenciales invalidas");
         }
       },
     }),

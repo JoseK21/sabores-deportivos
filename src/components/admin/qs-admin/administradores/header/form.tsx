@@ -93,8 +93,8 @@ export default function FormAdmin({
           email: "",
           password: "",
           idBusiness: "",
-          status: UserStatus.actived,
-          role: UserRole.admin_rest,
+          status: UserStatus.unknown,
+          role: UserRole.unknown,
         },
   });
 

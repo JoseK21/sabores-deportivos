@@ -30,7 +30,7 @@ const EventCard = ({ team1, team2 }: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <div className="flex items-center rounded-md border p-4 justify-between w-full">
+        <div className="flex items-center justify-between w-full">
           <TeamInfo {...team1} />
           <span className="text-sm font-semibold leading-none text-center">VS</span>
           <TeamInfo {...team2} />

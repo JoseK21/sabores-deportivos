@@ -32,8 +32,10 @@ export const metadata: Metadata = {
 // export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions);
+  
+  console.log("🚀 >>  Layout >>  session:", session)
 
-  if (!session) {
+  if (!session?.user?.email) {
     redirect("/qs-admin/auth/login");
   } else if (session?.user.role == UserRole.client) {
     redirect("/");

@@ -40,6 +40,7 @@ export const BUSINESS_TYPES = [
   { value: BusinessTypes.sportbar, label: "SportBar" },
   { value: BusinessTypes.restaurant, label: "Restaurante" },
   { value: BusinessTypes.sports_club, label: "Club Deportivo" },
+  { value: BusinessTypes.bar_restaurant, label: "Bar & Restaurante" },
   { value: BusinessTypes.shopping_center, label: "Centro Comercial" },
   { value: BusinessTypes.recreation_center, label: "Centro Recreativo" },
 ];

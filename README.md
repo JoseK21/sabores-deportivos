@@ -148,6 +148,9 @@ https://squoosh.app/
 ### Create Skeleton SVG
 https://skeletonreact.com/
 
+### Tailwind Component
+https://flowbite.com/docs/components/accordion/
+
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

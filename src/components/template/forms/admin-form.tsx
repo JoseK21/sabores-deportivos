@@ -60,7 +60,7 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
   const defaultValues = initialData
     ? initialData
-    : { name: "", description: "", price: 0, imageUrl: "", role: UserRole.admin_rest };
+    : { name: "", description: "", price: 0, imageUrl: "", role: UserRole.unknown };
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),

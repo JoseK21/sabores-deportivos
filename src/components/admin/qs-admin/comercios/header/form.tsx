@@ -23,7 +23,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { isEmpty } from "lodash";
 import { PutBlobResult } from "@vercel/blob";
 import { cleanText } from "@/utils/string";
-import { DISTRICTS_BY_CANTON, PROVINCE_WITH_CANTONS, PROVINCES } from "@/app/costa-rica-constants";
+import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -416,7 +416,7 @@ export default function Form_({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {PROVINCES.map((province) => (
+                    {Object.keys(PROVINCE_WITH_CANTONS).map((province) => (
                       <SelectItem key={province} value={province}>
                         {province}
                       </SelectItem>
@@ -448,11 +448,13 @@ export default function Form_({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {(PROVINCE_WITH_CANTONS?.[(form.getValues().province ?? "") as string] || []).map((canton) => (
-                      <SelectItem key={canton} value={canton}>
-                        {canton}
-                      </SelectItem>
-                    ))}
+                    {Object.keys(PROVINCE_WITH_CANTONS?.[(form.getValues().province ?? "") as string] || []).map(
+                      (canton) => (
+                        <SelectItem key={canton} value={canton}>
+                          {canton}
+                        </SelectItem>
+                      )
+                    )}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -473,7 +475,7 @@ export default function Form_({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {(DISTRICTS_BY_CANTON?.[(form.getValues().canton ?? "") as string] || []).map((district) => (
+                    {(PROVINCE_WITH_CANTONS?.[(form.getValues().province ?? "") as string]?.[(form.getValues().canton ?? "") as string] || []).map((district) => (
                       <SelectItem key={district} value={district}>
                         {district}
                       </SelectItem>

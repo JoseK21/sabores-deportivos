@@ -34,7 +34,7 @@ export default function FormEmployee() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
-      role: UserRole.admin_rest,
+      role: "",
       password_: "",
       email: "",
     },

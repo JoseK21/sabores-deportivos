@@ -9,9 +9,6 @@ const ALLOW_ROLES_EMPLOYEE = [UserRole.cashier_rest, UserRole.waiter_rest, UserR
 
 export const GET = requestMiddleware(async () => {
   const employees = await prisma.user.findMany({
-    // where: {
-    //   role: UserRole.admin_rest,
-    // },
     where: {
       AND: [{ role: { in: ALLOW_ROLES_EMPLOYEE } }],
     },
