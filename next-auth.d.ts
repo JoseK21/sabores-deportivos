@@ -13,18 +13,22 @@ declare module "next-auth" {
       email: string;
       image: string;
       password?: string;
+      status?: string;
+      idBusiness?: string;
     } & DefaultSession;
   }
 
   interface User extends DefaultUser {
     role: UserRole;
-    // image: string;
+    status?: string;
+    idBusiness?: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     role: UserRole;
-    // image: string;
+    status?: string;
+    idBusiness?: string;
   }
 }

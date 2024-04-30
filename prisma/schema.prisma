@@ -62,38 +62,40 @@ model VerificationToken {
 }
 
 model ProductType {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  Product   Product?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  Product   Product[]
 }
 
 model Product {
-  id           String         @id @default(cuid())
-  name         String
-  idBussiness  String
-  description  String
-  imageUrl     String
-  typeId       String         @unique
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  type         ProductType    @relation(fields: [typeId], references: [id])
-  ProductPrize ProductPrize[]
+  id            String         @id @default(cuid())
+  name          String
+  idBusiness    String
+  description   String
+  image         String
+  productTypeId String
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  productType   ProductType    @relation(fields: [productTypeId], references: [id])
+  business      Business       @relation(fields: [idBusiness], references: [id])
+  ProductPrize  ProductPrize[]
 }
 
 model Prize {
   id           String         @id @default(cuid())
   name         String
-  idBussiness  Int
+  idBusiness   String
   description  String
-  imageUrl     String
+  image        String
   points       Int
   enabled      Boolean        @default(true)
   startDate    DateTime
   endDate      DateTime
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
+  business     Business       @relation(fields: [idBusiness], references: [id])
   ClaimedPrize ClaimedPrize[]
   ProductPrize ProductPrize[]
 }
@@ -211,6 +213,8 @@ model Business {
   BusinessScheduled   BusinessScheduled[]
   Forecast            Forecast[]
   User                User[]
+  Prize               Prize[]
+  Product             Product[]
 }
 
 model BusinessScheduled {
@@ -239,7 +243,7 @@ model BusinessGallery {
   id         String   @id @default(cuid())
   idBusiness String
   ord        Int?
-  imageUrl   String
+  image      String
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
   business   Business @relation(fields: [idBusiness], references: [id])
@@ -249,7 +253,7 @@ model BusinessAdvertising {
   id         String    @id @default(cuid())
   idBusiness String
   title      String
-  imageUrl   String
+  image      String
   href       String?
   priority   Int?
   enabled    Boolean   @default(true)

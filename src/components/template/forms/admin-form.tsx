@@ -31,8 +31,8 @@ import axios from "axios";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "El nombre del administrador debe tener al menos 3 caracteres." }),
-  // imageUrl: z.string().min(1, { message: "Debe agregar una imagen" }),
-  // imageUrl: z
+  // image: z.string().min(1, { message: "Debe agregar una imagen" }),
+  // image: z
   //   .array(ImgSchema)
   //   .max(IMG_MAX_LIMIT, { message: "You can only add up to 3 images" })
   //   .min(1, { message: "At least one image must be added." }),
@@ -60,7 +60,7 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
   const defaultValues = initialData
     ? initialData
-    : { name: "", description: "", price: 0, imageUrl: "", role: UserRole.unknown };
+    : { name: "", description: "", price: 0, image: "", role: UserRole.unknown };
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
@@ -112,7 +112,7 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
     }
   };
 
-  // const triggerImgUrlValidation = () => form.trigger("imageUrl");
+  // const triggerImgUrlValidation = () => form.trigger("image");
 
   return (
     <>
@@ -138,13 +138,13 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
           name
           password
           email
-          imageUrl
+          image
           */}
 
           {/* <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="imageUrl"
+              name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image de Perfil</FormLabel>
@@ -191,12 +191,12 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
                   <FormLabel>Comercio</FormLabel>
                   <Select
                     disabled={loading}
-                    onValueChange={field.onChange}
                     value={field.value}
                     defaultValue={field.value}
+                    onValueChange={field.onChange}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger disabled={loading}>
                         <SelectValue defaultValue={field.value} placeholder="Seleccione un comercio" />
                       </SelectTrigger>
                     </FormControl>

@@ -5,7 +5,8 @@ import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
 import useAdminUsersData from "./useAdminUsersData";
-import { useAdminsStore } from "@/store/adminsStore";
+import { useAdminsStore } from "@/store/qs-admin";
+import { orderBy } from "lodash";
 
 export default function AdminsTable() {
   const { admins } = useAdminsStore();
@@ -13,7 +14,9 @@ export default function AdminsTable() {
   const { isLoaded } = useAdminUsersData();
 
   if (isLoaded) {
-    return <DataTable data={admins} searchKey="name" columns={columns} placeholder="Filtro por nombre.." />;
+    return (
+      <DataTable searchKey="name" columns={columns} data={orderBy(admins, "name")} placeholder="Filtro por nombre.." />
+    );
   }
 
   return (

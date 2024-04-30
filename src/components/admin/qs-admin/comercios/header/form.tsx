@@ -24,6 +24,7 @@ import { isEmpty } from "lodash";
 import { PutBlobResult } from "@vercel/blob";
 import { cleanText } from "@/utils/string";
 import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
+import { BusinessTypes } from "@/app/enum";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -135,7 +136,7 @@ export default function Form_({
           setLoading(false);
 
           toast({
-            duration: 7000,
+            duration: 3000,
             variant: "info",
             title: "Sin cambios!",
             description: "No ha nuevos datos por actualizar",
@@ -204,7 +205,7 @@ export default function Form_({
         }
 
         toast({
-          duration: 7000,
+          duration: 5000,
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
           description: response.isError
@@ -250,7 +251,7 @@ export default function Form_({
         }
 
         toast({
-          duration: 7000,
+          duration: 5000,
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Comercio no agregado!" : "Nuevo comercio agregado!",
           description: response.isError
@@ -284,10 +285,11 @@ export default function Form_({
                   <FormLabel>Imagen de Perfil</FormLabel>
                   <FormControl>
                     <FileInputPreview
-                      size={SIZES_UNIT.md}
-                      onChange={onChange}
-                      src={form.getValues().coverImageUrl}
                       name={data?.name}
+                      disabled={loading}
+                      onChange={onChange}
+                      size={SIZES_UNIT.md}
+                      src={form.getValues().coverImageUrl}
                     />
                   </FormControl>
                   <FormMessage />
@@ -305,10 +307,11 @@ export default function Form_({
                   <FormLabel>Logo</FormLabel>
                   <FormControl>
                     <FileInputPreview
-                      size={SIZES_UNIT.md}
-                      onChange={onChange}
-                      src={form.getValues().logoUrl}
                       name={data?.name}
+                      disabled={loading}
+                      onChange={onChange}
+                      size={SIZES_UNIT.md}
+                      src={form.getValues().logoUrl}
                     />
                   </FormControl>
                   <FormMessage />
@@ -353,14 +356,14 @@ export default function Form_({
                 <FormLabel>Tipo</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Seleccione un tipo de comercio" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {BUSINESS_TYPES.map(({ label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
+                    {Object.keys(BUSINESS_TYPES).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {BUSINESS_TYPES[key as BusinessTypes]}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -378,7 +381,7 @@ export default function Form_({
                 <FormLabel>País</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Seleccione un país" />
                     </SelectTrigger>
                   </FormControl>
@@ -411,7 +414,7 @@ export default function Form_({
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Seleccione una provincia" />
                     </SelectTrigger>
                   </FormControl>
@@ -443,7 +446,7 @@ export default function Form_({
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Seleccione un canton" />
                     </SelectTrigger>
                   </FormControl>
@@ -470,12 +473,16 @@ export default function Form_({
                 <FormLabel>Distrito</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Seleccione un distrito" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {(PROVINCE_WITH_CANTONS?.[(form.getValues().province ?? "") as string]?.[(form.getValues().canton ?? "") as string] || []).map((district) => (
+                    {(
+                      PROVINCE_WITH_CANTONS?.[(form.getValues().province ?? "") as string]?.[
+                        (form.getValues().canton ?? "") as string
+                      ] || []
+                    ).map((district) => (
                       <SelectItem key={district} value={district}>
                         {district}
                       </SelectItem>

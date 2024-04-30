@@ -12,12 +12,18 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { UserRole, UserStatus } from "@/app/enum";
-import { postApi, putApi } from "@/lib/api";
+import { UserRole, UserStaffBusinessRole, UserStatus } from "@/app/enum";
+import { deleteApi, postApi, putApi } from "@/lib/api";
 import { STAFF_REST_ROLES, USER_STATUS } from "@/app/constants";
-import { useAdminsStore } from "@/store/adminsStore";
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 import { User } from "@/types/user";
 import { getObjectDiff } from "@/utils/object";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { PutBlobResult } from "@vercel/blob";
+import { useFetchData } from "@/hooks/useFetchData";
+import { cleanText } from "@/utils/string";
+import { isEmpty } from "lodash";
 
 const PATH_API = "/api/employee/";
 
@@ -35,6 +41,15 @@ const FormSchema = z.object({
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
   role: z.string().min(3, { message: "Rol minimo de 3 letras" }),
   status: z.string().min(1, { message: "Estado requerido" }),
+  image: z
+    .any()
+    .refine((file) => file?.size, "Imagen requerida")
+    .refine((file) => file?.size <= MAX_FILE_SIZE, "El tamaño max es de  1MB.")
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    ),
+  idBusiness: z.string({ required_error: "Comercio requerido" }).min(1, { message: "Comercio requerido" }),
   password: z.string().min(4, { message: "Contrasena como minimo de de 4 letras" }),
   email: z
     .string({
@@ -51,30 +66,46 @@ const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
   }
 };
 
-export default function Form_({
+export default function FormEmployee({
   data,
   setOpen,
+  idBusiness,
   isEdition = false,
 }: {
   data?: User;
+  idBusiness: string;
   isEdition?: boolean;
   setOpen: (open: boolean) => void;
 }) {
-  const { admins, setData } = useAdminsStore();
+  const { employees, setData } = useEmployeesStore();
   const [displayPassword, setDisplayPassword] = useState(false);
 
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
-      ? data || ({} as User)
+      ? { ...data, ...(isEdition ? { password: "password" } : "") } || ({} as User)
       : {
           name: "",
+          image: "",
           email: "",
           password: "",
-          status: "",
           role: "",
+          status: "",
+          idBusiness,
         },
+  });
+
+  useFetchData(async () => {
+    if (isEdition && data?.image) {
+      urlToFile((data?.image as string) || "")
+        .then((file) => {
+          form.setValue("image", file);
+        })
+        .catch((error) => {
+          form.setValue("image", null);
+        });
+    }
   });
 
   const { toast } = useToast();
@@ -85,48 +116,95 @@ export default function Form_({
       setLoading(true);
 
       if (isEdition) {
-        const dataToEdit = getObjectDiff(dataForm, data ?? ({} as User));
+        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as User), ["email", "password"]);
 
-        const response = await putApi(`${PATH_API}${dataForm.id}`, dataToEdit);
+        if (isEmpty(dataToEdit)) {
+          setLoading(false);
+
+          toast({
+            duration: 3000,
+            variant: "info",
+            title: "Sin cambios!",
+            description: "No ha nuevos datos por actualizar",
+          });
+
+          return 0;
+        }
+
+        if (dataToEdit?.image) {
+          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.image as string}`);
+
+          console.log("🚀 >>  onSubmit >>  deletedPhoto:", deletedPhoto);
+          if (deletedPhoto?.isError) {
+            toast({
+              duration: 7000,
+              variant: "warning",
+              title: "Error al eliminar la foto anterior!",
+              description: "La imagen del administrator no se puso eliminar, consulte con soporte",
+            });
+          }
+
+          const responseImageUpload = await fetch(`/api/images/upload?filename=employee-${cleanText(dataForm.name)}`, {
+            method: "POST",
+            body: dataToEdit.image,
+          });
+
+          const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+          dataToEdit = { ...dataToEdit, image: newBlob.url ?? "" };
+        }
+
+        const response = await putApi(`/api/employee/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
         if (response.data) {
-          const updateEmployee = admins.map((employee) => {
+          const updateData = employees.map((employee) => {
             if (employee.id === response.data.id) {
               return response.data;
             }
 
             return employee;
           });
-          setData(updateEmployee);
+          setData(updateData);
         }
 
         toast({
-          duration: 7000,
+          duration: 5000,
           variant: response.isError ? "destructive" : "success",
-          title: response.isError ? "Empleado no actualizado!" : "Empleado actualizado!",
+          title: response.isError ? "Administrador no actualizado!" : "Administrador actualizado!",
           description: response.isError
             ? `${mapErrorCode(response?.error?.code)}`
-            : `Se actualizó el empleado ${dataForm.name}`,
+            : `Se actualizó el administrador ${dataForm.name}`,
         });
         setLoading(false);
       } else {
-        const response = await postApi(PATH_API, dataForm);
+        const file = dataForm.image;
+
+        const responseImageUpload = await fetch(`/api/images/upload?filename=employee-${cleanText(dataForm.name)}`, {
+          method: "POST",
+          body: file,
+        });
+
+        const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+        const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
+
+        const response = await postApi("/api/employee", updateDataForm);
 
         setOpen(response.isError);
 
         if (response.data) {
-          setData([...admins, response.data]);
+          setData([...employees, response.data]);
         }
 
         toast({
-          duration: 7000,
+          duration: 5000,
           variant: response.isError ? "destructive" : "success",
-          title: response.isError ? "Empleado no agregado!" : "Nuevo empleado agregado!",
+          title: response.isError ? "Administrador no agregado!" : "Nuevo administrador agregado!",
           description: response.isError
             ? `${mapErrorCode(response?.error?.code)}`
-            : `Se agregó el empleado ${dataForm.name}`,
+            : `Se agregó el administrador ${dataForm.name}`,
         });
         setLoading(false);
       }
@@ -145,6 +223,27 @@ export default function Form_({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
+        <FormField
+          name="image"
+          control={form.control}
+          render={({ field: { onChange, value, ...rest } }) => (
+            <>
+              <FormItem className="flex flex-col items-center justify-center my-3">
+                <FormControl>
+                  <FileInputPreview
+                    name={data?.name}
+                    disabled={loading}
+                    onChange={onChange}
+                    size={SIZES_UNIT.xl}
+                    src={form.getValues().image}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <FormField
             name="name"
@@ -167,7 +266,12 @@ export default function Form_({
               <FormItem>
                 <FormLabel>Correo Eléctronico</FormLabel>
                 <FormControl>
-                  <Input disabled={loading} placeholder="Correo Eléctronico" {...field} autoComplete="new-email" />
+                  <Input
+                    disabled={loading || isEdition}
+                    placeholder="Correo Eléctronico"
+                    {...field}
+                    autoComplete="new-email"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -182,21 +286,18 @@ export default function Form_({
                 <FormLabel>Rol</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Selecione un rol" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {STAFF_REST_ROLES.map(({ label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
+                    {Object.keys(STAFF_REST_ROLES).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {STAFF_REST_ROLES[key as UserStaffBusinessRole]}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                {/* <FormControl>
-                  <Input disabled placeholder="Rol" {...field} value="Administrsdor" autoComplete="new-rol" />
-                </FormControl> */}
                 <FormMessage />
               </FormItem>
             )}
@@ -209,17 +310,19 @@ export default function Form_({
               <FormItem>
                 <FormLabel className="inline-flex items-end w-min">
                   Contraseña
-                  <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
-                    {displayPassword ? <Eye size={16} /> : <EyeOff size={16} />}
-                  </div>
+                  {!isEdition && (
+                    <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
+                      {displayPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+                    </div>
+                  )}
                 </FormLabel>
 
                 <FormControl>
                   <Input
                     type={displayPassword ? "text" : "password"}
+                    disabled={loading || isEdition}
                     autoComplete="new-password"
                     placeholder="Contraseña"
-                    disabled={loading}
                     {...field}
                   />
                 </FormControl>
@@ -236,16 +339,18 @@ export default function Form_({
                 <FormLabel>Estado</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Selecione un estado" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {USER_STATUS.map(({ label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
+                    {Object.keys(USER_STATUS)
+                      .filter((status) => status !== UserStatus.unknown)
+                      .map((key) => (
+                        <SelectItem key={key} value={key}>
+                          {USER_STATUS[key as UserStatus] || "-"}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </FormItem>

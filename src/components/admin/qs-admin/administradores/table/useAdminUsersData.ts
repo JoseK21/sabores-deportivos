@@ -1,7 +1,6 @@
-import { USER_STATUS } from "@/app/constants";
 import { useFetchData } from "@/hooks/useFetchData";
 import { getApi } from "@/lib/api";
-import { useAdminsStore } from "@/store/adminsStore";
+import { useAdminsStore } from "@/store/qs-admin";
 import { User } from "@/types/user";
 import { useState } from "react";
 
@@ -15,6 +14,8 @@ const useAdminUsersData = () => {
     try {
       const newData = await getApi("api/admin");
       const adminsData: User[] = newData?.data || [];
+
+      console.log("🚀 >>  useFetchData >>  adminsData:", adminsData.length)
 
       setData(adminsData);
     } catch (error: any) {

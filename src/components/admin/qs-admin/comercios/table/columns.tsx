@@ -32,7 +32,7 @@ export const columns: ColumnDef<Business>[] = [
     accessorKey: "type",
     header: "Tipo",
     cell: ({ row }) => {
-      const statusLabel = BUSINESS_TYPES.find(({ value }) => value === row.original.type)?.label || "-";
+      const statusLabel = BUSINESS_TYPES[row.original.type] || "-";
 
       return <span>{statusLabel}</span>;
     },
@@ -52,6 +52,7 @@ export const columns: ColumnDef<Business>[] = [
   },
   {
     id: "actions",
+    header: "Acciones",
     cell: ({ row }) => <Cell_ data={row.original} />,
   },
 ];

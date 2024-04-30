@@ -3,7 +3,8 @@ import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from 
 import { Plus } from "lucide-react";
 import { User } from "@/types/user";
 import { USER_STATUS } from "@/app/constants";
-import Form_ from "../header/form";
+import FormEmployee from "../header/form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Props {
   data?: User;
@@ -13,8 +14,14 @@ interface Props {
   setOpen: (open: boolean) => void;
 }
 
-export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: Props) => {
+export const EmployeeDialog = ({ open, setOpen, data, isEdition, isShowing = false }: Props) => {
+  const { idBusiness } = data || ({} as User);
+
+  if (!idBusiness) return null;
+
   if (isShowing) {
+    const { name, email, status, image } = data || ({} as User);
+
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[700px]">
@@ -22,16 +29,29 @@ export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: P
             <DialogTitle>Empleado</DialogTitle>
           </DialogHeader>
 
-          <div className=" rounded-sm bg-slate-200 p-2 flex flex-col">
-            <span>
-              <strong>Nombre:</strong> {data?.name}
-            </span>
-            <span>
-              <strong>Email:</strong> {data?.email}
-            </span>
-            <span>
-              <strong>Estado:</strong> {USER_STATUS.find(({ value }) => value === (data?.["status"] || ""))?.label}
-            </span>
+          <div className="flex flex-row gap-4">
+            <Avatar
+              className={` w-20 h-20 border-neutral-300 rounded-full border overflow-hidden ${
+                image ? "" : " text-3xl"
+              }`}
+            >
+              <AvatarImage width={80} height={80} alt={name || ""} src={image ?? ""} className="h-full object-cover" />
+              <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+                {(name || "").charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+
+            <div className=" rounded-sm bg-slate-100 p-2 flex flex-col flex-1">
+              <span>
+                <strong>Nombre:</strong> {name}
+              </span>
+              <span>
+                <strong>Email:</strong> {email}
+              </span>
+              <span>
+                <strong>Estado:</strong> {USER_STATUS[status] || "-"}
+              </span>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -51,7 +71,7 @@ export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: P
         <DialogHeader>
           <DialogTitle>{isEdition ? "Edición de Empleado" : "Nuevo Empleado"}</DialogTitle>
         </DialogHeader>
-        <Form_ setOpen={setOpen} isEdition={isEdition} data={data} />
+        <FormEmployee setOpen={setOpen} isEdition={isEdition} data={data} idBusiness={idBusiness} />
       </DialogContent>
     </Dialog>
   );

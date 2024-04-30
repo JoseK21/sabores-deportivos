@@ -1,7 +1,6 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CellAction } from "@/components/template/tables/user-tables/cell-action";
 import { User } from "@/types/user";
 
 export const columns: ColumnDef<User>[] = [
@@ -42,6 +41,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    header: "Acciones",
+    // cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

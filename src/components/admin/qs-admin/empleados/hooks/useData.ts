@@ -1,7 +1,6 @@
-import { USER_STATUS } from "@/app/constants";
 import { useFetchData } from "@/hooks/useFetchData";
 import { getApi } from "@/lib/api";
-import { useAdminsStore } from "@/store/adminsStore";
+import { useAdminsStore } from "@/store/qs-admin";
 import { User } from "@/types/user";
 import { useState } from "react";
 

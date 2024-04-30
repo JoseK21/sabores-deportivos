@@ -15,10 +15,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { UserRole, UserStatus } from "@/app/enum";
+import { UserStatus } from "@/app/enum";
 import { deleteApi, postApi, putApi } from "@/lib/api";
 import { ADMIN_ROLES, USER_STATUS } from "@/app/constants";
-import { useAdminsStore } from "@/store/adminsStore";
+import { useAdminsStore } from "@/store/qs-admin";
 import { User } from "@/types/user";
 import { getObjectDiff } from "@/utils/object";
 import { Business } from "@/types/business";
@@ -86,15 +86,15 @@ export default function FormAdmin({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
-      ? data || ({} as User)
+      ? { ...data, ...(isEdition ? { password: "password" } : "") } || ({} as User)
       : {
           name: "",
           image: "",
           email: "",
           password: "",
           idBusiness: "",
-          status: UserStatus.unknown,
-          role: UserRole.unknown,
+          status: "",
+          role: "",
         },
   });
 
@@ -120,13 +120,15 @@ export default function FormAdmin({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as User));
+        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as User), ["email", "password"]);
+
+        console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
 
           toast({
-            duration: 7000,
+            duration: 3000,
             variant: "info",
             title: "Sin cambios!",
             description: "No ha nuevos datos por actualizar",
@@ -173,7 +175,7 @@ export default function FormAdmin({
         }
 
         toast({
-          duration: 7000,
+          duration: 5000,
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Administrador no actualizado!" : "Administrador actualizado!",
           description: response.isError
@@ -202,7 +204,7 @@ export default function FormAdmin({
         }
 
         toast({
-          duration: 7000,
+          duration: 5000,
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Administrador no agregado!" : "Nuevo administrador agregado!",
           description: response.isError
@@ -227,17 +229,18 @@ export default function FormAdmin({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
         <FormField
-          control={form.control}
           name="image"
+          control={form.control}
           render={({ field: { onChange, value, ...rest } }) => (
             <>
               <FormItem className="flex flex-col items-center justify-center my-3">
                 <FormControl>
                   <FileInputPreview
-                    size={SIZES_UNIT.xl}
-                    onChange={onChange}
-                    src={form.getValues().image}
                     name={data?.name}
+                    disabled={loading}
+                    onChange={onChange}
+                    size={SIZES_UNIT.xl}
+                    src={form.getValues().image}
                   />
                 </FormControl>
                 <FormMessage />
@@ -268,7 +271,12 @@ export default function FormAdmin({
               <FormItem>
                 <FormLabel>Correo Eléctronico</FormLabel>
                 <FormControl>
-                  <Input disabled={loading} placeholder="Correo Eléctronico" {...field} autoComplete="new-email" />
+                  <Input
+                    disabled={loading || isEdition}
+                    placeholder="Correo Eléctronico"
+                    {...field}
+                    autoComplete="new-email"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -283,7 +291,7 @@ export default function FormAdmin({
                 <FormLabel>Rol</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Selecione un rol" />
                     </SelectTrigger>
                   </FormControl>
@@ -307,9 +315,11 @@ export default function FormAdmin({
               <FormItem>
                 <FormLabel className="inline-flex items-end w-min">
                   Contraseña
-                  <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
-                    {displayPassword ? <Eye size={16} /> : <EyeOff size={16} />}
-                  </div>
+                  {!isEdition && (
+                    <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
+                      {displayPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+                    </div>
+                  )}
                 </FormLabel>
 
                 <FormControl>
@@ -334,16 +344,18 @@ export default function FormAdmin({
                 <FormLabel>Estado</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={loading}>
                       <SelectValue placeholder="Selecione un estado" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {USER_STATUS.map(({ label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
+                    {Object.keys(USER_STATUS)
+                      .filter((status) => status !== UserStatus.unknown)
+                      .map((key) => (
+                        <SelectItem key={key} value={key}>
+                          {USER_STATUS[key as UserStatus] || "-"}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </FormItem>

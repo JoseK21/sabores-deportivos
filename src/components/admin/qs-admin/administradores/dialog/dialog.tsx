@@ -47,7 +47,7 @@ export const AdminsDialog = ({ open, setOpen, data, isEdition, isShowing = false
                 <strong>Email:</strong> {email}
               </span>
               <span>
-                <strong>Estado:</strong> {USER_STATUS.find(({ value }) => value === status)?.label}
+                <strong>Estado:</strong> {USER_STATUS[status] || '-'}
               </span>
             </div>
           </div>

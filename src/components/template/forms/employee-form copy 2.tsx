@@ -231,12 +231,12 @@ export const EmployeeForm: React.FC<ProductFormProps> = ({
                   <FormLabel>Category</FormLabel>
                   <Select
                     disabled={loading}
-                    onValueChange={field.onChange}
                     value={field.value}
                     defaultValue={field.value}
+                    onValueChange={field.onChange}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger disabled={loading}>
                         <SelectValue
                           defaultValue={field.value}
                           placeholder="Select a category"

@@ -331,7 +331,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger disabled={loading}>
                             <SelectValue
                               defaultValue={field.value}
                               placeholder="Select a country"
@@ -364,7 +364,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger disabled={loading}>
                             <SelectValue
                               defaultValue={field.value}
                               placeholder="Select a city"
@@ -505,7 +505,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                                   defaultValue={field.value}
                                 >
                                   <FormControl>
-                                    <SelectTrigger>
+                                    <SelectTrigger disabled={loading}>
                                       <SelectValue
                                         defaultValue={field.value}
                                         placeholder="Select your job country"
@@ -540,7 +540,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                                   defaultValue={field.value}
                                 >
                                   <FormControl>
-                                    <SelectTrigger>
+                                    <SelectTrigger disabled={loading}>
                                       <SelectValue
                                         defaultValue={field.value}
                                         placeholder="Select your job city"

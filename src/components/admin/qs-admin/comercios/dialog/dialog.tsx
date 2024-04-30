@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import FormAdmin from "../header/form";
-import { User } from "@/types/user";
-import { BUSINESS_TYPES, FULL_USER_ROLES, USER_STATUS } from "@/app/constants";
+import { BUSINESS_TYPES } from "@/app/constants";
 import { Business } from "@/types/business";
 import Form_ from "../header/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -63,7 +61,7 @@ export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: P
                 <strong>Nombre:</strong> {name}
               </span>
               <span>
-                <strong>Tipo:</strong> {BUSINESS_TYPES.find(({ value }) => value === (type || ""))?.label}
+                <strong>Tipo:</strong> {BUSINESS_TYPES[type] || ""}
               </span>
               <span>
                 <strong>Ubicación:</strong> {district}, {canton}, {province}, {country}

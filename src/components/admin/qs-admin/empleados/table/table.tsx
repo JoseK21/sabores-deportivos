@@ -4,16 +4,24 @@
 import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
-import useData from "../hooks/useData";
-import { useAdminsStore } from "@/store/adminsStore";
+import useEmployersData from "./useEmployersData";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { orderBy } from "lodash";
 
-export default function AdminsTable() {
-  const { admins } = useAdminsStore();
+export default function EmployerTable({ idBusiness }: { idBusiness: string | undefined }) {
+  const { employees } = useEmployeesStore();
 
-  const { isLoaded } = useData();
+  const { isLoaded } = useEmployersData(idBusiness);
 
   if (isLoaded) {
-    return <DataTable data={admins} searchKey="name" columns={columns} placeholder="Filtro por nombre.." />;
+    return (
+      <DataTable
+        searchKey="name"
+        columns={columns}
+        data={orderBy(employees, "name")}
+        placeholder="Filtro por nombre.."
+      />
+    );
   }
 
   return (

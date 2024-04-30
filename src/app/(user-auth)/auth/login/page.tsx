@@ -6,7 +6,7 @@ import UserAuthForm from "@/components/template/forms/user-auth-form";
 import Logo from "@/components/quinisports/general/Logo";
 
 export const metadata: Metadata = {
-  title: "QuiniSports | User Login",
+  title: "QuiniSports | Inicio de Sesión",
   description:
     "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
   authors: [{ name: "JDataByte" }],

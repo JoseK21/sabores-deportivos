@@ -2,7 +2,7 @@ export type Advertising = {
   id: string;
   idBusiness: string;
   title: string;
-  imageUrl: string;
+  image: string;
   href?: string;
   priority?: number;
   enabled: boolean;

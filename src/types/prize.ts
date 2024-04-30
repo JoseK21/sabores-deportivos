@@ -6,7 +6,7 @@ export type Prize = {
   idBusiness: string;
   points: number;
   description: string;
-  imageUrl: string;
+  image: string;
   enabled: boolean;
 //   products: Product[];
 };

@@ -1,21 +1,24 @@
-import { BusinessTypes, Countries, UserRole, UserStatus } from "./enum";
+import { BusinessTypes, Countries, UserRole, UserStaffBusinessRole, UserStatus } from "./enum";
 
 export const QUINISPORTS_URL = "https://wwww.quinisports.com";
 
-export const FULL_USER_ROLES = [
-  { value: UserRole.cashier_rest, label: "Cajero" },
-  { value: UserRole.waiter_rest, label: "Mesero" },
-  { value: UserRole.bartender_rest, label: "Bartender" },
-  { value: UserRole.admin_rest, label: "Administrador" },
-];
+export const FULL_USER_ROLES = {
+  [UserRole.unknown]: "Desconocido",
+  [UserRole.client]: "Cliente",
+  [UserRole.master]: "Master",
+  [UserRole.admin_rest]: "Administrador",
+  [UserRole.cashier_rest]: "Cajero",
+  [UserRole.waiter_rest]: "Mesero",
+  [UserRole.bartender_rest]: "Bartender",
+};
 
 export const ADMIN_ROLES = [{ value: UserRole.admin_rest, label: "Administrador" }];
 
-export const STAFF_REST_ROLES = [
-  { value: UserRole.cashier_rest, label: "Cajero" },
-  { value: UserRole.waiter_rest, label: "Mesero" },
-  { value: UserRole.bartender_rest, label: "Bartender" },
-];
+export const STAFF_REST_ROLES: { [key in UserStaffBusinessRole]: string } = {
+  [UserRole.cashier_rest]: "Cajero",
+  [UserRole.waiter_rest]: "Mesero",
+  [UserRole.bartender_rest]: "Bartender",
+};
 
 export const ALLOWER_ROLES_TO_BUSINESS_LOGIC: UserRole[] = [
   UserRole.master,
@@ -25,28 +28,27 @@ export const ALLOWER_ROLES_TO_BUSINESS_LOGIC: UserRole[] = [
   UserRole.bartender_rest,
 ];
 
-export const USER_STATUS = [
-  { value: UserStatus.actived, label: "Activo" },
-  { value: UserStatus.suspented, label: "Suspendido" },
-  { value: UserStatus.deactivated, label: "Desactivo" },
-];
+export const USER_STATUS: { [key in UserStatus]: string } = {
+  [UserStatus.actived]: "Activo",
+  [UserStatus.unknown]: "Desconocido",
+  [UserStatus.suspented]: "Suspendido",
+  [UserStatus.deactivated]: "Desactivo",
+};
 
-//
-
-export const BUSINESS_TYPES = [
-  { value: BusinessTypes.bar, label: "Bar" },
-  { value: BusinessTypes.cafe, label: "Caferia" },
-  { value: BusinessTypes.hotel, label: "Hotel" },
-  { value: BusinessTypes.sportbar, label: "SportBar" },
-  { value: BusinessTypes.restaurant, label: "Restaurante" },
-  { value: BusinessTypes.sports_club, label: "Club Deportivo" },
-  { value: BusinessTypes.bar_restaurant, label: "Bar & Restaurante" },
-  { value: BusinessTypes.shopping_center, label: "Centro Comercial" },
-  { value: BusinessTypes.recreation_center, label: "Centro Recreativo" },
-];
+export const BUSINESS_TYPES: { [key in BusinessTypes]: string } = {
+  [BusinessTypes.bar]: "Bar",
+  [BusinessTypes.cafe]: "Caferia",
+  [BusinessTypes.hotel]: "Hotel",
+  [BusinessTypes.sportbar]: "SportBar",
+  [BusinessTypes.restaurant]: "Restaurante",
+  [BusinessTypes.sports_club]: "Club Deportivo",
+  [BusinessTypes.bar_restaurant]: "Bar & Restaurante",
+  [BusinessTypes.shopping_center]: "Centro Comercial",
+  [BusinessTypes.recreation_center]: "Centro Recreativo",
+};
 
 export const COUNTRIES = [
-  { value: Countries.cr, label: "Costa Rica", enabled: true},
-  { value: Countries.mx, label: "Mexico", enabled: false},
-  { value: Countries.es, label: "España", enabled: false},
+  { value: Countries.cr, label: "Costa Rica", enabled: true },
+  { value: Countries.mx, label: "Mexico", enabled: false },
+  { value: Countries.es, label: "España", enabled: false },
 ];

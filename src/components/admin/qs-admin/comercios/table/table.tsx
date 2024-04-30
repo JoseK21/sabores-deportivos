@@ -5,6 +5,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import useBusinessData from "./useBusinessData";
 import { useBusinessStore } from "@/store/businessStore";
+import { orderBy } from "lodash";
 
 export default function BusinessTable() {
   const { businesses } = useBusinessStore();
@@ -12,7 +13,14 @@ export default function BusinessTable() {
   const { isLoaded } = useBusinessData();
 
   if (isLoaded) {
-    return <DataTable data={businesses} searchKey="name" columns={columns} placeholder="Filtro por nombre.." />;
+    return (
+      <DataTable
+        searchKey="name"
+        columns={columns}
+        placeholder="Filtro por nombre.."
+        data={orderBy(businesses, "name")}
+      />
+    );
   }
 
   return (

@@ -8,6 +8,7 @@ import Providers from "@/components/template/layout/providers";
 import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/options";
+import { ErrorHandler } from "@/components/quinisports/_error-handlers";
 
 export default async function RootLayout({
   children,
@@ -18,8 +19,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* className="overflow-hidden" */}
       <body className={`${fontSystem.className} antialiased`}>
+        <ErrorHandler />
         <Providers session={session}>
           <Toaster />
           {children}

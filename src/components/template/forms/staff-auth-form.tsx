@@ -22,8 +22,8 @@ export default function StaffAuthForm() {
   const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
-  const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [displayPassword, setDisplayPassword] = useState(false);
 

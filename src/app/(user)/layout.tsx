@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { ALLOWER_ROLES_TO_BUSINESS_LOGIC } from "../constants";
 
 export const metadata: Metadata = {
-  title: "QuiniSports | Clientes",
+  title: "QuiniSports",
   description:
     "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
   authors: [{ name: "JDataByte" }],
@@ -36,6 +36,8 @@ export const metadata: Metadata = {
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
+  
+  console.log("🚀 >>  DashboardLayout >>  session:", session)
 
   if (session?.user.role && ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(session?.user.role)) {
     redirect("/qs-admin");

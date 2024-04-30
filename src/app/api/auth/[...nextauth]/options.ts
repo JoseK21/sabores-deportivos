@@ -8,6 +8,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import { NextAuthOptions } from "next-auth";
 import { UserRole, UserStatus } from "@/app/enum";
+import { USER_STATUS } from "@/app/constants";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -23,8 +24,8 @@ export const authOptions: NextAuthOptions = {
           name: `${profile.given_name} ${profile.family_name}`,
           email: profile.email,
           image: profile.picture,
-          role: profile.role ? profile.role : UserRole.client,
-          status: profile.status ? profile.status : UserStatus.deactivated,
+          role: profile.role ? profile.role : UserRole.unknown,
+          status: profile.status ? profile.status : UserStatus.unknown,
         };
       },
     }),
@@ -36,14 +37,12 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", placeholder: "*****" },
       },
       async authorize(credentials, req) {
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials?.email,
-          },
-        });
+        const user = await prisma.user.findUnique({ where: { email: credentials?.email } });
 
         // validar contrasena
         if (!user) throw new Error("Usuario no encontrado");
+
+        if (user && user.status !== UserStatus.actived) throw new Error(`Usuario ${USER_STATUS[user.status]}`);
 
         if (user && user.password === credentials?.password) {
           return {
@@ -53,6 +52,7 @@ export const authOptions: NextAuthOptions = {
             image: user.image,
             role: user.role as UserRole,
             status: user.status as UserStatus,
+            idBusiness: user.idBusiness ?? "N/A",
           };
         } else {
           throw new Error("Credenciales invalidas");
@@ -63,10 +63,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt({ token, user }) {
       if (user) token.role = user.role;
+      if (user) token.idBusiness = user.idBusiness;
+      if (user) token.status = user.status;
+
       return token;
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       session.user.role = token.role;
+      session.user.status = token.status;
+      session.user.idBusiness = token.idBusiness;
+
       return session;
     },
   },

@@ -36,9 +36,9 @@ function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const defaultValues = {
-    email: "jcnv21@gmail.com",
-    password: "",
     name: "",
+    email: "",
+    password: "",
     role: UserRole.unknown,
   };
 

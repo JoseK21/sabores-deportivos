@@ -1,18 +1,18 @@
 "use client";
+
+import { useState } from "react";
+import { Session } from "next-auth";
+import { MenuIcon } from "lucide-react";
+
+import { MENU_BY_ROLE } from "@/app/(admin)/qs-admin/constants";
 import { DashboardNav } from "@/components//template/dashboard-nav";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { navItems } from "@/constants/data";
-import { MenuIcon } from "lucide-react";
-import { useState } from "react";
 
-// import { Playlist } from "../data/playlists";
-
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  // playlists: Playlist[];
-}
-
-export function MobileSidebar({ className }: SidebarProps) {
+export function MobileSidebar({ session }: { session: Session }) {
   const [open, setOpen] = useState(false);
+
+  const { title, items } = { ...(MENU_BY_ROLE[session?.user?.role] || { title: "", items: [] }) };
+
   return (
     <>
       <Sheet open={open} onOpenChange={setOpen}>
@@ -22,9 +22,9 @@ export function MobileSidebar({ className }: SidebarProps) {
         <SheetContent side="left" className="!px-0">
           <div className="space-y-4 py-4">
             <div className="px-3 py-2">
-              <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Descripción general</h2>
+              <h2 className="mb-2 px-3 text-lg font-semibold tracking-tight">{title}</h2>
               <div className="space-y-1">
-                <DashboardNav items={navItems} setOpen={setOpen} />
+                <DashboardNav items={items} setOpen={setOpen} />
               </div>
             </div>
           </div>

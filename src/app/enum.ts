@@ -1,3 +1,9 @@
+export enum UserStaffBusinessRole {
+  cashier_rest = "cashier_rest",
+  waiter_rest = "waiter_rest",
+  bartender_rest = "bartender_rest",
+}
+
 export enum UserRole {
   unknown = "unknown",
   client = "client",

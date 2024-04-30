@@ -236,7 +236,7 @@ export const EmployeeForm: React.FC<ProductFormProps> = ({
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger disabled={loading}>
                         <SelectValue
                           defaultValue={field.value}
                           placeholder="Select a category"

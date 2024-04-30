@@ -24,12 +24,14 @@ const SIZES: SizesType = {
 
 const FileInputPreview = ({
   src,
-  size = SIZES_UNIT.md,
+  disabled,
   onChange,
   name = "",
+  size = SIZES_UNIT.md,
 }: {
   size: SIZES_UNIT;
   onChange: Function;
+  disabled: boolean;
   src: string | undefined;
   name: string | undefined;
 }) => {
@@ -62,30 +64,26 @@ const FileInputPreview = ({
           SIZES[size]
         }`}
       >
-        <AvatarImage
-          // width={240}
-          // height={240}
-          alt={name || ""}
-          src={imagePreview ?? ""}
-          className="h-full object-cover"
-        />
-        <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+        <AvatarImage alt={name || ""} src={imagePreview ?? ""} className="h-full object-cover" />
+        <AvatarFallback className=" bg-slate-200 w-full h-full flex items-center justify-center">
           {(name || "").charAt(0).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
       <div className="btn-container mt-2">
         <Input
-          ref={filePicekerRef}
-          accept=".jpg, .jpeg, .png, .webp"
-          onChange={previewFile}
-          type="file"
           hidden
+          type="file"
+          disabled={disabled}
           className=" hidden"
+          ref={filePicekerRef}
+          onChange={previewFile}
+          accept=".jpg, .jpeg, .png, .webp"
         />
         <Button
           type="button"
           variant="outline"
+          disabled={disabled}
           onClick={() => {
             if (filePicekerRef.current) {
               filePicekerRef.current.click();
@@ -97,6 +95,7 @@ const FileInputPreview = ({
         {imagePreview && (
           <Button
             variant="outline"
+            disabled={disabled}
             className=" text-destructive ml-1"
             onClick={() => {
               setImagePreview(null);

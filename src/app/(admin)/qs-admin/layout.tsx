@@ -33,14 +33,12 @@ export const metadata: Metadata = {
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions);
   
-  console.log("🚀 >>  Layout >>  session:", session)
-
   if (!session?.user?.email) {
     redirect("/qs-admin/auth/login");
   } else if (session?.user.role == UserRole.client) {
     redirect("/");
   }
-
+  
   return (
     <>
       <Header session={session} />
