@@ -4,7 +4,7 @@ import SingleTestimonial from "./SingleTestimonial";
 
 const testimonialData: Testimonial[] = [
   {
-    id: 1,
+    id: "1",
     name: "Musharof Chy",
     designation: "Founder @TailGrids",
     content:
@@ -13,7 +13,7 @@ const testimonialData: Testimonial[] = [
     star: 5,
   },
   {
-    id: 2,
+    id: "2",
     name: "Devid Weilium",
     designation: "Founder @UIdeck",
     content:
@@ -22,7 +22,7 @@ const testimonialData: Testimonial[] = [
     star: 5,
   },
   {
-    id: 3,
+    id: "3",
     name: "Lethium Frenci",
     designation: "Founder @Lineicons",
     content:

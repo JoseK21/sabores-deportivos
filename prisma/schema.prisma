@@ -88,7 +88,7 @@ model Prize {
   name         String
   idBusiness   String
   description  String
-  image        String
+  image        String?
   points       Int
   enabled      Boolean        @default(true)
   startDate    DateTime

@@ -1,33 +1,28 @@
-import { Plus } from "lucide-react";
-import { Product } from "@/types/product";
-import { Button } from "@/components/ui/button";
-import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import FormData from "./form";
-import { ProductType } from "@/types/product-type";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Prize } from "@/types/prize";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface Props {
-  data?: Product;
+  data?: Prize;
   open: boolean;
   isEdition: boolean;
-  idBusiness: string | undefined;
   isShowing: boolean;
-  productTypes: ProductType[];
+  idBusiness: string | undefined;
   setOpen: (open: boolean) => void;
 }
 
-export const FormDialog = ({ open, setOpen, data, isEdition, productTypes, idBusiness, isShowing = false }: Props) => {
-  if (!idBusiness) return null;
-
+export const FormDialog = ({ open, setOpen, data, isEdition, idBusiness, isShowing = false }: Props) => {
   if (isShowing) {
-    const { name, image, description, productType } = data || ({} as Product);
+    const { name, image } = data || ({} as Prize);
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
-            <DialogTitle>Producto</DialogTitle>
+            <DialogTitle>Premio</DialogTitle>
           </DialogHeader>
 
           <div className="flex flex-row gap-4">
@@ -41,16 +36,9 @@ export const FormDialog = ({ open, setOpen, data, isEdition, productTypes, idBus
                 {(name || "").charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-
             <div className=" rounded-sm bg-slate-100 p-2 flex flex-col flex-1">
               <span>
                 <strong>Nombre:</strong> {name}
-              </span>
-              <span>
-                <strong>Tipo:</strong> {productType?.name}
-              </span>
-              <span>
-                <strong>Descripción:</strong> {description}
               </span>
             </div>
           </div>
@@ -70,15 +58,9 @@ export const FormDialog = ({ open, setOpen, data, isEdition, productTypes, idBus
       )}
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
-          <DialogTitle>{isEdition ? "Edición de Producto" : "Nuevo Producto"}</DialogTitle>
+          <DialogTitle>{isEdition ? "Edición de Premio" : "Nuevo Premio"}</DialogTitle>
         </DialogHeader>
-        <FormData
-          data={data}
-          setOpen={setOpen}
-          isEdition={isEdition}
-          idBusiness={idBusiness}
-          productTypes={productTypes}
-        />
+        <FormData setOpen={setOpen} isEdition={isEdition} data={data} />
       </DialogContent>
     </Dialog>
   );

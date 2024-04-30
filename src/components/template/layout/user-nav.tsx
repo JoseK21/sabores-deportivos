@@ -27,9 +27,9 @@ export function UserNav({ session }: { session: Session }) {
   
   const { isLoaded } = useDataUserNav(session?.user?.idBusiness || "");
 
-  const { user } = session;
+  const { user } = session || {} as Session;
 
-  return user.email ? (
+  return user?.email ? (
     <>
       {isLoaded ? (
         !isEmpty(business) && (
@@ -53,7 +53,7 @@ export function UserNav({ session }: { session: Session }) {
                 className="object-cover"
                 referrerPolicy="no-referrer"
               />
-              <AvatarFallback>{getFirstChars(user.name)}</AvatarFallback>
+              <AvatarFallback>{getFirstChars(user?.name)}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -61,9 +61,9 @@ export function UserNav({ session }: { session: Session }) {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
-                {user.name}{" "}
-                {user.role !== UserRole.client && (
-                  <>| {FULL_USER_ROLES[user.role as UserRole] || FULL_USER_ROLES[UserRole.unknown]}</>
+                {user?.name}{" "}
+                {user?.role !== UserRole.client && (
+                  <>| {FULL_USER_ROLES[user?.role as UserRole] || FULL_USER_ROLES[UserRole.unknown]}</>
                 )}
               </p>
               <p className="text-xs leading-none text-muted-foreground">{user?.email || "-"}</p>
@@ -73,7 +73,7 @@ export function UserNav({ session }: { session: Session }) {
           <DropdownMenuItem
             onClick={() =>
               signOut({
-                callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user.role) ? "/qs-admin" : "/eventos",
+                callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role) ? "/qs-admin" : "/eventos",
               })
             }
           >
