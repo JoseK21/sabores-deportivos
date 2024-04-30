@@ -134,7 +134,6 @@ export default function FormEmployee({
         if (dataToEdit?.image) {
           const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.image as string}`);
 
-          console.log("🚀 >>  onSubmit >>  deletedPhoto:", deletedPhoto);
           if (deletedPhoto?.isError) {
             toast({
               duration: 7000,
@@ -209,7 +208,7 @@ export default function FormEmployee({
         setLoading(false);
       }
     } catch (error: any) {
-      console.log("🚀 >>  onSubmit >>  error:", error);
+      console.error("🚀 >>  onSubmit >>  error:", error);
       setLoading(false);
       toast({
         duration: 7000,

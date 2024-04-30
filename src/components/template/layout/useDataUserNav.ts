@@ -20,7 +20,7 @@ const useDataUserNav = (isBusiness: string) => {
 
       setData(userBusiness);
     } catch (error: any) {
-      console.log("🚀 >>  useFetchData >>  error:", error);
+      console.error("🚀 >>  useFetchData >>  error:", error);
       setError(error);
     }
 

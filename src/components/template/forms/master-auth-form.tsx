@@ -35,16 +35,14 @@ export default function MasterAuthForm() {
   });
 
   const onSubmit = async (data: MasterFormValue) => {
-    console.log("🚀 >>  onSubmit >>  data:", data);
-    console.log("🚀 >>  onSubmit >>  callbackUrl:", callbackUrl);
-
+    setLoading(true);
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
       callbackUrl: callbackUrl ?? "/qs-admin/auth/login",
     });
 
-    console.log("Res: ", res);
+    setLoading(false);
 
     if (res?.error) {
       alert(res.error);

@@ -7,16 +7,18 @@ import { useAdminsStore, useProductsStore } from "@/store/qs-admin";
 import { useToast } from "@/components/ui/use-toast";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
 import { ActionDropdown } from "@/components/quinisports/general/ActionDropdown";
-import { ProductType } from "@/types/product-type";
+import { Product } from "@/types/product";
+import useData from "../tipos-de-productos/useData";
 
 interface Props {
-  data: ProductType;
+  data: Product;
 }
-
 export const CellAction: React.FC<Props> = ({ data }) => {
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
+
+  const { productTypes } = useData();
 
   const { toast } = useToast();
   const { products, setData } = useProductsStore();
@@ -25,7 +27,7 @@ export const CellAction: React.FC<Props> = ({ data }) => {
   const onConfirmRemove = async (id: string) => {
     setLoading(true);
 
-    const response = await deleteApi(`/api/product-type/${id}`);
+    const response = await deleteApi(`/api/product/${id}`);
 
     setOpenRemove(response.isError);
 
@@ -47,9 +49,9 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <FormDialog open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
+      <FormDialog idBusiness={data.idBusiness} open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} productTypes={productTypes} />
 
-      <FormDialog open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
+      <FormDialog idBusiness={data.idBusiness} open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} productTypes={productTypes} />
 
       <AlertModal
         text="Eliminar"

@@ -5,7 +5,7 @@ import { Business } from "@/types/business";
 import { useState } from "react";
 
 const useBusinessData = () => {
-  const { setData, setError } = useBusinessStore();
+  const { businesses, setData, setError } = useBusinessStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useFetchData(async () => {
@@ -23,7 +23,7 @@ const useBusinessData = () => {
     setIsLoaded(true);
   });
 
-  return { isLoaded };
+  return { isLoaded, businesses };
 };
 
 export default useBusinessData;

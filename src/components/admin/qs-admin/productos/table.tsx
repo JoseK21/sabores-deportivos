@@ -7,7 +7,7 @@ import { columns } from "./columns";
 import useData from "./useData";
 import { orderBy } from "lodash";
 
-export default function PoductTypesTable() {
+export default function ProductsTable({ idBusiness }: { idBusiness: string | undefined }) {
   const { products } = useProductsStore();
 
   const { isLoaded } = useData();

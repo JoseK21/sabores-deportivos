@@ -122,8 +122,6 @@ export default function FormAdmin({
       if (isEdition) {
         let dataToEdit = getObjectDiff(dataForm, data ?? ({} as User), ["email", "password"]);
 
-        console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
-
         if (isEmpty(dataToEdit)) {
           setLoading(false);
 
@@ -214,7 +212,7 @@ export default function FormAdmin({
         setLoading(false);
       }
     } catch (error: any) {
-      console.log("🚀 >>  onSubmit >>  error:", error);
+      console.error("🚀 >>  onSubmit >>  error:", error);
       setLoading(false);
       toast({
         duration: 7000,

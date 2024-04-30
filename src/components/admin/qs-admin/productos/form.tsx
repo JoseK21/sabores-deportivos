@@ -77,7 +77,9 @@ export default function FormData({
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: isEdition ? data || ({} as Product) : { name: "", idBusiness },
+    defaultValues: isEdition
+      ? data || ({} as Product)
+      : { name: "", description: "", productTypeId: "", image: "", idBusiness },
   });
 
   useFetchData(async () => {
@@ -94,84 +96,6 @@ export default function FormData({
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-
-  // add image logic
-  // async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
-  //   try {
-  //     setLoading(true);
-
-  //     if (isEdition) {
-  //       let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Product), ["id"]);
-
-  //       if (isEmpty(dataToEdit)) {
-  //         setLoading(false);
-
-  //         toast({
-  //           duration: 3000,
-  //           variant: "info",
-  //           title: "Sin cambios!",
-  //           description: "No ha nuevos datos por actualizar",
-  //         });
-
-  //         return 0;
-  //       }
-
-  //       const response = await putApi(`/api/product/${dataForm.id}`, dataToEdit);
-
-  //       setOpen(response.isError);
-
-  //       if (response.data) {
-  //         const updateData = products.map((employee) => {
-  //           if (employee.id === response.data.id) {
-  //             return response.data;
-  //           }
-
-  //           return employee;
-  //         });
-  //         setData(updateData);
-  //       }
-
-  //       toast({
-  //         duration: 5000,
-  //         variant: response.isError ? "destructive" : "success",
-  //         title: response.isError ? "Producto no actualizado!" : "Producto actualizado!",
-  //         description: response.isError
-  //           ? `${mapErrorCode(response?.error?.code)}`
-  //           : `Se actualizó el producto ${dataForm.name}`,
-  //       });
-  //       setLoading(false);
-  //     } else {
-  //       const updateDataForm = dataForm;
-
-  //       const response = await postApi("/api/product", updateDataForm);
-
-  //       setOpen(response.isError);
-
-  //       if (response.data) {
-  //         setData([...products, response.data]);
-  //       }
-
-  //       toast({
-  //         duration: 5000,
-  //         variant: response.isError ? "destructive" : "success",
-  //         title: response.isError ? "Producto no agregado!" : "Nuevo Producto agregado!",
-  //         description: response.isError
-  //           ? `${mapErrorCode(response?.error?.code)}`
-  //           : `Se agregó el producto ${dataForm.name}`,
-  //       });
-  //       setLoading(false);
-  //     }
-  //   } catch (error: any) {
-  //     console.log("🚀 >>  onSubmit >>  error:", error);
-  //     setLoading(false);
-  //     toast({
-  //       duration: 7000,
-  //       variant: "destructive",
-  //       title: "Hubo un error! por favor contactar con soporte",
-  //       description: "Error desconocido",
-  //     });
-  //   }
-  // }
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
     try {
@@ -270,7 +194,7 @@ export default function FormData({
         setLoading(false);
       }
     } catch (error: any) {
-      console.log("🚀 >>  onSubmit >>  error:", error);
+      console.error("🚀 >>  onSubmit >>  error:", error);
       setLoading(false);
       toast({
         duration: 7000,
@@ -284,28 +208,27 @@ export default function FormData({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
+        <FormField
+          name="image"
+          control={form.control}
+          render={({ field: { onChange, value, ...rest } }) => (
+            <>
+              <FormItem className="flex flex-col items-center justify-center my-3">
+                <FormControl>
+                  <FileInputPreview
+                    name={data?.name}
+                    disabled={loading}
+                    onChange={onChange}
+                    size={SIZES_UNIT.xl}
+                    src={form.getValues().image}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <FormField
-            name="image"
-            control={form.control}
-            render={({ field: { onChange, value, ...rest } }) => (
-              <>
-                <FormItem className="flex flex-col items-center justify-center my-3">
-                  <FormControl>
-                    <FileInputPreview
-                      name={data?.name}
-                      disabled={loading}
-                      onChange={onChange}
-                      size={SIZES_UNIT.xl}
-                      src={form.getValues().image}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </>
-            )}
-          />
-
           <FormField
             name="name"
             control={form.control}
@@ -314,20 +237,6 @@ export default function FormData({
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
                   <Input disabled={loading} placeholder="Nombre" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            name="description"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Descripción</FormLabel>
-                <FormControl>
-                  <Input disabled={loading} placeholder="Descripción" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -354,6 +263,20 @@ export default function FormData({
                     ))}
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="description"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descripción</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} placeholder="Descripción" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

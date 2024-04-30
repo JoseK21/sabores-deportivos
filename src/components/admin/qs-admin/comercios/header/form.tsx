@@ -124,8 +124,6 @@ export default function Form_({
   });
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
-    console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
-
     try {
       setLoading(true);
 
@@ -261,7 +259,7 @@ export default function Form_({
         setLoading(false);
       }
     } catch (error: any) {
-      console.log("🚀 >>  onSubmit >>  error:", error);
+      console.error("🚀 >>  onSubmit >>  error:", error);
       setLoading(false);
       toast({
         duration: 7000,

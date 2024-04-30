@@ -3,7 +3,7 @@ import { ProductType } from "@/types/product-type";
 import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const GET = requestMiddleware(async () => {
-  return await prisma.productType.findMany();
+  return await prisma.productType.findMany({ orderBy: { name: "asc" } });
 });
 
 export const POST = requestMiddleware(async ({ data }: { data: ProductType }) => {

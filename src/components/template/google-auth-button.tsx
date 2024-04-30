@@ -1,15 +1,9 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
 
 export default function GoogleSignInButton() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams ? searchParams.get("callbackUrl") : null;
-
-  console.log("🚀 >>  GoogleSignInButton >>  callbackUrl:", callbackUrl);
-
   return (
     <Button
       className="w-full"

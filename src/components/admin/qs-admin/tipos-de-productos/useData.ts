@@ -6,7 +6,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { useProductTypesStore } from "@/store/qs-admin";
 
 const useData = () => {
-  const { setData, setError } = useProductTypesStore();
+  const { productTypes, setData, setError } = useProductTypesStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useFetchData(async () => {
@@ -23,7 +23,7 @@ const useData = () => {
     setIsLoaded(true);
   });
 
-  return { isLoaded };
+  return { isLoaded, productTypes };
 };
 
 export default useData;

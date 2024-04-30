@@ -15,8 +15,6 @@ const useAdminUsersData = () => {
       const newData = await getApi("api/admin");
       const adminsData: User[] = newData?.data || [];
 
-      console.log("🚀 >>  useFetchData >>  adminsData:", adminsData.length)
-
       setData(adminsData);
     } catch (error: any) {
       setError(error);

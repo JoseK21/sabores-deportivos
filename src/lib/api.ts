@@ -16,7 +16,7 @@ export const getApi = async (url: string, cancelToken?: CancelToken): Promise<an
 
     return response.data;
   } catch (error: any) {
-    console.log("🚀 >>  getApi >>  error:", error);
+    console.error("🚀 >>  getApi >>  error:", error);
     return { isError: true, error: error?.response?.data || error };
   }
 };
@@ -27,7 +27,7 @@ export const postApi = async (url: string, data: any, cancelToken?: CancelToken)
 
     return response.data;
   } catch (error: any) {
-    console.log("🚀 >>  getApi >>  error:", error);
+    console.error("🚀 >>  getApi >>  error:", error);
 
     return { isError: true, error: error?.response?.data || error };
   }
@@ -39,7 +39,7 @@ export const putApi = async (url: string, data: any, cancelToken?: CancelToken):
 
     return response.data;
   } catch (error: any) {
-    console.log("🚀 >>  getApi >>  error:", error);
+    console.error("🚀 >>  getApi >>  error:", error);
 
     return { isError: true, error: error?.response?.data || error };
   }
@@ -51,7 +51,7 @@ export const deleteApi = async (url: string, cancelToken?: CancelToken): Promise
 
     return response.data;
   } catch (error: any) {
-    console.log("🚀 >>  deleteApi >>  error:", error);
+    console.error("🚀 >>  deleteApi >>  error:", error);
 
     return { isError: true, error: error?.response?.data || error };
   }

@@ -16,8 +16,6 @@ const useEmployersData = (idBusiness: string | undefined) => {
         const newData = await getApi(`api/employee/byBusiness/${idBusiness}`);
         const employeesData: User[] = newData?.data || [];
 
-        console.log("🚀 >>  useFetchData >>  employeesData:", employeesData.length);
-
         setData(employeesData);
       }else{
         throw new Error("Sin Comercio asociado (id)");

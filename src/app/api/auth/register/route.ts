@@ -7,20 +7,11 @@ export async function POST(request: Request) {
     const data = await request.json();
 
     const userFound = await prisma.user.findUnique({
-      where: {
-        email: data.email,
-      },
+      where: { email: data.email },
     });
 
     if (userFound) {
-      return NextResponse.json(
-        {
-          message: "Email already exists",
-        },
-        {
-          status: 400,
-        }
-      );
+      return NextResponse.json({ message: "Email already exists" }, { status: 400 });
     }
 
     // const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -39,14 +30,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(user);
   } catch (error) {
-    console.log("🚀 >>  POST >>  error:", error);
-    return NextResponse.json(
-      {
-        message: "error.message",
-      },
-      {
-        status: 500,
-      }
-    );
+    console.error("🚀 >>  POST >>  error:", error);
+    return NextResponse.json({ message: "error.message" }, { status: 500 });
   }
 }

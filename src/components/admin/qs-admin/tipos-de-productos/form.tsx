@@ -126,7 +126,7 @@ export default function FormData({
         setLoading(false);
       }
     } catch (error: any) {
-      console.log("🚀 >>  onSubmit >>  error:", error);
+      console.error("🚀 >>  onSubmit >>  error:", error);
       setLoading(false);
       toast({
         duration: 7000,

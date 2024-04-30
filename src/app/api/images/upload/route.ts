@@ -16,14 +16,10 @@ export async function POST(request: Request): Promise<NextResponse> {
   return NextResponse.json({ message: "Error: No filename detected" });
 }
 
-
 export async function DELETE(request: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
     const fileurl = searchParams.get("fileurl");
-    console.log("🚀 >>  DELETE >>  searchParams:", searchParams)
-
-    console.log("🚀 >>  DELETE >>  fileurl:", fileurl);
 
     if (fileurl) {
       await del(fileurl);
@@ -35,4 +31,4 @@ export async function DELETE(request: Request): Promise<NextResponse> {
   } catch (error) {
     return NextResponse.json({ isError: true, error });
   }
-};
+}

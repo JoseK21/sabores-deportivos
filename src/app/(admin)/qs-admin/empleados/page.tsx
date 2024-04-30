@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 export default async function Page() {
   const session = await getServerSession(authOptions);
 
-  const idBusiness = session?.user.idBusiness
+  const idBusiness = session?.user.idBusiness || "";
 
   return (
     <>

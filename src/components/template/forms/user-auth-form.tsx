@@ -39,25 +39,6 @@ export default function UserAuthForm() {
     defaultValues,
   });
 
-  // const onSubmit = async (data: UserFormValue) => {
-  //   console.log("🚀 >>  onSubmit >>  data:", data);
-  //   console.log("🚀 >>  onSubmit >>  callbackUrl:", callbackUrl);
-
-  //   const res = await signIn("credentials", {
-  //     email: data.email,
-  //     password: data.password,
-  //     callbackUrl: callbackUrl ?? "/auth/login",
-  //   });
-
-  //   console.log("Res: ", res);
-
-  //   if (res?.error) {
-  //     alert(res.error);
-  //   } else {
-  //     router.push("/master");
-  //   }
-  // };
-
   const onSubmit = async (form: UserFormValue) => {
     setErrorMessage(null);
     setLoading(true);

@@ -48,8 +48,6 @@ function RegisterPage() {
   });
 
   const onClick = async (data: UserFormValue) => {
-    console.log("🚀 >>  onClick >>  data:", data);
-
     try {
       setLoading(true);
       const res = await fetch("/api/auth/register", {
@@ -65,8 +63,6 @@ function RegisterPage() {
         },
       });
 
-      console.log("🚀 >>  onClick >>  res:", res);
-
       setLoading(false);
 
       if (res.ok) {
@@ -75,7 +71,7 @@ function RegisterPage() {
         alert("Error en el proceso de registro!");
       }
     } catch (error) {
-      console.log("🚀 >>  onClick >>  error:", error);
+      console.error("🚀 >>  onClick >>  error:", error);
       setLoading(false);
     }
   };
