@@ -17,7 +17,7 @@ const useEmployersData = (idBusiness: string | undefined) => {
         const employeesData: User[] = newData?.data || [];
 
         setData(employeesData);
-      }else{
+      } else {
         throw new Error("Sin Comercio asociado (id)");
       }
     } catch (error: any) {
