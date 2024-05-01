@@ -1,30 +1,28 @@
 "use client";
 
+import { z } from "zod";
+import { isEmpty } from "lodash";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { cleanText } from "@/utils/string";
+import { BusinessTypes } from "@/app/enum";
+import { Business } from "@/types/business";
+import { PutBlobResult } from "@vercel/blob";
+import { Input } from "@/components/ui/input";
+import { getObjectDiff } from "@/utils/object";
+import { useFetchData } from "@/hooks/useFetchData";
+import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DialogFooter } from "@/components/ui/dialog";
+import { deleteApi, postApi, putApi } from "@/lib/api";
+import { useBusinessStore } from "@/store/businessStore";
+import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
+import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-
-import { useToast } from "@/components/ui/use-toast";
-import { SetStateAction, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { deleteApi, postApi, putApi } from "@/lib/api";
-import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
-import { getObjectDiff } from "@/utils/object";
-import { Business } from "@/types/business";
-import { useBusinessStore } from "@/store/businessStore";
-import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
-import { useFetchData } from "@/hooks/useFetchData";
-import { isEmpty } from "lodash";
-import { PutBlobResult } from "@vercel/blob";
-import { cleanText } from "@/utils/string";
-import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
-import { BusinessTypes } from "@/app/enum";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -62,14 +60,6 @@ const FormSchema = z.object({
   type: z.string().min(1, { message: "Debe seleccionar un tipo de comercio" }),
   country: z.string().min(1, { message: "Por favor indique el pais" }),
 });
-
-const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
-  if (isEdition) {
-    return loading ? "Actualizando.." : "Actualizar";
-  } else {
-    return loading ? "Creando.." : "Guardar";
-  }
-};
 
 export default function Form_({
   data,
@@ -507,10 +497,7 @@ export default function Form_({
           />
         </div>
         <DialogFooter>
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {_getLabelBottom(loading, isEdition)}
-          </Button>
+          <ButtonLoadingSubmit loading={loading} isEdition={isEdition} />
         </DialogFooter>
       </form>
     </Form>

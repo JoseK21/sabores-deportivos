@@ -3,14 +3,12 @@
 import { z } from "zod";
 import { useState } from "react";
 import { isEmpty } from "lodash";
-import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { Product } from "@/types/product";
 import { deleteApi, postApi, putApi } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import { getObjectDiff } from "@/utils/object";
-import { Button } from "@/components/ui/button";
 import { useProductsStore } from "@/store/qs-admin";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +21,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { cleanText } from "@/utils/string";
 import { PutBlobResult } from "@vercel/blob";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -51,13 +50,6 @@ const FormSchema = z.object({
   description: z.string().min(10, { message: "La descripción debe ser de mas de 10 caracteres" }),
 });
 
-const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
-  if (isEdition) {
-    return loading ? "Actualizando.." : "Actualizar";
-  } else {
-    return loading ? "Creando.." : "Guardar";
-  }
-};
 
 export default function FormData({
   data,
@@ -283,10 +275,7 @@ export default function FormData({
           />
         </div>
         <DialogFooter>
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {_getLabelBottom(loading, isEdition)}
-          </Button>
+          <ButtonLoadingSubmit loading={loading} isEdition={isEdition} />
         </DialogFooter>
       </form>
     </Form>

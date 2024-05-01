@@ -34,23 +34,24 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?
-  image         String?
-  totalPoints   Int?           @default(0)
-  claimedPoints Int?           @default(0)
-  password      String?
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-  status        UserStatus     @default(deactivated)
-  role          UserRole       @default(client)
-  idBusiness    String?
-  accounts      Account[]
-  claimedPrize  ClaimedPrize[]
-  sessions      Session[]
-  business      Business?      @relation(fields: [idBusiness], references: [id])
+  id                 String         @id @default(cuid())
+  name               String?
+  email              String?        @unique
+  emailVerified      DateTime?
+  image              String?
+  totalPoints        Int?           @default(0)
+  claimedPoints      Int?           @default(0)
+  password           String?
+  createdAt          DateTime       @default(now()) @map("created_at")
+  updatedAt          DateTime       @updatedAt @map("updated_at")
+  status             UserStatus     @default(deactivated)
+  role               UserRole       @default(client)
+  idBusiness         String?
+  accounts           Account[]
+  sessions           Session[]
+  business           Business?      @relation(fields: [idBusiness], references: [id])
+  claimedPrizes      ClaimedPrize[] @relation("ClaimedPrizesByUser")
+  claimedPrizesStaff ClaimedPrize[] @relation("ClaimedPrizesByStaff")
 }
 
 model VerificationToken {
@@ -73,9 +74,9 @@ model Product {
   id            String         @id @default(cuid())
   name          String
   idBusiness    String
-  description   String
   image         String
   productTypeId String
+  description   String?
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
   productType   ProductType    @relation(fields: [productTypeId], references: [id])
@@ -87,12 +88,9 @@ model Prize {
   id           String         @id @default(cuid())
   name         String
   idBusiness   String
-  description  String
-  image        String?
   points       Int
+  description  String?
   enabled      Boolean        @default(true)
-  startDate    DateTime
-  endDate      DateTime
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
   business     Business       @relation(fields: [idBusiness], references: [id])
@@ -104,6 +102,7 @@ model ProductPrize {
   id        String   @id @default(cuid())
   idPrize   String
   idProduct String
+  amount    Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   prize     Prize    @relation(fields: [idPrize], references: [id])
@@ -111,14 +110,15 @@ model ProductPrize {
 }
 
 model ClaimedPrize {
-  id        String   @id @default(cuid())
-  idPrize   String
-  idUser    String
-  idUserS   String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  prize     Prize    @relation(fields: [idPrize], references: [id])
-  user      User     @relation(fields: [idUser], references: [id])
+  id          String   @id @default(cuid())
+  idPrize     String
+  idUser      String
+  idUserStaff String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  prize       Prize    @relation(fields: [idPrize], references: [id])
+  user        User     @relation("ClaimedPrizesByUser", fields: [idUser], references: [id])
+  userStaff   User     @relation("ClaimedPrizesByStaff", fields: [idUserStaff], references: [id])
 }
 
 model Sport {

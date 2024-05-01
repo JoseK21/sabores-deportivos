@@ -55,3 +55,8 @@ export enum Countries {
   mx = "mx",
   es = "es",
 }
+
+export enum BooleanOption {
+  false = "false",
+  true = "true",
+}

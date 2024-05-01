@@ -7,12 +7,11 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { UserRole, UserStaffBusinessRole, UserStatus } from "@/app/enum";
+import { UserStaffBusinessRole, UserStatus } from "@/app/enum";
 import { deleteApi, postApi, putApi } from "@/lib/api";
 import { STAFF_REST_ROLES, USER_STATUS } from "@/app/constants";
 import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
@@ -24,6 +23,7 @@ import { PutBlobResult } from "@vercel/blob";
 import { useFetchData } from "@/hooks/useFetchData";
 import { cleanText } from "@/utils/string";
 import { isEmpty } from "lodash";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 
 const PATH_API = "/api/employee/";
 
@@ -57,14 +57,6 @@ const FormSchema = z.object({
     })
     .email(),
 });
-
-const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
-  if (isEdition) {
-    return loading ? "Actualizando.." : "Actualizar";
-  } else {
-    return loading ? "Creando.." : "Guardar";
-  }
-};
 
 export default function FormEmployee({
   data,
@@ -357,10 +349,7 @@ export default function FormEmployee({
           />
         </div>
         <DialogFooter>
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {_getLabelBottom(loading, isEdition)}
-          </Button>
+          <ButtonLoadingSubmit loading={loading} isEdition={isEdition} />
         </DialogFooter>
       </form>
     </Form>

@@ -1,14 +1,13 @@
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
-import { useProductsStore } from "@/store/qs-admin";
 
 import { columns } from "./columns";
-import useData from "./useData";
+import useProductsData from "./useProductsData";
 import { orderBy } from "lodash";
 
 export default function ProductsTable({ idBusiness }: { idBusiness: string | undefined }) {
-  const { products, isLoaded } = useData(idBusiness);
+  const { products, isLoaded } = useProductsData(idBusiness);
 
   if (isLoaded) {
     return (

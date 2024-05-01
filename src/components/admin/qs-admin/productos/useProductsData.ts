@@ -5,7 +5,7 @@ import { Product } from "@/types/product";
 import { useFetchData } from "@/hooks/useFetchData";
 import { useProductsStore } from "@/store/qs-admin";
 
-const useData = (idBusiness: string | undefined) => {
+const useProductsData = (idBusiness: string | undefined) => {
   const { products, setData, setError } = useProductsStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -30,4 +30,4 @@ const useData = (idBusiness: string | undefined) => {
   return { isLoaded, products };
 };
 
-export default useData;
+export default useProductsData;
