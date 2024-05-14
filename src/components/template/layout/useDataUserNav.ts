@@ -13,7 +13,7 @@ const useDataUserNav = (isBusiness: string) => {
     setIsLoaded(false);
 
     try {
-      if (isEmpty(isBusiness) || isBusiness == 'N/A') throw new Error("No business");
+      if (isEmpty(isBusiness) || isBusiness == "N/A") return;
 
       const newData = await getApi(`api/business/${isBusiness}`);
       const userBusiness: Business = newData?.data || ({} as Business);

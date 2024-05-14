@@ -16,26 +16,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { UserRole } from "@/app/enum";
 import axios from "axios";
 
-// const ImgSchema = z.object({
-//   fileName: z.string(),
-//   name: z.string(),
-//   fileSize: z.number(),
-//   size: z.number(),
-//   fileKey: z.string(),
-//   key: z.string(),
-//   fileUrl: z.string(),
-//   url: z.string(),
-// });
-
-// export const IMG_MAX_LIMIT = 1;
-
 const formSchema = z.object({
   name: z.string().min(3, { message: "El nombre del administrador debe tener al menos 3 caracteres." }),
-  // image: z.string().min(1, { message: "Debe agregar una imagen" }),
-  // image: z
-  //   .array(ImgSchema)
-  //   .max(IMG_MAX_LIMIT, { message: "You can only add up to 3 images" })
-  //   .min(1, { message: "At least one image must be added." }),
   email: z.string().email({ message: "Introduzca una dirección de correo electrónico válida" }),
   role: z.string().min(1, { message: "Por favor seleccione un rol" }),
   businessId: z.string().min(1, { message: "Por favor seleccione un comercio" }),
@@ -55,7 +37,6 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const title = initialData ? "Editar administrador" : "Crear administrador";
   const description = initialData ? "Editar un administrador." : "Crear un nuevo administrador";
-  const toastMessage = initialData ? "Administrador actualizado." : "Administrador creado.";
   const action = initialData ? "Guardar Cambios" : "Crear";
 
   const defaultValues = initialData
@@ -133,29 +114,6 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-          {/* 
-          role
-          name
-          password
-          email
-          image
-          */}
-
-          {/* <div className="md:grid md:grid-cols-3 gap-8">
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image de Perfil</FormLabel>
-                  <FormControl>
-                    <FileUpload onChange={field.onChange} value={field.value} onRemove={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}

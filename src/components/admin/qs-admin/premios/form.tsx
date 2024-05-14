@@ -313,7 +313,7 @@ export default function FormData({
                     </PopoverContent>
                   </Popover>
                 </FormControl>
-                <div className=" flex gap-2">
+                <div className="flex flex-wrap gap-2 ">
                   {currentProducts.length === 0 && <span className=" text-sm text-gray-400 pl-3">Sin Productos</span>}
                   {currentProducts.map((product, index) => (
                     <Badge key={`${index}-${product.id}`} variant="outline" className=" bg-slate-100">

@@ -53,18 +53,18 @@ export const metadata: Metadata = {
 export default function AuthenticationPage() {
   return (
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="hidden h-full justify-between flex-col bg-muted p-10 text-white dark:border-r lg:flex bg-zinc-900 z-20">
-        <div className="flex items-center">
-          <Logo width={210} fillLabel="#FFF" fillLine="#FFF" />
+      <div className="hidden h-full justify-center flex-col bg-muted p-10 text-white dark:border-r lg:flex bg-zinc-900 z-20 gap-16">
+        <div className="flex items-center justify-center">
+          <Logo width={380} fillLabel="#FFF" fillLine="#FFF" />
         </div>
         <div>
           <blockquote className="space-y-2">
-            <p className="text-lg">
+            <p className="text-lg text-center">
               &ldquo;Quinisports es una plataforma destacada para participar en quinielas deportivas, donde la emoción
               del deporte se complementa con la colaboración de varios establecimientos comerciales para mejorar la
               experiencia de sus clientes.&rdquo;
             </p>
-            <footer className="text-sm">José Núñez. CTO</footer>
+            <footer className="text-sm text-center">José Núñez. CTO</footer>
           </blockquote>
         </div>
       </div>
