@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useProductTypesStore } from "@/store/qs-admin";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
 import { ActionDropdown } from "@/components/quinisports/general/ActionDropdown";
+import useProductsData from "../productos/useProductsData";
 
 interface Props {
   data: Prize;
@@ -20,6 +21,8 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
   const { toast } = useToast();
   const { productTypes, setData } = useProductTypesStore();
+  const { products, isLoaded } = useProductsData(data.idBusiness);
+
   const [loading, setLoading] = useState(false);
 
   const onConfirmRemove = async (id: string) => {
@@ -47,9 +50,9 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <FormDialog idBusiness={data.idBusiness} open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
+      <FormDialog idBusiness={data.idBusiness} open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} products={products} />
 
-      <FormDialog idBusiness={data.idBusiness} open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
+      <FormDialog idBusiness={data.idBusiness} open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} products={products} />
 
       <AlertModal
         text="Eliminar"
