@@ -102,7 +102,6 @@ model ProductPrize {
   id        String   @id @default(cuid())
   idPrize   String
   idProduct String
-  amount    Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   prize     Prize    @relation(fields: [idPrize], references: [id])

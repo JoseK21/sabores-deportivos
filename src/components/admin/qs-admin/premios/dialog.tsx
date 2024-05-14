@@ -1,4 +1,5 @@
 import FormData from "./form";
+import Image from "next/image";
 import { Plus } from "lucide-react";
 import { Prize } from "@/types/prize";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,9 @@ interface Props {
 
 export const FormDialog = ({ open, setOpen, data, isEdition, products, idBusiness, isShowing = false }: Props) => {
   if (isShowing) {
-    const { name } = data || ({} as Prize);
+    const { name, points, enabled } = data || ({} as Prize);
+
+    const products = data?.ProductPrize || [];
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -31,6 +34,29 @@ export const FormDialog = ({ open, setOpen, data, isEdition, products, idBusines
               <span>
                 <strong>Nombre:</strong> {name}
               </span>
+              <span>
+                <strong>Puntos:</strong> {points}
+              </span>
+              <span>
+                <strong>Estado:</strong> {enabled ? "Habilitado" : "Deshabilitado"}
+              </span>
+              <span>
+                <strong>Productos:</strong>
+              </span>
+              <div className=" flex gap-2 flex-wrap flex-row bg-white rounded-md">
+                {products.map(
+                  ({ product }, i) =>
+                    product && (
+                      <div key={i} className="flex gap-2 flex-col justify-center items-center p-3 text-center max-w-24">
+                        <div className=" w-14 h-14 relative rounded-sm">
+                          <Image fill alt="" src={product.image} />
+                        </div>
+
+                        <span>{product.name}</span>
+                      </div>
+                    )
+                )}
+              </div>
             </div>
           </div>
         </DialogContent>

@@ -76,8 +76,6 @@ function RegisterPage() {
 
       const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
 
-      console.log("🚀 >>  onClick >>  updateDataForm:", updateDataForm);
-
       const response = await postApi("/api/auth/register", updateDataForm);
 
       toast({

@@ -40,9 +40,7 @@ export const CellAction: React.FC<Props> = ({ data }) => {
       duration: 5000,
       variant: "success",
       title: response.isError ? "Premio no eliminado!" : "Premio eliminado!",
-      description: response.isError
-        ? `${response?.error?.code}`
-        : `Se eliminó el premio ${response.data.name}`,
+      description: response.isError ? `${response?.error?.code}` : `Se eliminó el premio ${response.data.name}`,
     });
 
     setLoading(false);
@@ -50,9 +48,25 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <FormDialog idBusiness={data.idBusiness} open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} products={products} />
+      <FormDialog
+        data={data}
+        open={openShow}
+        isShowing={true}
+        isEdition={false}
+        products={products}
+        setOpen={setOpenShow}
+        idBusiness={data.idBusiness}
+      />
 
-      <FormDialog idBusiness={data.idBusiness} open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} products={products} />
+      <FormDialog
+        isEdition
+        data={data}
+        open={openEdit}
+        isShowing={false}
+        products={products}
+        setOpen={setOpenEdit}
+        idBusiness={data.idBusiness}
+      />
 
       <AlertModal
         text="Eliminar"

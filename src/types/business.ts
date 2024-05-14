@@ -1,4 +1,6 @@
 import { BusinessTypes } from "@/app/enum";
+import { Product } from "./product";
+import { Prize } from "./prize";
 
 export type Business = {
   id: string;
@@ -18,4 +20,9 @@ export type Business = {
   facebookLink?: string;
   instagramLink?: string;
   xLink?: string;
+
+  // UI relation DB
+  Product?: Product[];
+  Prize?: Prize[];
+
 };

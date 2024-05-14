@@ -5,6 +5,6 @@ export const GET = requestMiddleware(async ({ params }) => {
   return await prisma.prize.findMany({
     where: { idBusiness: params.idBusiness || "N/A" },
     orderBy: { name: "asc" },
-    include: { ProductPrize: true },
+    include: { ProductPrize: { include: { product: true } } },
   });
 });

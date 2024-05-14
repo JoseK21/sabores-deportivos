@@ -1,17 +1,8 @@
-import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import React from "react";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Business } from "@/types/business";
 import { Metadata } from "next";
+import CategoryDropdown from "@/components/pages/comercios-afiliados/Header/categoryDropdown";
+import Grid from "@/components/pages/comercios-afiliados/Content/grid";
 
 export const metadata: Metadata = {
   title: "QuiniSports | Comercios Afiliados",
@@ -39,29 +30,8 @@ export const metadata: Metadata = {
 const Page = () => {
   return (
     <main>
-      <div className="flex justify-end my-7">
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Restaurante X" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="grid grid-cols-4 gap-4">
-        {/* {places.map((place) => (
-          <ComercioCard key={place.id} {...place} />
-        ))} */}
-      </div>
+      <CategoryDropdown />
+      <Grid />
     </main>
   );
 };
