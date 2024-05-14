@@ -1,22 +1,19 @@
 "use client";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-
-import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { postApi, putApi } from "@/lib/api";
-import { ProductType } from "@/types/product-type";
-import { getObjectDiff } from "@/utils/object";
-import { useEmployeesStore } from "@/store/employeesStore";
+import { useState } from "react";
 import { isEmpty } from "lodash";
+import { useForm } from "react-hook-form";
+import { postApi, putApi } from "@/lib/api";
+import { Input } from "@/components/ui/input";
+import { getObjectDiff } from "@/utils/object";
+import { ProductType } from "@/types/product-type";
+import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DialogFooter } from "@/components/ui/dialog";
 import { useProductTypesStore } from "@/store/qs-admin";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -31,14 +28,6 @@ const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
 });
-
-const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
-  if (isEdition) {
-    return loading ? "Actualizando.." : "Actualizar";
-  } else {
-    return loading ? "Creando.." : "Guardar";
-  }
-};
 
 export default function FormData({
   data,
@@ -156,10 +145,7 @@ export default function FormData({
           />
         </div>
         <DialogFooter>
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {_getLabelBottom(loading, isEdition)}
-          </Button>
+          <ButtonLoadingSubmit loading={loading} isEdition={isEdition} />
         </DialogFooter>
       </form>
     </Form>

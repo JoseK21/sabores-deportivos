@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 // import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -14,17 +14,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Email already exists" }, { status: 400 });
     }
 
-    // const hashedPassword = await bcrypt.hash(data.password, 10);
+    // NO USAR PORQUE DA ERROR AL USARLO EN NEXT
+    // const hashedPasswordV2 = await bcrypt.hash(data.password, 10);
+
+    // console.log("🚀 >>  POST >>  hashedPasswordV2:", hashedPasswordV2);
+
     const hashedPassword = data.password;
 
-    const newUser = await prisma.user.create({
-      data: {
-        name: data.name,
-        role: data.role,
-        email: data.email,
-        password: hashedPassword,
-      },
-    });
+    const newUser = await prisma.user.create({ data: { ...data, password: hashedPassword } });
 
     const { password: _, ...user } = newUser;
 

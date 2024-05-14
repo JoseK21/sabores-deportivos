@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { User } from "@/types/user";
 import { ProductType } from "@/types/product-type";
 import { Product } from "@/types/product";
+import { Prize } from "@/types/prize";
 
 export const useAdminsStore = create<{
   admins: User[];
@@ -38,4 +39,16 @@ export const useProductsStore = create<{
   products: [],
   setError: (error) => set({ error }),
   setData: (data) => set({ products: data, error: null }),
+}));
+
+export const usePrizesStore = create<{
+  prizes: Prize[];
+  error: Error | null;
+  setData: (newData: Prize[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  error: null,
+  prizes: [],
+  setError: (error) => set({ error }),
+  setData: (data) => set({ prizes: data, error: null }),
 }));

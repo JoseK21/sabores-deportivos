@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { EmployerHeader } from "@/components/admin/qs-admin/empleados/header/header";
-import EmployerTable from "@/components/admin/qs-admin/empleados/table/table";
+import { PrizeHeader } from "@/components/admin/qs-admin/premios/header";
+import PrizeTable from "@/components/admin/qs-admin/premios/table";
 import { Separator } from "@/components/ui/separator";
 import { getServerSession } from "next-auth";
 
@@ -12,9 +12,9 @@ export default async function Page() {
   return (
     <>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <EmployerHeader idBusiness={idBusiness} />
+        <PrizeHeader idBusiness={idBusiness} />
         <Separator />
-        <EmployerTable idBusiness={idBusiness} />
+        <PrizeTable idBusiness={idBusiness} />
       </div>
     </>
   );

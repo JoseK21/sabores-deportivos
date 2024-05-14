@@ -1,33 +1,33 @@
 "use client";
 
+import { z } from "zod";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { isEmpty } from "lodash";
+import { User } from "@/types/user";
+import { UserStatus } from "@/app/enum";
+import { useForm } from "react-hook-form";
+import { cleanText } from "@/utils/string";
+import { Business } from "@/types/business";
+import { Input } from "@/components/ui/input";
+import { getObjectDiff } from "@/utils/object";
+import { Button } from "@/components/ui/button";
+import type { PutBlobResult } from "@vercel/blob";
+import { useAdminsStore } from "@/store/qs-admin";
+import { useFetchData } from "@/hooks/useFetchData";
+import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DialogFooter } from "@/components/ui/dialog";
+import { deleteApi, postApi, putApi } from "@/lib/api";
+import { ADMIN_ROLES, USER_STATUS } from "@/app/constants";
+import { Check, ChevronsUpDown, Eye, EyeOff } from "lucide-react";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Command, CommandEmpty, CommandList, CommandInput, CommandItem } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import type { PutBlobResult } from "@vercel/blob";
-
-import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { UserStatus } from "@/app/enum";
-import { deleteApi, postApi, putApi } from "@/lib/api";
-import { ADMIN_ROLES, USER_STATUS } from "@/app/constants";
-import { useAdminsStore } from "@/store/qs-admin";
-import { User } from "@/types/user";
-import { getObjectDiff } from "@/utils/object";
-import { Business } from "@/types/business";
-import { cn } from "@/lib/utils";
-import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
-import { cleanText } from "@/utils/string";
-import { useFetchData } from "@/hooks/useFetchData";
-import { isEmpty } from "lodash";
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -59,14 +59,6 @@ const FormSchema = z.object({
     })
     .email({ message: "Correo electrónico inválido" }),
 });
-
-const _getLabelBottom = (loading: boolean, isEdition: boolean) => {
-  if (isEdition) {
-    return loading ? "Actualizando.." : "Actualizar";
-  } else {
-    return loading ? "Creando.." : "Guardar";
-  }
-};
 
 export default function FormAdmin({
   data,
@@ -410,10 +402,7 @@ export default function FormAdmin({
           />
         </div>
         <DialogFooter>
-          <Button type="submit" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {_getLabelBottom(loading, isEdition)}
-          </Button>
+          <ButtonLoadingSubmit loading={loading} isEdition={isEdition} />
         </DialogFooter>
       </form>
     </Form>

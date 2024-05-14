@@ -2,17 +2,21 @@
 
 import * as z from "zod";
 import { useState } from "react";
+import { UserRole, UserStatus } from "@/app/enum";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { UserRole } from "@/app/enum";
-import Logo from "@/components/quinisports/general/Logo";
-
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Logo from "@/components/quinisports/general/Logo";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { postApi } from "@/lib/api";
+import { PutBlobResult } from "@vercel/blob";
+import { cleanText } from "@/utils/string";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z
@@ -23,7 +27,16 @@ const formSchema = z.object({
   password: z.string({
     required_error: "Contraseña requerido.",
   }),
+  image: z
+    .any()
+    .refine((file) => file?.size, "Imagen requerida")
+    .refine((file) => file?.size <= MAX_FILE_SIZE, "El tamaño max es de  1MB.")
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    ),
   role: z.nativeEnum(UserRole),
+  status: z.nativeEnum(UserStatus),
   name: z.string({
     required_error: "Nombre requerido.",
   }),
@@ -35,40 +48,51 @@ function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const defaultValues = {
-    name: "",
-    email: "",
-    password: "",
-    role: UserRole.unknown,
-  };
+  const { toast } = useToast();
 
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      role: UserRole.client,
+      status: UserStatus.actived,
+    },
   });
 
-  const onClick = async (data: UserFormValue) => {
+  const onClick = async (dataForm: UserFormValue) => {
     try {
       setLoading(true);
-      const res = await fetch("/api/auth/register", {
+
+      const file = dataForm.image;
+
+      const responseImageUpload = await fetch(`/api/images/upload?filename=client-${cleanText(dataForm.name)}`, {
         method: "POST",
-        body: JSON.stringify({
-          name: data.name,
-          role: data.role,
-          email: data.email,
-          password: data.password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: file,
+      });
+
+      const newBlob = (await responseImageUpload.json()) as PutBlobResult;
+
+      const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
+
+      console.log("🚀 >>  onClick >>  updateDataForm:", updateDataForm);
+
+      const response = await postApi("/api/auth/register", updateDataForm);
+
+      toast({
+        duration: 3000,
+        variant: response.isError ? "destructive" : "success",
+        title: response.isError ? "Usuario no agregado!" : "Usuario agregado!",
+        description: response.isError ? "Error" : `Se agregó el usuario ${dataForm.name}`,
       });
 
       setLoading(false);
 
-      if (res.ok) {
-        router.push("/auth/login");
-      } else {
+      if (response.isError) {
         alert("Error en el proceso de registro!");
+      } else {
+        router.push("/auth/login");
       }
     } catch (error) {
       console.error("🚀 >>  onClick >>  error:", error);
@@ -89,6 +113,27 @@ function RegisterPage() {
         <div className="flex justify-center items-center min-w-80">
           <Form {...form}>
             <form className="space-y-2 w-full">
+              <FormField
+                name="image"
+                control={form.control}
+                render={({ field: { onChange, value, ...rest } }) => (
+                  <>
+                    <FormItem className="flex flex-col items-center justify-center my-3">
+                      <FormControl>
+                        <FileInputPreview
+                          name={""}
+                          disabled={loading}
+                          onChange={onChange}
+                          size={SIZES_UNIT.md}
+                          src={form.getValues().image}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  </>
+                )}
+              />
+
               <FormField
                 name="name"
                 control={form.control}
@@ -126,10 +171,16 @@ function RegisterPage() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
+                    {/* <FormLabel>
                       Contraseña
                       <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
                         {displayPassword ? <Eye /> : <EyeOff />}
+                      </div>
+                    </FormLabel> */}
+                    <FormLabel className="inline-flex items-end w-min">
+                      Contraseña
+                      <div className="ml-4" onClick={() => setDisplayPassword(!displayPassword)}>
+                        {displayPassword ? <Eye size={16} /> : <EyeOff size={16} />}
                       </div>
                     </FormLabel>
                     <FormControl>

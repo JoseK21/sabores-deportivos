@@ -3,32 +3,32 @@ import Image from "next/image";
 
 const brandsData: Brand[] = [
   {
-    id: 1,
-    name: "coca",
+    id: "1",
+    name: "Coca Cola",
     href: "https://uideck.com",
     image: "/brands/coca.jpeg",
   },
   {
-    id: 2,
-    name: "dos-pino",
+    id: "2",
+    name: "Dos Pinos",
     href: "https://tailgrids.com",
     image: "/brands/dos-pinos.png",
   },
   {
-    id: 3,
-    name: "heineken",
+    id: "3",
+    name: "Heineken",
     href: "https://lineicons.com",
     image: "/brands/heineken.png",
   },
   {
-    id: 4,
-    name: "GrayGrids",
+    id: "4",
+    name: "Imperial",
     href: "https://graygrids.com",
     image: "/brands/imperial.webp",
   },
   {
-    id: 5,
-    name: "TailAdmin",
+    id: "5",
+    name: "Snickers",
     href: "https://tailadmin.com",
     image: "/brands/snickers.png",
   },

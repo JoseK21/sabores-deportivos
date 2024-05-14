@@ -70,7 +70,7 @@ export const FormDialog = ({ open, setOpen, data, isEdition, productTypes, idBus
       )}
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
-          <DialogTitle>{isEdition ? "Edición de Tipo de Producto" : "Nuevo Tipo de Producto"}</DialogTitle>
+          <DialogTitle>{isEdition ? "Edición de Producto" : "Nuevo Producto"}</DialogTitle>
         </DialogHeader>
         <FormData
           data={data}

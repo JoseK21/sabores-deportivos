@@ -18,7 +18,7 @@ type SizesType = {
 
 const SIZES: SizesType = {
   [SIZES_UNIT.sm]: "w-20 h-20",
-  [SIZES_UNIT.md]: "w-32 h-32",
+  [SIZES_UNIT.md]: "w-40 h-40",
   [SIZES_UNIT.xl]: "w-60 h-60",
 };
 
