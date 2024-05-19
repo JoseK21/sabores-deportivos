@@ -1,10 +1,10 @@
 "use client";
 
 import * as z from "zod";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { UserRole, UserStatus } from "@/app/enum";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -100,10 +100,18 @@ function RegisterPage() {
 
   const [displayPassword, setDisplayPassword] = useState(false);
 
+  const goBack = useCallback(() => {
+    router.back();
+  }, []);
+
   return (
     <div className="w-full h-screen ">
       <div className="m-6 fixed ">
         <Logo width={120} />
+        <Button variant="secondary" onClick={goBack}>
+          <ArrowLeft size={20} />
+          <span className="ml-4 ">Atras</span>
+        </Button>
       </div>
       <div className="space-y-6 flex items-center justify-center flex-col min-h-screen">
         <h1 className="text-2xl font-semibold tracking-tight">Crea una cuenta</h1>
