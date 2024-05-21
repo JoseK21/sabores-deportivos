@@ -34,9 +34,14 @@ const HomeFooter = () => {
                     Politica de Privacidad
                   </a>
                 </li>
-                <li>
+                <li className="mb-4">
                   <a href="#" className="hover:underline">
                     Terminos &amp; Condiciones
+                  </a>
+                </li>
+                <li>
+                  <a href="/preguntas-frecuentes" className="hover:underline">
+                    Información
                   </a>
                 </li>
               </ul>
