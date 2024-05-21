@@ -50,6 +50,12 @@ export enum BusinessTypes {
   recreation_center = "recreation_center",
 }
 
+export enum BusinessPlan {
+  basic = "basic",
+  intermediate = "intermediate",
+  premium = "premium",
+}
+
 export enum Countries {
   cr = "cr",
   mx = "mx",

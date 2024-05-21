@@ -1,4 +1,4 @@
-import { BooleanOption, BusinessTypes, Countries, UserRole, UserStaffBusinessRole, UserStatus } from "./enum";
+import { BooleanOption, BusinessPlan, BusinessTypes, Countries, UserRole, UserStaffBusinessRole, UserStatus } from "./enum";
 
 export const QUINISPORTS_URL = "https://wwww.quinisports.com";
 
@@ -45,6 +45,12 @@ export const BUSINESS_TYPES: { [key in BusinessTypes]: string } = {
   [BusinessTypes.bar_restaurant]: "Bar & Restaurante",
   [BusinessTypes.shopping_center]: "Centro Comercial",
   [BusinessTypes.recreation_center]: "Centro Recreativo",
+};
+
+export const BUSINESS_PLAN: { [key in BusinessPlan]: string } = {
+  [BusinessPlan.basic]: "Basico",
+  [BusinessPlan.intermediate]: "Intermedio",
+  [BusinessPlan.premium]: "Premium",
 };
 
 export const BOOLEAN_OPTIONS: { [key in BooleanOption]: string } = {
