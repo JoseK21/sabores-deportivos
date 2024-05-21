@@ -1,6 +1,5 @@
 import React from "react";
 
-import AboutSectionOne from "@/components/pages/home/About/AboutSectionOne";
 import Brands from "@/components/pages/home/Brands";
 import ScrollUp from "@/components/pages/home/Common/ScrollUp";
 import Contact from "@/components/pages/home/Contact";
