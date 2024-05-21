@@ -1,12 +1,18 @@
+"use client";
+
 import { Brand } from "@/types/brand";
 import Image from "next/image";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const brandsData: Brand[] = [
   {
     id: "1",
     name: "Coca Cola",
     href: "https://uideck.com",
-    image: "/brands/coca.jpeg",
+    image: "/brands/coca.png",
   },
   {
     id: "2",
@@ -18,7 +24,7 @@ const brandsData: Brand[] = [
     id: "3",
     name: "Heineken",
     href: "https://lineicons.com",
-    image: "/brands/heineken.png",
+    image: "/brands/heineken.jpeg",
   },
   {
     id: "4",
@@ -34,7 +40,7 @@ const brandsData: Brand[] = [
   },
 ];
 
-const Brands = () => {
+const BrandsOLD = () => {
   return (
     <section className="pt-4">
       <div className="container">
@@ -42,8 +48,7 @@ const Brands = () => {
           <div className="w-full px-4">
             <div
               className="wow fadeInUp flex flex-wrap items-center justify-center rounded-md bg-dark py-8 px-8 dark:bg-primary dark:bg-opacity-5 sm:px-10 md:py-[40px] md:px-[50px] xl:p-[50px] 2xl:py-[60px] 2xl:px-[70px]"
-              data-wow-delay=".1s
-              "
+              data-wow-delay=".1s"
             >
               {brandsData.map((brand) => (
                 <SingleBrand key={brand.id} brand={brand} />
@@ -55,8 +60,6 @@ const Brands = () => {
     </section>
   );
 };
-
-export default Brands;
 
 const SingleBrand = ({ brand }: { brand: Brand }) => {
   const { href, image, name } = brand;
@@ -74,3 +77,56 @@ const SingleBrand = ({ brand }: { brand: Brand }) => {
     </div>
   );
 };
+
+const Brands = () => {
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    centerPadding: "0",
+    centerMode: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <div className="w-full">
+      <Slider {...settings}>
+        {brandsData.map((sponsor, index) => (
+          <a target="_blank" href={sponsor.href} key={index} className="p-0 px-12">
+            <div className=" relative w-full h-40 flex items-center justify-center">
+              <Image src={sponsor.image} alt={sponsor.name} layout="fill" objectFit="contain" />
+            </div>
+          </a>
+        ))}
+      </Slider>
+    </div>
+  );
+};
+
+export default Brands;

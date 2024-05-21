@@ -10,12 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${QUINISPORTS_URL}/eventos`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
       url: `${QUINISPORTS_URL}/rankings`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -23,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${QUINISPORTS_URL}/comercios-afiliados`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${QUINISPORTS_URL}/sobre-nosotros`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,

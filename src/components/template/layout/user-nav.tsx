@@ -73,7 +73,7 @@ export function UserNav({ session }: { session: Session }) {
           <DropdownMenuItem
             onClick={() =>
               signOut({
-                callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role) ? "/qs-admin" : "/eventos",
+                callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role) ? "/qs-admin" : "/",
               })
             }
           >

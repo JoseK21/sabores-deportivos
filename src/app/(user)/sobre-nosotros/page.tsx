@@ -17,7 +17,7 @@ const Page = () => {
       <Features />
       <Video />
       <Brands />
-      <AboutSectionOne />
+      {/* <AboutSectionOne /> */}
       {/* <AboutSectionTwo /> */}
       <Testimonials />
       {/* <Pricing /> */}

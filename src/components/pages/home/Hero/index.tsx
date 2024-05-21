@@ -39,7 +39,7 @@ const Hero = () => {
                       gradientUnits="userSpaceOnUse"
                     >
                       <stop />
-                      <stop offset="1" stop-color="#31973B" />
+                      <stop offset="1" stopColor="#31973B" />
                     </linearGradient>
                   </defs>
                 </svg>
