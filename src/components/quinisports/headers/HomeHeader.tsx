@@ -10,9 +10,10 @@ import { UserNav } from "@/components/template/layout/user-nav";
 import Logo from "../general/Logo";
 
 const posts = [
-  { id: "events", slug: "/eventos", title: "Eventos" },
-  { id: "ranks", slug: "/rankings", title: "Rankings" },
-  { id: "affiliated-businesses", slug: "/comercios-afiliados", title: "Comercios afiliados" },
+  { slug: "/", title: "Eventos" },
+  { slug: "/rankings", title: "Rankings" },
+  { slug: "/comercios-afiliados", title: "Comercios afiliados" },
+  { slug: "/sobre-nosotros", title: "Sobre Nosotros" },
 ];
 
 interface Props {
