@@ -8,7 +8,7 @@ import { useBusinessStore } from "@/store/businessStore";
 import { orderBy } from "lodash";
 
 export default function BusinessTable() {
-  const { isLoaded, businesses } = useBusinessData();
+  const { isLoaded, businesses, error } = useBusinessData();
 
   if (isLoaded) {
     return (

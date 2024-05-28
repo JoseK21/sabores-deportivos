@@ -80,25 +80,24 @@ const Contact = () => {
       console.log("🚀 >>  onSubmitSubscription >>  response:", response);
 
       setLoadingSubcription(false);
+
       if (response.isError) {
-      
-        const code = response?.error?.code
-        console.log("🚀 >>  onSubmitSubscription >>  code:", code)
-        
-        if(code == "P2002"){
+        const code = response?.error?.code;
+
+        if (code == "P2002") {
           toast({
             duration: 3000,
             title: "Aviso",
             variant: "info",
             description: "El correo ya esta subscrito!",
           });
-
-        }else{
-          throw new Error(`response status: ${response?.error}`)
+        } else {
+          throw new Error(`response status: ${response?.error}`);
         }
-      };
+      }
 
       formSubscription.reset();
+
       toast({
         duration: 3000,
         title: "Listo",

@@ -67,16 +67,14 @@ const TabsInfo = ({ slug }: { slug: string }) => {
 
         <h1 className=" ml-2 text-2xl font-medium uppercase">BIENVENIDOS A {name}</h1>
       </div>
-      <Tabs defaultValue="main">
+      <Tabs defaultValue="menu">
         <TabsList>
-          <TabsTrigger value="main">Inicio</TabsTrigger>
           <TabsTrigger value="menu">Menu</TabsTrigger>
           <TabsTrigger value="prize">Premios</TabsTrigger>
           <TabsTrigger value="schedule-location">Horario y Ubicacion</TabsTrigger>
           <TabsTrigger value="gallery">Galleria de Fotos</TabsTrigger>
         </TabsList>
         <div className="mx-4">
-          <TabsContent value="main">{description}</TabsContent>
           <TabsContent value="menu">
             <Accordion type="single" collapsible className="w-full">
               {Object.keys(menu || {}).map((key) => (

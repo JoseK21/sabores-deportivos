@@ -6,7 +6,7 @@ import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import useBusinessData from "@/components/admin/qs-admin/comercios/table/useBusinessData";
 
 const Grid = () => {
-  const { isLoaded, businesses } = useBusinessData();
+  const { isLoaded, businesses, error } = useBusinessData();
 
   if (!isLoaded) {
     return (
@@ -24,6 +24,14 @@ const Grid = () => {
           <div className="max-w-sm w-96 h-96 rounded-md animate-pulse bg-slate-200" />
         </div>
       </>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <span>Ocurrio un error, por favor refrescar el navegador</span>
+      </div>
     );
   }
 
