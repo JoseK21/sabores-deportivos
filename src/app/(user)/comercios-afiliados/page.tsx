@@ -1,8 +1,5 @@
-import React from "react";
-
 import { Metadata } from "next";
-import CategoryDropdown from "@/components/pages/comercios-afiliados/Header/categoryDropdown";
-import Grid from "@/components/pages/comercios-afiliados/Content/grid";
+import GridFilter from "../../../components/pages/comercios-afiliados/GridFilter";
 
 export const metadata: Metadata = {
   title: "QuiniSports | Comercios Afiliados",
@@ -30,8 +27,7 @@ export const metadata: Metadata = {
 const Page = () => {
   return (
     <main>
-      <CategoryDropdown />
-      <Grid />
+      <GridFilter />
     </main>
   );
 };

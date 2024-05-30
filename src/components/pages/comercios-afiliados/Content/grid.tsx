@@ -1,12 +1,32 @@
 "use client";
 
-import React from "react";
-
+import React, { use, useEffect, useState } from "react";
+import { Business } from "@/types/business";
 import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import useBusinessData from "@/components/admin/qs-admin/comercios/table/useBusinessData";
 
-const Grid = () => {
-  const { isLoaded, businesses, error } = useBusinessData();
+type Props = {
+  filterText: string;
+  category: string;
+};
+
+const Grid = ({ filterText, category }: Props) => {
+  const { error, isLoaded, businesses } = useBusinessData();
+  const [filterBusinesses, setFilter] = useState<Business[]>([]);
+  
+  useEffect(() => {
+    let fb: Business[] = [];
+    fb = businesses.filter((x) => {
+      const isNameIncluded = filterText ? x.name.includes(filterText) : true;
+      const isSameCategory = category && category !== "*" ? x.type === category : true
+      return isNameIncluded && isSameCategory
+    });
+    setFilter(fb);
+  }, [filterText, category]);
+
+  useEffect(() => {
+    setFilter(isLoaded ? businesses : []);
+  }, [isLoaded, businesses]);
 
   if (!isLoaded) {
     return (
@@ -37,9 +57,14 @@ const Grid = () => {
 
   return (
     <div className="grid grid-cols-4 gap-4">
-      {businesses.map((business) => (
+      {filterBusinesses.map((business) => (
         <ComercioCard key={business.id} {...business} />
       ))}
+      {!filterBusinesses.length && (
+        <>
+         <span>Sin resultados</span>
+        </>
+      )}
     </div>
   );
 };
