@@ -124,4 +124,6 @@ export const SCHEDULE: {
   { value: 2250, label: "10:30 pm" },
   { value: 2300, label: "11:00 pm" },
   { value: 2350, label: "11:30 pm" },
+  // 2359 -> 2359
+  // 2400 -> 0
 ];

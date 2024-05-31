@@ -35,7 +35,7 @@ const nextConfig = {
       },
     ],
   },
-  reactStrictMode: false,
+  // reactStrictMode: false,
   async rewrites() {
     return [{ source: "/", destination: "/auth/login" }];
   },
