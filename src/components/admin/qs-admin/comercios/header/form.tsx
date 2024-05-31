@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteApi, postApi, putApi } from "@/lib/api";
-import { useBusinessStore } from "@/store/businessStore";
+import { useBusinessesStore } from "@/store/qs-admin";
 import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
 import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
@@ -70,7 +70,7 @@ export default function Form_({
   isEdition?: boolean;
   setOpen: (open: boolean) => void;
 }) {
-  const { businesses, setData } = useBusinessStore();
+  const { businesses, setData } = useBusinessesStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

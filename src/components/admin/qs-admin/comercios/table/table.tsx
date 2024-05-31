@@ -4,7 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
 import useBusinessData from "./useBusinessData";
-import { useBusinessStore } from "@/store/businessStore";
+import { useBusinessesStore } from "@/store/qs-admin";
 import { orderBy } from "lodash";
 
 export default function BusinessTable() {

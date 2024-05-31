@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { isEmpty } from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { cleanText } from "@/utils/string";
 import { BusinessTypes } from "@/app/enum";
@@ -14,8 +14,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { deleteApi, postApi, putApi } from "@/lib/api";
-import { useBusinessStore } from "@/store/businessStore";
+import { deleteApi, putApi } from "@/lib/api";
 import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
 import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
@@ -23,6 +22,7 @@ import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInput
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
+import { useBusinessStore, useBusinessesStore } from "@/store/qs-admin";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -62,7 +62,13 @@ const FormSchema = z.object({
 });
 
 export default function FormBusiness({ data }: { data?: Business }) {
-  const { businesses, setData } = useBusinessStore();
+  const { business, setData } = useBusinessStore();
+
+  useEffect(() => {
+    console.log("@ useEffect", data);
+    
+    setData(data ?? {} as Business);
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -159,13 +165,8 @@ export default function FormBusiness({ data }: { data?: Business }) {
       const response = await putApi(`/api/business/${dataForm.id}`, dataToEdit);
 
       if (response.data) {
-        const updateData = businesses.map((business) => {
-          if (business.id === response.data.id) {
-            return response.data;
-          }
+        const updateData = response.data;
 
-          return business;
-        });
         setData(updateData);
       }
 

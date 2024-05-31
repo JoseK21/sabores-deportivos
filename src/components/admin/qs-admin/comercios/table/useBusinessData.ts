@@ -1,11 +1,11 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { getApi } from "@/lib/api";
-import { useBusinessStore } from "@/store/businessStore";
+import { useBusinessesStore } from "@/store/qs-admin";
 import { Business } from "@/types/business";
 import { useState } from "react";
 
 const useBusinessData = () => {
-  const { businesses, setData, setError, error } = useBusinessStore();
+  const { businesses, setData, setError, error } = useBusinessesStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useFetchData(async () => {

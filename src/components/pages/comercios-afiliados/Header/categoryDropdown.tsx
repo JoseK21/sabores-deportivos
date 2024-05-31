@@ -11,10 +11,11 @@ import {
   SelectContent,
   SelectTrigger,
 } from "@/components/ui/select";
-import { useBusinessStore } from "@/store/businessStore";
+import { useBusinessesStore } from "@/store/qs-admin";
 import { BUSINESS_TYPES } from "@/app/constants";
 import { BusinessTypes } from "@/app/enum";
 import { Input } from "@/components/ui/input";
+import { InputWithClean } from "@/components/ui/input-with-clean";
 
 interface CategoryDropdownProps {
   handleTextChange: (filterText: string) => void;
@@ -28,7 +29,7 @@ type CategoryT = {
 };
 
 const CategoryDropdown = ({ handleTextChange, filterText, handleCategories }: CategoryDropdownProps) => {
-  const { businesses } = useBusinessStore();
+  const { businesses } = useBusinessesStore();
 
   const categories: CategoryT[] = useMemo(
     () =>
@@ -43,12 +44,12 @@ const CategoryDropdown = ({ handleTextChange, filterText, handleCategories }: Ca
 
   return (
     <div className="flex justify-end my-7 px-2 gap-3">
-      <Input
+      <InputWithClean
         type="text"
         placeholder="Nombre"
         className=" max-w-60"
         value={filterText}
-        onChange={(event) => handleTextChange(event.target.value)}
+        handle={handleTextChange}
       />
 
       <Select onValueChange={(type) => handleCategories(categories.find(({ name }) => type === name)?.type || "")}>

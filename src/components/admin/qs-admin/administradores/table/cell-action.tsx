@@ -7,7 +7,7 @@ import { deleteApi } from "@/lib/api";
 import { useAdminsStore } from "@/store/qs-admin";
 import { useToast } from "@/components/ui/use-toast";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
-import { useBusinessStore } from "@/store/businessStore";
+import { useBusinessesStore } from "@/store/qs-admin";
 import { ActionDropdown } from "@/components/quinisports/general/ActionDropdown";
 
 interface Props {
@@ -20,7 +20,7 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
   const [openRemove, setOpenRemove] = useState(false);
 
   const { toast } = useToast();
-  const { businesses } = useBusinessStore();
+  const { businesses } = useBusinessesStore();
   const { admins, setData } = useAdminsStore();
   const [loading, setLoading] = useState(false);
 

@@ -65,3 +65,15 @@ export const useBusinessStore = create<{
   setError: (error) => set({ error }),
   setData: (data) => set({ business: data, error: null }),
 }));
+
+export const useBusinessesStore = create<{
+  businesses: Business[];
+  error: Error | null;
+  setData: (newData: Business[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  businesses: [],
+  error: null,
+  setData: (newData) => set({ businesses: newData, error: null }),
+  setError: (error) => set({ error }),
+}));
