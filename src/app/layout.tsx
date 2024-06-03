@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/options";
 import { ErrorHandler } from "@/components/quinisports/_error-handlers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default async function RootLayout({
   children,
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <Providers session={session}>
           <Toaster />
           {children}
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
