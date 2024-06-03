@@ -16,7 +16,7 @@ import { BOOLEAN_OPTIONS } from "@/app/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { useProductTypesStore } from "@/store/qs-admin";
+import { usePrizesStore, useProductTypesStore } from "@/store/qs-admin";
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -36,7 +36,7 @@ const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
   idBusiness: z.string({ required_error: "Comercio requerido" }).min(1, { message: "Comercio requerido" }),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   points: z.number().min(1, { message: "Los Puntos deben ser mayor a 1" }),
   enabled: z.boolean().optional(),
 });
@@ -87,12 +87,14 @@ export default function FormData({
   isEdition?: boolean;
   setOpen: (open: boolean) => void;
 }) {
-  const { productTypes, setData } = useProductTypesStore();
+  const { prizes, setData } = usePrizesStore();
 
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: isEdition ? { ...data, idBusiness } || ({} as Prize) : { name: "", idBusiness },
+    defaultValues: isEdition
+      ? { ...data, idBusiness } || ({} as Prize)
+      : { name: "", idBusiness, points: 0, enabled: true },
   });
 
   const { toast } = useToast();
@@ -100,15 +102,22 @@ export default function FormData({
   const [openProducts, setOpenProducts] = useState(false);
   const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
 
+  useEffect(() => {
+    if (data?.ProductPrize?.length) {
+      setCurrentProducts(data?.ProductPrize.map(({ product }) => product));
+    }
+  }, [data?.ProductPrize]);
+
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
     try {
       console.log("🚀 >>  onSubmit >>  dataForm:", dataForm, currentProducts);
-      return;
 
       setLoading(true);
 
       if (isEdition) {
         let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Prize), ["id"]);
+
+        console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -123,12 +132,16 @@ export default function FormData({
           return 0;
         }
 
+        // Validar cambios de id de productos, agregar y eliminar
+        //  considera hacer el proceso por cada producto
+        //  para esto necesito primero tener el premio en db
+
         const response = await putApi(`/api/prize/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
         if (response.data) {
-          const updateData = productTypes.map((employee) => {
+          const updateData = prizes.map((employee) => {
             if (employee.id === response.data.id) {
               return response.data;
             }
@@ -150,12 +163,32 @@ export default function FormData({
       } else {
         const updateDataForm = dataForm;
 
+        console.log("🚀 >>  onSubmit >>  updateDataForm:", updateDataForm);
+
         const response = await postApi("/api/prize", updateDataForm);
 
         setOpen(response.isError);
 
         if (response.data) {
-          setData([...productTypes, response.data]);
+          if (currentProducts.length > 0) {
+            const responsePrizeProduct = await postApi("/api/prize_products", {
+              idPrize: response.data["id"],
+              productIds: currentProducts.map((product) => product.id),
+            });
+
+            if (responsePrizeProduct.data) {
+              toast({
+                duration: 5000,
+                variant: responsePrizeProduct.isError ? "destructive" : "success",
+                title: responsePrizeProduct.isError ? "Productos no agregados!" : "Productos agregados!",
+                description: responsePrizeProduct.isError
+                  ? `${mapErrorCode(responsePrizeProduct?.error?.code)}`
+                  : `Se agregaron los productos al premio`,
+              });
+            }
+          }
+
+          setData([...prizes, response.data]);
         }
 
         toast({
@@ -194,11 +227,7 @@ export default function FormData({
 
   const removeProduct = useCallback(
     (index: number) => {
-      const auxProduct: Product[] = currentProducts;
-
-      const x = auxProduct.filter((_, currentIndex) => index !== currentIndex);
-
-      setCurrentProducts(x);
+      setCurrentProducts(currentProducts.filter((_, currentIndex) => index !== currentIndex));
     },
     [currentProducts]
   );
@@ -237,9 +266,7 @@ export default function FormData({
                       {...field}
                       value={field.value} // Asegurarse de que el valor sea un número
                       onChange={(e) => {
-                        const value = parseFloat(e.target.value); // Convertir el valor a número
-                        console.log("🚀 >>  value:", value);
-                        field.onChange(value); // Actualizar el valor del campo con el número
+                        field.onChange(Number(parseFloat(e.target.value))); // Actualizar el valor del campo con el número
                       }}
                     />
                   </FormControl>
@@ -254,7 +281,7 @@ export default function FormData({
                 <FormItem>
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Descripción" {...field} />
+                    <Input disabled={loading} placeholder="Descripción" {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -273,7 +300,7 @@ export default function FormData({
                   >
                     <FormControl>
                       <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione si esta habilitado o no" />
+                        <SelectValue placeholder="Habilitado" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

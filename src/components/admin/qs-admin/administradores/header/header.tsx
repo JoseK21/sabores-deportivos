@@ -8,7 +8,7 @@ import useBusinessData from "../../comercios/table/useBusinessData";
 export const AdminsHeader = () => {
   const [open, setOpen] = useState(false);
 
-  const { businesses } = useBusinessData();
+  const { businesses, error } = useBusinessData();
 
   return (
     <div className="flex items-start justify-between">

@@ -7,6 +7,7 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 
+// MODELs
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -77,6 +78,7 @@ model Product {
   image         String
   productTypeId String
   description   String?
+  price         Int            @default(1)
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
   productType   ProductType    @relation(fields: [productTypeId], references: [id])
@@ -102,7 +104,6 @@ model ProductPrize {
   id        String   @id @default(cuid())
   idPrize   String
   idProduct String
-  amount    Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   prize     Prize    @relation(fields: [idPrize], references: [id])
@@ -206,6 +207,8 @@ model Business {
   facebookLink        String?
   instagramLink       String?
   xLink               String?
+  plan                BusinessPlan          @default(basic)
+  displayProductPrize Boolean               @default(false)
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
   BusinessAdvertising BusinessAdvertising[]
@@ -264,6 +267,14 @@ model BusinessAdvertising {
   business   Business  @relation(fields: [idBusiness], references: [id])
 }
 
+model Subscription {
+  id    String @id @default(cuid())
+  name  String
+  email String @unique
+}
+
+// ENUMs
+
 enum UserRole {
   unknown
   client
@@ -308,4 +319,10 @@ enum BusinessTypes {
   bar_restaurant
   shopping_center
   recreation_center
+}
+
+enum BusinessPlan {
+  basic
+  intermediate
+  premium
 }

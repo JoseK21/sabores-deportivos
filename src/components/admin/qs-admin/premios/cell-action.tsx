@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useProductTypesStore } from "@/store/qs-admin";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
 import { ActionDropdown } from "@/components/quinisports/general/ActionDropdown";
+import useProductsData from "../productos/useProductsData";
 
 interface Props {
   data: Prize;
@@ -20,6 +21,8 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
   const { toast } = useToast();
   const { productTypes, setData } = useProductTypesStore();
+  const { products, isLoaded } = useProductsData(data.idBusiness);
+
   const [loading, setLoading] = useState(false);
 
   const onConfirmRemove = async (id: string) => {
@@ -37,9 +40,7 @@ export const CellAction: React.FC<Props> = ({ data }) => {
       duration: 5000,
       variant: "success",
       title: response.isError ? "Premio no eliminado!" : "Premio eliminado!",
-      description: response.isError
-        ? `${response?.error?.code}`
-        : `Se eliminó el premio ${response.data.name}`,
+      description: response.isError ? `${response?.error?.code}` : `Se eliminó el premio ${response.data.name}`,
     });
 
     setLoading(false);
@@ -47,9 +48,25 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
   return (
     <>
-      <FormDialog idBusiness={data.idBusiness} open={openShow} setOpen={setOpenShow} data={data} isEdition={false} isShowing={true} />
+      <FormDialog
+        data={data}
+        open={openShow}
+        isShowing={true}
+        isEdition={false}
+        products={products}
+        setOpen={setOpenShow}
+        idBusiness={data.idBusiness}
+      />
 
-      <FormDialog idBusiness={data.idBusiness} open={openEdit} setOpen={setOpenEdit} data={data} isEdition isShowing={false} />
+      <FormDialog
+        isEdition
+        data={data}
+        open={openEdit}
+        isShowing={false}
+        products={products}
+        setOpen={setOpenEdit}
+        idBusiness={data.idBusiness}
+      />
 
       <AlertModal
         text="Eliminar"

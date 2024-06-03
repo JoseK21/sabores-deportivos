@@ -14,6 +14,12 @@ import {
   useId,
 } from "react";
 
+// const isFieldRequired = (schema, fieldName) => {
+//   const fieldSchema = schema.shape[fieldName];
+//   if (!fieldSchema) return false;
+//   return fieldSchema instanceof z.ZodNonEmpty || fieldSchema instanceof z.ZodDefault || fieldSchema instanceof z.ZodString && fieldSchema.isNonEmpty;
+// };
+
 const Form = FormProvider;
 
 type FormFieldContextValue<
@@ -42,7 +48,7 @@ const useFormField = () => {
   const fieldContext = useContext(FormFieldContext);
   const itemContext = useContext(FormItemContext);
   const { getFieldState, formState } = useFormContext();
-
+  
   const fieldState = getFieldState(fieldContext.name, formState);
 
   if (!fieldContext) {

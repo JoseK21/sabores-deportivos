@@ -6,7 +6,7 @@ import { useUserBusinessStore } from "@/store/userBusinessStore";
 import { isEmpty } from "lodash";
 
 const useDataUserNav = (isBusiness: string) => {
-  const { setData, setError } = useUserBusinessStore();
+  const { business, setData, setError } = useUserBusinessStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useFetchData(async () => {
@@ -27,7 +27,7 @@ const useDataUserNav = (isBusiness: string) => {
     setIsLoaded(true);
   });
 
-  return { isLoaded };
+  return { business, isLoaded };
 };
 
 export default useDataUserNav;

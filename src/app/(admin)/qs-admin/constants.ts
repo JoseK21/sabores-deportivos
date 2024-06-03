@@ -13,6 +13,7 @@ export const MENU_BY_ROLE = {
     title: "Admin",
     items: [
       { title: "Dashboard", href: "/qs-admin" },
+      { title: "Comercio", href: "/qs-admin/comercio" },
       { title: "Empleados", href: "/qs-admin/empleados" },
       { title: "Productos", href: "/qs-admin/productos" },
       { title: "Premios", href: "/qs-admin/premios" },

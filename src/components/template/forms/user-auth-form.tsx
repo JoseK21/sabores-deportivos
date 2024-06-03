@@ -64,7 +64,7 @@ export default function UserAuthForm() {
           setErrorMessage(res?.error || "Credenciales invalidas");
         } else {
           setRedirecting(true);
-          router.push("/qs-admin");
+          router.push("/");
         }
       } else {
         setLoading(false);

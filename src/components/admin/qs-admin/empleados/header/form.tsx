@@ -53,9 +53,9 @@ const FormSchema = z.object({
   password: z.string().min(4, { message: "Contrasena como minimo de de 4 letras" }),
   email: z
     .string({
-      required_error: "Por favor seleccione un correo electrónico para mostrar.",
+      required_error: "Correo requerido.",
     })
-    .email(),
+    .email({ message: "Introduzca una dirección de correo electrónico válida" }),
 });
 
 export default function FormEmployee({

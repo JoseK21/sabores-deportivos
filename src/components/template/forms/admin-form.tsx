@@ -56,8 +56,7 @@ export const AdminForm: React.FC<ProductFormProps> = ({ initialData }) => {
       } else {
         // TODO use apiBaseUrl.ts
         const res = await axios.post(`/api/products/create-administrador`, data);
-        console.log("administrador", res);
-
+        
         if (res) {
           router.refresh();
           router.push(`/qs-admin/admin`);

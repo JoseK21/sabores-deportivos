@@ -13,11 +13,8 @@ export default function NotFound() {
         Error 404
       </span>
       <h2 className="my-2 font-heading text-2xl font-bold">Pagina no encontrada</h2>
-      <p>Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
-      <div className="mt-8 flex justify-center gap-2">
-        <Button onClick={() => router.back()} variant="ghost" size="lg">
-          Atras
-        </Button>
+      <p>Lo sentimos, la página que estás buscando no existe.</p>
+      <div className="mt-8 flex justify-center">
         <Button onClick={() => router.push("/auth/login")} variant="default" size="lg">
           Ir al Incio
         </Button>

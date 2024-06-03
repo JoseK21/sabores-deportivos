@@ -9,36 +9,36 @@ import {
   DropdownMenuShortcut,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { isEmpty } from "lodash";
+import { Session } from "next-auth";
+import { UserRole } from "@/app/enum";
+import { signOut } from "next-auth/react";
+import useDataUserNav from "./useDataUserNav";
+import { getFirstChars } from "@/utils/string";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { getFirstChars } from "@/utils/string";
 import { ALLOWER_ROLES_TO_BUSINESS_LOGIC, BUSINESS_TYPES, FULL_USER_ROLES } from "@/app/constants";
-import { UserRole } from "@/app/enum";
-import { useUserBusinessStore } from "@/store/userBusinessStore";
-import useDataUserNav from "./useDataUserNav";
-import { Session } from "next-auth";
-import { isEmpty } from "lodash";
 
 export function UserNav({ session }: { session: Session }) {
-  const { business } = useUserBusinessStore();
-  
-  const { isLoaded } = useDataUserNav(session?.user?.idBusiness || "");
+  const { isLoaded, business } = useDataUserNav(session?.user?.idBusiness || "");
 
-  const { user } = session || {} as Session;
+  const { user } = session || ({} as Session);
 
   return user?.email ? (
     <>
-      {isLoaded ? (
-        !isEmpty(business) && (
-          <span className="mr-2 text-sm">
-            {BUSINESS_TYPES[business.type] || "-"} {business.name}
-          </span>
-        )
-      ) : (
-        <div className="w-36 h-4 rounded-md animate-pulse bg-slate-200" />
+      {user.role != UserRole.master && (
+        <>
+          {isLoaded ? (
+            !isEmpty(business) && (
+              <span className="mr-2 text-sm">
+                {BUSINESS_TYPES[business.type] || "-"} {business.name}
+              </span>
+            )
+          ) : (
+            <div className="w-36 h-4 rounded-md animate-pulse bg-slate-200" />
+          )}
+        </>
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -73,7 +73,7 @@ export function UserNav({ session }: { session: Session }) {
           <DropdownMenuItem
             onClick={() =>
               signOut({
-                callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role) ? "/qs-admin" : "/eventos",
+                callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role) ? "/qs-admin" : "/",
               })
             }
           >

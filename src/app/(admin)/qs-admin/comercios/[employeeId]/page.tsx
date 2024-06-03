@@ -7,6 +7,7 @@ export default function Page() {
     { title: "Employee", link: "/dashboard/employee" },
     { title: "Crear", link: "/dashboard/employee/create" },
   ];
+  
   return (
     <div className="flex-1 space-y-4 p-8">
       <BreadCrumb items={breadcrumbItems} />

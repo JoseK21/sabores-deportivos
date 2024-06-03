@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: ["/"],
-      disallow: ["/terminos-y-condiciones", "/politicas-de-privacidad", "/#/*"],
+      disallow: ["/terminos-y-condiciones", "/politicas-de-privacidad", "/#/*", "/qs-admin/*"],
     },
     sitemap: `${QUINISPORTS_URL}/sitemap.xml`,
   };

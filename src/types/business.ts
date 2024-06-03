@@ -1,4 +1,7 @@
 import { BusinessTypes } from "@/app/enum";
+import { Product } from "./product";
+import { Prize } from "./prize";
+import { Schedule } from "./schedule";
 
 export type Business = {
   id: string;
@@ -13,9 +16,15 @@ export type Business = {
   canton: string;
   district: string;
   address: string;
+  // social media
   wazeLink?: string;
   googleMapLink?: string;
   facebookLink?: string;
   instagramLink?: string;
   xLink?: string;
+
+  // UI relation DB
+  Product?: Product[];
+  Prize?: Prize[];
+  Schedule?: Schedule;
 };

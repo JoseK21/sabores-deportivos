@@ -5,42 +5,38 @@ import SingleTestimonial from "./SingleTestimonial";
 const testimonialData: Testimonial[] = [
   {
     id: "1",
-    name: "Musharof Chy",
-    designation: "Founder @TailGrids",
+    name: "Luis Martínez",
+    designation: "Dueño de Bar Deportivo 'El Golazo'",
     content:
-      "Our members are so impressed. It's intuitive. It's clean. It's distraction free. If you're building a community.",
-    image: "/images/testimonials/auth-01.png",
+      "Implementar QuiniSports en nuestro bar ha sido una decisión excelente. Nuestros clientes disfrutan mucho más de los partidos con las estadísticas en tiempo real y las predicciones que ofrece la plataforma. Además, ha aumentado la interacción y las apuestas amigables entre los asistentes. Definitivamente lo recomiendo a otros dueños de sportbars.",
+    image: "/assets/testimonials/auth-1.webp",
     star: 5,
   },
   {
     id: "2",
-    name: "Devid Weilium",
-    designation: "Founder @UIdeck",
+    name: "María Rodríguez",
+    designation: "Propietaria de Restaurante 'La Cancha'",
     content:
-      "Our members are so impressed. It's intuitive. It's clean. It's distraction free. If you're building a community.",
-    image: "/images/testimonials/auth-02.png",
+      "QuiniSports ha revolucionado la experiencia de nuestros clientes durante eventos deportivos. Las funciones de predicción y análisis en vivo han generado un ambiente más dinámico y entretenido. Hemos notado un incremento en la afluencia de clientes durante los días de partidos importantes. ¡Una herramienta indispensable para cualquier negocio orientado al deporte!",
+    image: "/assets/testimonials/auth-2.webp",
     star: 5,
   },
   {
     id: "3",
-    name: "Lethium Frenci",
-    designation: "Founder @Lineicons",
+    name: "Juan Pérez",
+    designation: "Gerente del Bar 'Tiempo Extra'",
     content:
-      "Our members are so impressed. It's intuitive. It's clean. It's distraction free. If you're building a community.",
-    image: "/images/testimonials/auth-03.png",
+      "Desde que introdujimos QuiniSports en nuestro bar, la respuesta de los clientes ha sido increíble. Las predicciones deportivas y los datos en tiempo real han creado una atmósfera emocionante y competitiva. Esto no solo ha mejorado la satisfacción de nuestros clientes, sino que también ha incrementado nuestras ventas en días de juego. Muy recomendable.",
+    image: "/assets/testimonials/auth-3.png",
     star: 5,
   },
 ];
 
 const Testimonials = () => {
   return (
-    <section className="relative z-10 bg-primary/[.03] py-16 md:py-20 lg:py-28">
+    <section className="relative z-10 bg-slate-50 py-16 md:py-20 lg:py-28">
       <div className="container">
-        <SectionTitle
-          title="What Our Users Says"
-          paragraph="There are many variations of passages of Lorem Ipsum available but the majority have suffered alteration in some form."
-          center
-        />
+        <SectionTitle title="Lo que dicen nuestros usuarios" paragraph="" center />
 
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {testimonialData.map((testimonial) => (
@@ -49,13 +45,7 @@ const Testimonials = () => {
         </div>
       </div>
       <div className="absolute top-5 right-0 z-[-1]">
-        <svg
-          width="238"
-          height="531"
-          viewBox="0 0 238 531"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="238" height="531" viewBox="0 0 238 531" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect
             opacity="0.3"
             x="422.819"
@@ -85,8 +75,8 @@ const Testimonials = () => {
               y2="459.865"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4A6CF7" />
-              <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
+              <stop stopColor="#16a34a" />
+              <stop offset="1" stopColor="#16a34a" stopOpacity="0" />
             </linearGradient>
             <linearGradient
               id="paint1_linear_83:2"
@@ -96,20 +86,14 @@ const Testimonials = () => {
               y2="675.565"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4A6CF7" />
-              <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
+              <stop stopColor="#16a34a" />
+              <stop offset="1" stopColor="#16a34a" stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>
       </div>
       <div className="absolute left-0 bottom-5 z-[-1]">
-        <svg
-          width="279"
-          height="106"
-          viewBox="0 0 279 106"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="279" height="106" viewBox="0 0 279 106" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.5">
             <path
               d="M-57 12L50.0728 74.8548C55.5501 79.0219 70.8513 85.7589 88.2373 79.3692C109.97 71.3821 116.861 60.9642 156.615 63.7423C178.778 65.291 195.31 69.2985 205.911 62.3533C216.513 55.408 224.994 47.7682 243.016 49.1572C255.835 50.1453 265.278 50.8936 278 45.3373"
@@ -137,8 +121,8 @@ const Testimonials = () => {
               y2="8.15715"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4A6CF7" stopOpacity="0" />
-              <stop offset="1" stopColor="#4A6CF7" />
+              <stop stopColor="#16a34a" stopOpacity="0" />
+              <stop offset="1" stopColor="#16a34a" />
             </linearGradient>
             <linearGradient
               id="paint1_linear_72:302"
@@ -148,8 +132,8 @@ const Testimonials = () => {
               y2="-2.84285"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4A6CF7" stopOpacity="0" />
-              <stop offset="1" stopColor="#4A6CF7" />
+              <stop stopColor="#16a34a" stopOpacity="0" />
+              <stop offset="1" stopColor="#16a34a" />
             </linearGradient>
             <linearGradient
               id="paint2_linear_72:302"
@@ -159,8 +143,8 @@ const Testimonials = () => {
               y2="19.1572"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4A6CF7" stopOpacity="0" />
-              <stop offset="1" stopColor="#4A6CF7" />
+              <stop stopColor="#16a34a" stopOpacity="0" />
+              <stop offset="1" stopColor="#16a34a" />
             </linearGradient>
             <linearGradient
               id="paint3_linear_72:302"
@@ -170,8 +154,8 @@ const Testimonials = () => {
               y2="31.1572"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4A6CF7" stopOpacity="0" />
-              <stop offset="1" stopColor="#4A6CF7" />
+              <stop stopColor="#16a34a" stopOpacity="0" />
+              <stop offset="1" stopColor="#16a34a" />
             </linearGradient>
           </defs>
         </svg>

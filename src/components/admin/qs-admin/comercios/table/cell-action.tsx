@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Dialog_ } from "../dialog/dialog";
 import { deleteApi } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
-import { useBusinessStore } from "@/store/businessStore";
+import { useBusinessesStore } from "@/store/qs-admin";
 import { AlertModal } from "@/components/quinisports/general/AlertModal";
 import { ActionDropdown } from "@/components/quinisports/general/ActionDropdown";
 
@@ -19,7 +19,7 @@ export const Cell_: React.FC<Props> = ({ data }) => {
   const [openRemove, setOpenRemove] = useState(false);
 
   const { toast } = useToast();
-  const { businesses, setData } = useBusinessStore();
+  const { businesses, setData } = useBusinessesStore();
   const [loading, setLoading] = useState(false);
 
   const onConfirmRemove = async (id: string) => {
