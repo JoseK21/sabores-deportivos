@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
 import { ALLOWER_ROLES_TO_BUSINESS_LOGIC } from "../constants";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "QuiniSports",
@@ -36,9 +37,13 @@ export const metadata: Metadata = {
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
-  
+
   if (session?.user.role && ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(session?.user.role)) {
     redirect("/qs-admin");
+  }
+
+  if (headers().get("quini-access") != "true") {
+    redirect("/en-mantenimiento");
   }
 
   return (

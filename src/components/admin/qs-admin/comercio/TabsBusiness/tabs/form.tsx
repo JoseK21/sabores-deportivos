@@ -2,27 +2,27 @@
 
 import { z } from "zod";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { cleanText } from "@/utils/string";
 import { BusinessTypes } from "@/app/enum";
 import { Business } from "@/types/business";
 import { PutBlobResult } from "@vercel/blob";
 import { Input } from "@/components/ui/input";
+import { deleteApi, putApi } from "@/lib/api";
 import { getObjectDiff } from "@/utils/object";
 import { useFetchData } from "@/hooks/useFetchData";
+import { useBusinessStore } from "@/store/qs-admin";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { deleteApi, putApi } from "@/lib/api";
 import { BUSINESS_TYPES, COUNTRIES } from "@/app/constants";
 import { PROVINCE_WITH_CANTONS } from "@/app/costa-rica-constants";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
-import { useBusinessStore, useBusinessesStore } from "@/store/qs-admin";
 
 function mapErrorCode(code: string): string {
   switch (code) {
@@ -61,26 +61,20 @@ const FormSchema = z.object({
   country: z.string().min(1, { message: "Por favor indique el pais" }),
 });
 
-export default function FormBusiness({ data }: { data?: Business }) {
-  const { business, setData } = useBusinessStore();
-
-  useEffect(() => {
-    console.log("@ useEffect", data);
-    
-    setData(data ?? {} as Business);
-  }, []);
+export default function FormBusiness({ business }: { business?: Business }) {
+  const { setData } = useBusinessStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: data || ({} as Business),
+    defaultValues: business || ({} as Business),
   });
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   useFetchData(async () => {
-    if (data?.coverImageUrl) {
-      urlToFile((data?.coverImageUrl as string) || "")
+    if (business?.coverImageUrl) {
+      urlToFile((business?.coverImageUrl as string) || "")
         .then((file) => {
           form.setValue("coverImageUrl", file);
         })
@@ -88,8 +82,8 @@ export default function FormBusiness({ data }: { data?: Business }) {
           form.setValue("coverImageUrl", null);
         });
     }
-    if (data?.logoUrl) {
-      urlToFile((data?.logoUrl as string) || "")
+    if (business?.logoUrl) {
+      urlToFile((business?.logoUrl as string) || "")
         .then((file) => {
           form.setValue("logoUrl", file);
         })
@@ -103,7 +97,7 @@ export default function FormBusiness({ data }: { data?: Business }) {
     try {
       setLoading(true);
 
-      let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Business));
+      let dataToEdit = getObjectDiff(dataForm, business ?? ({} as Business));
 
       if (isEmpty(dataToEdit)) {
         setLoading(false);
@@ -119,7 +113,7 @@ export default function FormBusiness({ data }: { data?: Business }) {
       }
 
       if (dataToEdit?.coverImageUrl) {
-        const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.coverImageUrl as string}`);
+        const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${business?.coverImageUrl as string}`);
 
         if (deletedPhoto?.isError) {
           toast({
@@ -141,7 +135,7 @@ export default function FormBusiness({ data }: { data?: Business }) {
       }
 
       if (dataToEdit?.logoUrl) {
-        const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.logoUrl as string}`);
+        const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${business?.logoUrl as string}`);
 
         if (deletedPhoto?.isError) {
           toast({
@@ -165,9 +159,7 @@ export default function FormBusiness({ data }: { data?: Business }) {
       const response = await putApi(`/api/business/${dataForm.id}`, dataToEdit);
 
       if (response.data) {
-        const updateData = response.data;
-
-        setData(updateData);
+        setData(response.data);
       }
 
       toast({
@@ -204,7 +196,7 @@ export default function FormBusiness({ data }: { data?: Business }) {
                   <FormLabel>Imagen de Perfil</FormLabel>
                   <FormControl>
                     <FileInputPreview
-                      name={data?.name}
+                      name={business?.name}
                       disabled={loading}
                       onChange={onChange}
                       size={SIZES_UNIT.md}
@@ -226,7 +218,7 @@ export default function FormBusiness({ data }: { data?: Business }) {
                   <FormLabel>Logo</FormLabel>
                   <FormControl>
                     <FileInputPreview
-                      name={data?.name}
+                      name={business?.name}
                       disabled={loading}
                       onChange={onChange}
                       size={SIZES_UNIT.md}

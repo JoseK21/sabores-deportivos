@@ -1,25 +1,17 @@
 "use client";
 
-import Logo from "@/components/quinisports/general/Logo";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Logo from "@/components/quinisports/general/Logo";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const routes = useRouter();
 
   const goBack = useCallback(() => {
     routes.back();
-
-    // TODO: redirect back to own page
-    // if (document.referrer) {
-    //   routes.replace("/");
-    // } else {
-    //   routes.back();
-    // }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

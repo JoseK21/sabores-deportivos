@@ -32,21 +32,19 @@ const FormSchema = z.object({
   xLink: z.string().optional(),
 });
 
-export default function FormBusinessSocialMedia({ data }: { data?: Business }) {
-  const { business, setData } = useBusinessStore();
+export default function FormBusinessSocialMedia({ business }: { business?: Business }) {
+  const { setData } = useBusinessStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: data || ({} as Business),
+    defaultValues: {
+      wazeLink: business?.wazeLink ?? "",
+      googleMapLink: business?.googleMapLink ?? "",
+      facebookLink: business?.facebookLink ?? "",
+      instagramLink: business?.instagramLink ?? "",
+      xLink: business?.xLink ?? "",
+    } as Business,
   });
-
-  useEffect(() => {
-    form.setValue("wazeLink", business.wazeLink);
-    form.setValue("googleMapLink", business.googleMapLink);
-    form.setValue("facebookLink", business.facebookLink);
-    form.setValue("instagramLink", business.instagramLink);
-    form.setValue("xLink", business.xLink);
-  }, [business]);
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -55,7 +53,7 @@ export default function FormBusinessSocialMedia({ data }: { data?: Business }) {
     try {
       setLoading(true);
 
-      let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Business));
+      let dataToEdit = getObjectDiff(dataForm, business ?? ({} as Business));
 
       console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
 
@@ -72,12 +70,10 @@ export default function FormBusinessSocialMedia({ data }: { data?: Business }) {
         return 0;
       }
 
-      const response = await putApi(`/api/business/${data?.id}`, dataToEdit);
+      const response = await putApi(`/api/business/${business?.id}`, dataToEdit);
 
       if (response.data) {
-        const updateData = response.data;
-
-        setData(updateData);
+        setData(response.data);
       }
 
       toast({

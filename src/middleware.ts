@@ -11,6 +11,15 @@ export { default } from "next-auth/middleware";
 
 export const config = { matcher: [] };
 
+export function middleware(request: NextRequest) {
+  console.log(`credentials:${request.credentials}`);
+  console.log(`method:${request.method}`);
+
+  console.log(`headers: referer:${request.headers.get("referer")}`);
+
+  return NextResponse.next();
+}
+
 // export function middleware(request: NextRequest) {
 //   const pathname = request.nextUrl.pathname;
 
