@@ -11,8 +11,8 @@ import { UserRole, UserStatus } from "@/app/enum";
 import { USER_STATUS } from "@/app/constants";
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma) as Adapter,
-  secret: (process.env.NEXTAUTH_SECRET as string) ?? "",
   session: { strategy: "jwt", maxAge: 2592000 },
   providers: [
     GoogleProvider({
