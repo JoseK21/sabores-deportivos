@@ -15,11 +15,8 @@ export const metadata: Metadata = {
   keywords:
     "Quinielas deportivas, Pronósticos deportivos, Premios en quinielas, Emoción del deporte, Plataforma deportiva en línea",
   metadataBase: new URL("https://www.quinisports.com"),
-  icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
-  },
+  icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "https://wwww.quinisports.com",
@@ -27,11 +24,7 @@ export const metadata: Metadata = {
     description:
       "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
     siteName: "QuiniSports",
-    images: [
-      {
-        url: "/logo.png",
-      },
-    ],
+    images: [{ url: "/logo.png" }],
   },
 };
 

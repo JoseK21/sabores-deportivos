@@ -1,54 +1,8 @@
-import { Metadata } from "next";
 import Link from "next/link";
 
 import UserAuthForm from "@/components/template/forms/user-auth-form";
 
 import Logo from "@/components/quinisports/general/Logo";
-
-export const metadata: Metadata = {
-  title: "QuiniSports | Inicio de Sesión",
-  description:
-    "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
-  authors: [{ name: "JDataByte" }],
-  keywords:
-    "Quinielas deportivas, Pronósticos deportivos, Premios en quinielas, Emoción del deporte, Plataforma deportiva en línea",
-  manifest: "",
-  metadataBase: new URL("https://www.quinisports.com"),
-  alternates: {
-    canonical: "https://www.quinisports.com",
-  },
-  icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
-  },
-  robots: {
-    index: false,
-    follow: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: false,
-      noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  openGraph: {
-    type: "website",
-    url: "https://wwww.quinisports.com",
-    title: "QuiniSports",
-    description:
-      "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
-    siteName: "QuiniSports",
-    images: [
-      {
-        url: "https://www.quinisports.com//logo.png",
-      },
-    ],
-  },
-};
 
 export default function AuthenticationPage() {
   return (

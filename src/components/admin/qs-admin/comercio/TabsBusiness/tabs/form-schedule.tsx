@@ -15,15 +15,6 @@ import { useBusinessStore } from "@/store/qs-admin";
 import { Schedule } from "@/types/schedule";
 import { SCHEDULE } from "@/app/constants";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
-
 const FormSchema = z.object({
   mondayOpening: z.number().optional(),
   mondayClose: z.number().optional(),
@@ -106,7 +97,7 @@ export default function FormBusinessSchedule({ schedule }: { schedule?: Schedule
       //   duration: 5000,
       //   variant: response.isError ? "destructive" : "success",
       //   title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
-      //   description: response.isError ? `${mapErrorCode(response?.error?.code)}` : `Horarios Guardado`,
+      //   description: response.isError ? "Hubo un error interno en el servidor" : `Horarios Guardado`,
       // });
       // setLoading(false);
     } catch (error: any) {

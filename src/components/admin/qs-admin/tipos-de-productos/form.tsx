@@ -15,15 +15,6 @@ import { useProductTypesStore } from "@/store/qs-admin";
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
-
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
@@ -89,7 +80,7 @@ export default function FormData({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Tipo de Producto no actualizado!" : "Tipo de Producto actualizado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se actualizó el tipo de producto ${dataForm.name}`,
         });
         setLoading(false);
@@ -109,7 +100,7 @@ export default function FormData({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Tipo de Producto no agregado!" : "Nuevo Tipo de Producto agregado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se agregó el tipo de producto ${dataForm.name}`,
         });
         setLoading(false);

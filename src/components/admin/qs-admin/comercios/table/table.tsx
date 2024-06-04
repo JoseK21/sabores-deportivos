@@ -2,13 +2,14 @@
 
 import { DataTable } from "@/components/ui/data-table";
 
+import { orderBy } from "lodash";
 import { columns } from "./columns";
 import useBusinessData from "./useBusinessData";
-import { useBusinessesStore } from "@/store/qs-admin";
-import { orderBy } from "lodash";
 
 export default function BusinessTable() {
   const { isLoaded, businesses, error } = useBusinessData();
+
+  console.log("🚀 >>  BusinessTable >>  businesses:", businesses);
 
   if (isLoaded) {
     return (

@@ -4,37 +4,26 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
-import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { DialogFooter } from "@/components/ui/dialog";
-import { UserStaffBusinessRole, UserStatus } from "@/app/enum";
-import { deleteApi, postApi, putApi } from "@/lib/api";
-import { STAFF_REST_ROLES, USER_STATUS } from "@/app/constants";
-import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
-import { User } from "@/types/user";
-import { getObjectDiff } from "@/utils/object";
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
-import { useEmployeesStore } from "@/store/employeesStore";
-import { PutBlobResult } from "@vercel/blob";
-import { useFetchData } from "@/hooks/useFetchData";
-import { cleanText } from "@/utils/string";
+import { useState } from "react";
 import { isEmpty } from "lodash";
+import { User } from "@/types/user";
+import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
+import { cleanText } from "@/utils/string";
+import { PutBlobResult } from "@vercel/blob";
+import { getObjectDiff } from "@/utils/object";
+import { useFetchData } from "@/hooks/useFetchData";
+import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DialogFooter } from "@/components/ui/dialog";
+import { deleteApi, postApi, putApi } from "@/lib/api";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { UserStaffBusinessRole, UserStatus } from "@/app/enum";
+import { STAFF_REST_ROLES, USER_STATUS } from "@/app/constants";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
-
-const PATH_API = "/api/employee/";
-
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
+import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInputPreview";
 
 const FormSchema = z.object({
   id: z.string().optional(),
@@ -165,7 +154,7 @@ export default function FormEmployee({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Administrador no actualizado!" : "Administrador actualizado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se actualizó el administrador ${dataForm.name}`,
         });
         setLoading(false);
@@ -194,7 +183,7 @@ export default function FormEmployee({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Administrador no agregado!" : "Nuevo administrador agregado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se agregó el administrador ${dataForm.name}`,
         });
         setLoading(false);

@@ -29,15 +29,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Command, CommandEmpty, CommandList, CommandInput, CommandItem } from "@/components/ui/command";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
-
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
@@ -169,7 +160,7 @@ export default function FormAdmin({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Administrador no actualizado!" : "Administrador actualizado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se actualizó el administrador ${dataForm.name}`,
         });
         setLoading(false);
@@ -198,7 +189,7 @@ export default function FormAdmin({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Administrador no agregado!" : "Nuevo administrador agregado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se agregó el administrador ${dataForm.name}`,
         });
         setLoading(false);

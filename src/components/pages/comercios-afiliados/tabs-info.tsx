@@ -83,14 +83,15 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                   <AccordionContent>
                     {menu?.[key].map((item) => (
                       <>
-                        <div className=" flex flex-row gap-2 items-center">
+                        <div className="flex flex-col gap-2 items-center">
                           <Avatar>
-                            <AvatarImage src={item.image ?? ""} alt="-" className=" object-cover" />
-                            <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+                            <AvatarImage src={item.image ?? ""} alt="-" className="object-cover" />
+                            <AvatarFallback className="bg-slate-300 w-full h-full flex items-center justify-center">
                               {name.charAt(0).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                           <span>{item.name}</span>
+                          {/* <span>{item.}</span> */}
                         </div>
                         <br />
                       </>
