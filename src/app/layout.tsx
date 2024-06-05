@@ -11,6 +11,12 @@ import { authOptions } from "./api/auth/[...nextauth]/options";
 import { ErrorHandler } from "@/components/quinisports/_error-handlers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+export const metadata = {
+  robots: { index: true, follow: true },
+  verification: { google: "UmbI5KqAodg61vnQqbekEgSHPh5EsX_VzS2YrWVhh_M" },
+  other: { google: "notranslate" },
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
