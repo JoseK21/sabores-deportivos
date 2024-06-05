@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/"],
-      disallow: ["/terminos-y-condiciones", "/politicas-de-privacidad", "/#/*", "/qs-admin/*"],
+      allow: "/",
+      disallow: ["/#/*", "/qs-admin/*", "/preguntas-frecuentes","/terminos-y-condiciones", "/politicas-de-privacidad"],
     },
     sitemap: `${QUINISPORTS_URL}/sitemap.xml`,
   };

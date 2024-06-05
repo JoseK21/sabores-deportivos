@@ -16,12 +16,20 @@ const HomeFooter = () => {
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Siguenos En</h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <Link href="https://www.facebook.com/share/T6AP32G5TDniLbgu/?mibextid=LQQJ4d" target="_blank" className="hover:underline ">
+                  <Link
+                    href="https://www.facebook.com/share/T6AP32G5TDniLbgu/?mibextid=LQQJ4d"
+                    target="_blank"
+                    className="hover:underline "
+                  >
                     Facebook
                   </Link>
                 </li>
                 <li>
-                  <Link href="https://www.instagram.com/quinisports?igsh=MWxkMnJpMnhlbHIwMg==" target="_blank" className="hover:underline">
+                  <Link
+                    href="https://www.instagram.com/quinisports?igsh=MWxkMnJpMnhlbHIwMg=="
+                    target="_blank"
+                    className="hover:underline"
+                  >
                     Instagram
                   </Link>
                 </li>
@@ -42,7 +50,7 @@ const HomeFooter = () => {
                 </li>
                 <li>
                   <a href="/preguntas-frecuentes" className="hover:underline">
-                    Información
+                    Preguntas Frecuentes
                   </a>
                 </li>
               </ul>

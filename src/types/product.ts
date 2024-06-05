@@ -6,6 +6,7 @@ export type Product = {
   idBusiness: string;
   description: string;
   image: string;
+  price: number;
   productTypeId: string;
 
   productType?: ProductType;

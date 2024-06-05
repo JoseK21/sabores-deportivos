@@ -12,7 +12,8 @@ import Logo from "../general/Logo";
 const posts = [
   { slug: "/", title: "Eventos" },
   { slug: "/rankings", title: "Rankings" },
-  { slug: "/comercios-afiliados", title: "Comercios afiliados" },
+  { slug: "/comercios-afiliados", title: "Comercios" },
+  // { slug: "/comercios-afiliados", title: "Novedades" },
   { slug: "/sobre-nosotros", title: "Sobre Nosotros" },
 ];
 

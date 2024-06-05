@@ -11,6 +11,12 @@ import { authOptions } from "./api/auth/[...nextauth]/options";
 import { ErrorHandler } from "@/components/quinisports/_error-handlers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+export const metadata = {
+  robots: { index: true, follow: true },
+  verification: { google: "UmbI5KqAodg61vnQqbekEgSHPh5EsX_VzS2YrWVhh_M" },
+  other: { google: "notranslate" },
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -19,7 +25,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body className={`${fontSystem.className} antialiased`}>
         <ErrorHandler />
         <Providers session={session}>

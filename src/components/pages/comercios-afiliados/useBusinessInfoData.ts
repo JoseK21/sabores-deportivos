@@ -16,8 +16,6 @@ const useBusinessInfoData = (slug: string) => {
       const newData = await getApi(`api/business/full-info/${id}`);
       const data: Business = newData?.data || {};
 
-      console.log("🚀 >>  useFetchData >>  data:", data);
-
       setData(data);
     } catch (error: any) {
       setError(error);

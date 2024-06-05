@@ -22,19 +22,15 @@ import { cleanText } from "@/utils/string";
 import { PutBlobResult } from "@vercel/blob";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
+import { Textarea } from "@/components/ui/textarea";
+import Req from "@/components/quinisports/general/Req";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
+const exceptThisSymbols = ["e", "E", "+", "-", ".", ","];
 
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
+  price: z.number().optional(),
   image: z
     .any()
     .refine((file) => file?.size, "Imagen requerida")
@@ -49,7 +45,6 @@ const FormSchema = z.object({
     .min(1, { message: "Tipo de producto requerido" }),
   description: z.string().min(10, { message: "La descripción debe ser de mas de 10 caracteres" }),
 });
-
 
 export default function FormData({
   data,
@@ -71,7 +66,7 @@ export default function FormData({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
       ? data || ({} as Product)
-      : { name: "", description: "", productTypeId: "", image: "", idBusiness },
+      : { name: "", description: "", productTypeId: "", image: "", price: 0, idBusiness },
   });
 
   useFetchData(async () => {
@@ -151,7 +146,7 @@ export default function FormData({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Producto no actualizado!" : "Producto actualizado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se actualizó el producto ${dataForm.name}`,
         });
         setLoading(false);
@@ -180,7 +175,7 @@ export default function FormData({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Producto no agregado!" : "Nuevo producto agregado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se agregó el producto ${dataForm.name}`,
         });
         setLoading(false);
@@ -200,33 +195,40 @@ export default function FormData({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
-        <FormField
-          name="image"
-          control={form.control}
-          render={({ field: { onChange, value, ...rest } }) => (
-            <>
-              <FormItem className="flex flex-col items-center justify-center my-3">
-                <FormControl>
-                  <FileInputPreview
-                    name={data?.name}
-                    disabled={loading}
-                    onChange={onChange}
-                    size={SIZES_UNIT.xl}
-                    src={form.getValues().image}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </>
-          )}
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div className="flex items-center flex-col">
+          <FormLabel>
+            Imagen de Producto
+            <Req />
+          </FormLabel>
+          <FormField
+            name="image"
+            control={form.control}
+            render={({ field: { onChange, value, ...rest } }) => (
+              <>
+                <FormItem className="flex flex-col items-center justify-center my-3">
+                  <FormControl>
+                    <FileInputPreview
+                      name={data?.name}
+                      disabled={loading}
+                      onChange={onChange}
+                      size={SIZES_UNIT.xl}
+                      src={form.getValues().image}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
           <FormField
             name="name"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre</FormLabel>
+                <FormLabel>Nombre <Req /></FormLabel>
                 <FormControl>
                   <Input disabled={loading} placeholder="Nombre" {...field} />
                 </FormControl>
@@ -240,7 +242,7 @@ export default function FormData({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tipo de Producto</FormLabel>
+                <FormLabel>Tipo de Producto <Req /></FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger disabled={loading}>
@@ -261,20 +263,39 @@ export default function FormData({
           />
 
           <FormField
-            name="description"
+            name="price"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Descripción</FormLabel>
+                <FormLabel>Precio</FormLabel>
                 <FormControl>
-                  <Input disabled={loading} placeholder="Descripción" {...field} />
+                  <Input
+                    disabled={loading}
+                    type="number"
+                    placeholder="Precio"
+                    {...field}
+                    onKeyDown={(e) => exceptThisSymbols.includes(e.key) && e.preventDefault()}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <DialogFooter>
+        <FormField
+          name="description"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Descripción</FormLabel>
+              <FormControl>
+                <Textarea disabled={loading} placeholder="Descripción" className="w-full" {...field} maxLength={300} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <DialogFooter className="mt-4">
           <ButtonLoadingSubmit loading={loading} isEdition={isEdition} />
         </DialogFooter>
       </form>

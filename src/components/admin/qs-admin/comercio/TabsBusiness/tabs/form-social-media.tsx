@@ -15,15 +15,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { useBusinessStore } from "@/store/qs-admin";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
-
 const FormSchema = z.object({
   wazeLink: z.string().optional(),
   googleMapLink: z.string().optional(),
@@ -80,7 +71,7 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
         duration: 5000,
         variant: response.isError ? "destructive" : "success",
         title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
-        description: response.isError ? `${mapErrorCode(response?.error?.code)}` : `Horarios Guardado`,
+        description: response.isError ? "Hubo un error interno en el servidor" : `Horarios Guardado`,
       });
       setLoading(false);
     } catch (error: any) {

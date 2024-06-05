@@ -24,15 +24,6 @@ import FileInputPreview, { SIZES_UNIT } from "@/components/quinisports/FileInput
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
-
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
@@ -167,7 +158,7 @@ export default function FormBusiness({ business }: { business?: Business }) {
         variant: response.isError ? "destructive" : "success",
         title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
         description: response.isError
-          ? `${mapErrorCode(response?.error?.code)}`
+          ? "Hubo un error interno en el servidor"
           : `Se actualizó el comercio ${dataForm.name}`,
       });
       setLoading(false);

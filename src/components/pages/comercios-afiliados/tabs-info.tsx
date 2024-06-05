@@ -1,15 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useBusinessInfoData from "./useBusinessInfoData";
-import { useEffect } from "react";
-import Image from "next/image";
 import { Product } from "@/types/product";
-import { Prize } from "@/types/prize";
 
 interface ProductMap {
   [key: string]: Product[]; // O utiliza ProductType en lugar de string si ProductType es un tipo específico
@@ -21,7 +17,7 @@ interface PrizeMap {
 
 const TabsInfo = ({ slug }: { slug: string }) => {
   const { isLoaded, business } = useBusinessInfoData(slug);
-  const { name, description, logoUrl, coverImageUrl, Product, Prize } = business || {};
+  const { name, description, logoUrl, coverImageUrl, Product, Prize, displayProductPrice } = business || {};
 
   const menu: ProductMap =
     Product?.reduce((acc, item) => {
@@ -82,18 +78,18 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                   <AccordionTrigger>{key}</AccordionTrigger>
                   <AccordionContent>
                     {menu?.[key].map((item) => (
-                      <>
-                        <div className=" flex flex-row gap-2 items-center">
-                          <Avatar>
-                            <AvatarImage src={item.image ?? ""} alt="-" className=" object-cover" />
-                            <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
-                              {name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <span>{item.name}</span>
+                      <div className="flex flex-col gap-2 items-center bg-slate-100 p-2 rounded" key={item.id}>
+                        <Avatar>
+                          <AvatarImage src={item.image ?? ""} alt="-" className="object-cover" />
+                          <AvatarFallback className="bg-slate-300 w-full h-full flex items-center justify-center">
+                            {name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col items-center">
+                          <span className=" font-semibold">{item.name}</span>
+                          {displayProductPrice && <span>₡ {Number(item.price ?? 0).toLocaleString()}</span>}
                         </div>
-                        <br />
-                      </>
+                      </div>
                     ))}
                   </AccordionContent>
                 </AccordionItem>
@@ -108,18 +104,15 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                   <AccordionContent>
                     {premios?.[key].length === 0 && <div>No hay productos asociados!</div>}
                     {premios?.[key].map((item) => (
-                      <>
-                        <div className=" flex flex-row gap-2 items-center">
-                          <Avatar>
-                            <AvatarImage src={item.image ?? ""} alt="-" className=" object-cover" />
-                            <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
-                              {name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <span>{item.name}</span>
-                        </div>
-                        <br />
-                      </>
+                      <div className=" flex flex-col gap-2 items-center bg-primary-100 p-2 rounded" key={item.id}>
+                        <Avatar>
+                          <AvatarImage src={item.image ?? ""} alt="-" className=" object-cover" />
+                          <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+                            {name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span>{item.name}</span>
+                      </div>
                     ))}
                   </AccordionContent>
                 </AccordionItem>

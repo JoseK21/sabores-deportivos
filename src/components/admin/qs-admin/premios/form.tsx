@@ -23,15 +23,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
-function mapErrorCode(code: string): string {
-  switch (code) {
-    case "P2002":
-      return "Hubo un error, el email ya se encuentra registrado en el sistema";
-    default:
-      return "Hubo un error interno en el servidor";
-  }
-}
-
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
@@ -156,7 +147,7 @@ export default function FormData({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Premio no actualizado!" : "Premio actualizado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se actualizó el premio ${dataForm.name}`,
         });
         setLoading(false);
@@ -182,7 +173,7 @@ export default function FormData({
                 variant: responsePrizeProduct.isError ? "destructive" : "success",
                 title: responsePrizeProduct.isError ? "Productos no agregados!" : "Productos agregados!",
                 description: responsePrizeProduct.isError
-                  ? `${mapErrorCode(responsePrizeProduct?.error?.code)}`
+                  ? "Hubo un error interno en el servidor"
                   : `Se agregaron los productos al premio`,
               });
             }
@@ -196,7 +187,7 @@ export default function FormData({
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Premio no agregado!" : "Nuevo Premio agregado!",
           description: response.isError
-            ? `${mapErrorCode(response?.error?.code)}`
+            ? "Hubo un error interno en el servidor"
             : `Se agregó el premio ${dataForm.name}`,
         });
         setLoading(false);
