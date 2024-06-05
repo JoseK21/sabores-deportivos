@@ -8,8 +8,6 @@ import {
   UserStatus,
 } from "./enum";
 
-export const QUINISPORTS_URL = "https://wwww.quinisports.com";
-
 export const FULL_USER_ROLES = {
   [UserRole.unknown]: "Desconocido",
   [UserRole.client]: "Cliente",

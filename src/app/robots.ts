@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { QUINISPORTS_URL } from "./constants";
+import { __URL } from "./seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/#/*", "/qs-admin/*", "/preguntas-frecuentes","/terminos-y-condiciones", "/politicas-de-privacidad"],
     },
-    sitemap: `${QUINISPORTS_URL}/sitemap.xml`,
+    sitemap: `${__URL}/sitemap.xml`,
   };
 }
