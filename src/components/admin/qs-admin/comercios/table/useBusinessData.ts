@@ -11,13 +11,15 @@ const useBusinessData = () => {
   useFetchData(async () => {
     setIsLoaded(false);
 
-    try {
-      const newData = await getApi("api/business");
-      const businessesData: Business[] = newData?.data || [];
+    if (!businesses.length) {
+      try {
+        const newData = await getApi("business");
+        const businessesData: Business[] = newData?.data || [];
 
-      setData(businessesData);
-    } catch (error: any) {
-      setError(error);
+        setData(businessesData);
+      } catch (error: any) {
+        setError(error);
+      }
     }
 
     setIsLoaded(true);

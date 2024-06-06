@@ -104,7 +104,7 @@ export default function FormBusiness({ business }: { business?: Business }) {
       }
 
       if (dataToEdit?.coverImageUrl) {
-        const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${business?.coverImageUrl as string}`);
+        const deletedPhoto = await deleteApi(`images/upload?fileurl=${business?.coverImageUrl as string}`);
 
         if (deletedPhoto?.isError) {
           toast({
@@ -126,7 +126,7 @@ export default function FormBusiness({ business }: { business?: Business }) {
       }
 
       if (dataToEdit?.logoUrl) {
-        const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${business?.logoUrl as string}`);
+        const deletedPhoto = await deleteApi(`images/upload?fileurl=${business?.logoUrl as string}`);
 
         if (deletedPhoto?.isError) {
           toast({
@@ -147,7 +147,7 @@ export default function FormBusiness({ business }: { business?: Business }) {
         dataToEdit = { ...dataToEdit, logoUrl: newBlob.url ?? "" };
       }
 
-      const response = await putApi(`/api/business/${dataForm.id}`, dataToEdit);
+      const response = await putApi(`business/${dataForm.id}`, dataToEdit);
 
       if (response.data) {
         setData(response.data);

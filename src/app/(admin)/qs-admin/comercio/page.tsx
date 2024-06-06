@@ -9,7 +9,7 @@ export default async function Page() {
 
   const idBusiness = session?.user.idBusiness || "";
 
-  const newData = await getApi(`api/business/${idBusiness}`);
+  const newData = await getApi(`business/${idBusiness}`);
 
   const data = newData?.data ?? ({} as Business);
 

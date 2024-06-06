@@ -11,7 +11,7 @@ const TeamInfo = ({ id, name, abbr, logoUrl, colors }: Team) => {
         <AvatarFallback>{getFirstChars(name)}</AvatarFallback>
       </Avatar>
 
-      <h2 className="text-sm font-medium leading-none mt-2 text-center">{name || "-"}</h2>
+      <span className="text-sm font-medium leading-none mt-2 text-center">{name || "-"}</span>
 
       {/* <Input type="number" className="mt-4" /> */}
     </div>

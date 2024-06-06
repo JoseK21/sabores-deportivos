@@ -113,7 +113,7 @@ export default function FormEmployee({
         }
 
         if (dataToEdit?.image) {
-          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.image as string}`);
+          const deletedPhoto = await deleteApi(`images/upload?fileurl=${data?.image as string}`);
 
           if (deletedPhoto?.isError) {
             toast({
@@ -134,7 +134,7 @@ export default function FormEmployee({
           dataToEdit = { ...dataToEdit, image: newBlob.url ?? "" };
         }
 
-        const response = await putApi(`/api/employee/${dataForm.id}`, dataToEdit);
+        const response = await putApi(`employee/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
@@ -170,7 +170,7 @@ export default function FormEmployee({
 
         const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
 
-        const response = await postApi("/api/employee", updateDataForm);
+        const response = await postApi("employee", updateDataForm);
 
         setOpen(response.isError);
 

@@ -14,7 +14,7 @@ const useProductsData = (idBusiness: string | undefined) => {
 
     try {
       if (idBusiness) {
-        const data: Product[] = (await getApi(`api/product/byBusiness/${idBusiness}`))?.data || [];
+        const data: Product[] = (await getApi(`product/byBusiness/${idBusiness}`))?.data || [];
 
         setData(data);
       } else {

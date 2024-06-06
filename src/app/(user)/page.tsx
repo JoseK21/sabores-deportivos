@@ -132,7 +132,7 @@ export default function Home() {
         <div className="flex flex-row justify-between items-center my-4">
           <div className=" flex items-center">
             <h2 className="text-2xl font-semibold">Eventos</h2>
-            <h4 className="text-slate-600 ml-2">| Puntos Acumulados: 5 Pts</h4>
+            <span className="text-slate-600 ml-2">| Puntos Acumulados: 5 Pts</span>
           </div>
           <div className="flex justify-end ">
             <Select>

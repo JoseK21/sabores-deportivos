@@ -14,6 +14,7 @@ import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { useBusinessStore } from "@/store/qs-admin";
 import { Schedule } from "@/types/schedule";
 import { SCHEDULE } from "@/app/constants";
+import { putApi } from "@/lib/api";
 
 const FormSchema = z.object({
   mondayOpening: z.number().optional(),
@@ -33,29 +34,13 @@ const FormSchema = z.object({
 });
 
 export default function FormBusinessSchedule({ schedule }: { schedule?: Schedule }) {
-  const { business, setData } = useBusinessStore();
+  console.log("🚀 >>  FormBusinessSchedule >>  schedule:", schedule);
+  const { setData } = useBusinessStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: schedule || ({} as Schedule),
   });
-
-  // useEffect(() => {
-  //   form.setValue("mondayOpening", business?.Schedule?.mondayOpening ?? 0);
-  //   form.setValue("mondayClose", business?.Schedule?.mondayClose ?? 0);
-  //   form.setValue("tuesdayOpening", business?.Schedule?.tuesdayOpening ?? 0);
-  //   form.setValue("tuesdayClose", business?.Schedule?.tuesdayClose ?? 0);
-  //   form.setValue("wednesdayOpening", business?.Schedule?.wednesdayOpening ?? 0);
-  //   form.setValue("wednesdayClose", business?.Schedule?.wednesdayClose ?? 0);
-  //   form.setValue("thursdayOpening", business?.Schedule?.thursdayOpening ?? 0);
-  //   form.setValue("thursdayClose", business?.Schedule?.thursdayClose ?? 0);
-  //   form.setValue("fridayOpening", business?.Schedule?.fridayOpening ?? 0);
-  //   form.setValue("fridayClose", business?.Schedule?.fridayClose ?? 0);
-  //   form.setValue("saturdayOpening", business?.Schedule?.saturdayOpening ?? 0);
-  //   form.setValue("saturdayClose", business?.Schedule?.saturdayClose ?? 0);
-  //   form.setValue("sundayOpening", business?.Schedule?.sundayOpening ?? 0);
-  //   form.setValue("sundayClose", business?.Schedule?.sundayClose ?? 0);
-  // }, [business]);
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -64,6 +49,7 @@ export default function FormBusinessSchedule({ schedule }: { schedule?: Schedule
     console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
     try {
       setLoading(true);
+      console.log("🚀 >>  onSubmit >>  schedule?.id:", schedule?.id);
 
       let dataToEdit = getObjectDiff(dataForm, schedule ?? ({} as Schedule));
 
@@ -82,24 +68,24 @@ export default function FormBusinessSchedule({ schedule }: { schedule?: Schedule
         return 0;
       }
 
-      // todo remove
+      console.log("🚀 >>  onSubmit >>  schedule?.id:", schedule?.id);
+
+      const response = await putApi(`business_schedule/${schedule?.id}`, dataToEdit);
+
+      if (response.data) {
+        const updateData = response.data;
+
+        setData(updateData);
+      }
+
+      toast({
+        duration: 5000,
+        variant: response.isError ? "destructive" : "success",
+        title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
+        description: response.isError ? "Hubo un error interno en el servidor" : `Horarios Guardado`,
+      });
+
       setLoading(false);
-
-      // const response = await putApi(`/api/business/${data?.id}`, dataToEdit);
-
-      // if (response.data) {
-      //   const updateData = response.data;
-
-      //   setData(updateData);
-      // }
-
-      // toast({
-      //   duration: 5000,
-      //   variant: response.isError ? "destructive" : "success",
-      //   title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
-      //   description: response.isError ? "Hubo un error interno en el servidor" : `Horarios Guardado`,
-      // });
-      // setLoading(false);
     } catch (error: any) {
       console.error("🚀 >>  onSubmit >>  error:", error);
       setLoading(false);

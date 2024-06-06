@@ -5,7 +5,6 @@ import CategoryDropdown from "@/components/pages/comercios-afiliados/Header/cate
 import { useState } from "react";
 
 const GridFilter = () => {
-    
     const [filterText, handleTextChange] = useState("");
     const [category, handleCategories] = useState("");
   

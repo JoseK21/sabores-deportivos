@@ -119,7 +119,7 @@ export default function FormAdmin({
         }
 
         if (dataToEdit?.image) {
-          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.image as string}`);
+          const deletedPhoto = await deleteApi(`images/upload?fileurl=${data?.image as string}`);
 
           if (deletedPhoto?.isError) {
             toast({
@@ -140,7 +140,7 @@ export default function FormAdmin({
           dataToEdit = { ...dataToEdit, image: newBlob.url ?? "" };
         }
 
-        const response = await putApi(`/api/admin/${dataForm.id}`, dataToEdit);
+        const response = await putApi(`admin/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
@@ -176,7 +176,7 @@ export default function FormAdmin({
 
         const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
 
-        const response = await postApi("/api/admin", updateDataForm);
+        const response = await postApi("admin", updateDataForm);
 
         setOpen(response.isError);
 

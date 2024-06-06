@@ -28,7 +28,7 @@ export const CellAction: React.FC<Props> = ({ data }) => {
   const onConfirmRemove = async (id: string) => {
     setLoading(true);
 
-    const response = await deleteApi(`/api/prize/${id}`);
+    const response = await deleteApi(`prize/${id}`);
 
     setOpenRemove(response.isError);
 

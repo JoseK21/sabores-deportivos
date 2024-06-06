@@ -27,7 +27,7 @@ export const AdminCell: React.FC<Props> = ({ data }) => {
   const onConfirmRemove = async (id: string) => {
     setLoading(true);
 
-    const response = await deleteApi(`/api/admin/${id}`);
+    const response = await deleteApi(`admin/${id}`);
 
     setOpenRemove(response.isError);
 

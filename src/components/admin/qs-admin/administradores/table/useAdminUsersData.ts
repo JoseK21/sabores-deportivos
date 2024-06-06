@@ -12,7 +12,7 @@ const useAdminUsersData = () => {
     setIsLoaded(false);
 
     try {
-      const newData = await getApi("api/admin");
+      const newData = await getApi("admin");
       const adminsData: User[] = newData?.data || [];
 
       setData(adminsData);

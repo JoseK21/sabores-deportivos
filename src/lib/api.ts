@@ -8,11 +8,11 @@ interface ApiResponse {
   data: any;
 }
 
-const api = process.env.NODE_ENV === "development" ? "http://localhost:3000/" : "https://quinisports/";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 export const getApi = async (url: string, cancelToken?: CancelToken): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.get(`${api}${url}`, { cancelToken });
+    const response: AxiosResponse = await axios.get(`${API_URL}${url}`, { cancelToken });
 
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
@@ -23,7 +23,7 @@ export const getApi = async (url: string, cancelToken?: CancelToken): Promise<Ap
 
 export const postApi = async (url: string, data: any, cancelToken?: CancelToken): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.post(`${api}${url}`, data, { headers: HEADERS, cancelToken });
+    const response: AxiosResponse = await axios.post(`${API_URL}${url}`, data, { headers: HEADERS, cancelToken });
 
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
@@ -34,7 +34,7 @@ export const postApi = async (url: string, data: any, cancelToken?: CancelToken)
 
 export const putApi = async (url: string, data: any, cancelToken?: CancelToken): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.put(`${api}${url}`, data, { headers: HEADERS, cancelToken });
+    const response: AxiosResponse = await axios.put(`${API_URL}${url}`, data, { headers: HEADERS, cancelToken });
 
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
@@ -45,7 +45,7 @@ export const putApi = async (url: string, data: any, cancelToken?: CancelToken):
 
 export const deleteApi = async (url: string, cancelToken?: CancelToken): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.delete(`${api}${url}`, { headers: HEADERS, data: {}, cancelToken });
+    const response: AxiosResponse = await axios.delete(`${API_URL}${url}`, { headers: HEADERS, data: {}, cancelToken });
 
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {

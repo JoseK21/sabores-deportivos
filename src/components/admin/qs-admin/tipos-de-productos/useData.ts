@@ -13,7 +13,7 @@ const useData = () => {
     setIsLoaded(false);
 
     try {
-      const data: ProductType[] = (await getApi("api/product-type"))?.data || [];
+      const data: ProductType[] = (await getApi("product-type"))?.data || [];
 
       setData(data);
     } catch (error: any) {

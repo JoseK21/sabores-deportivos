@@ -22,7 +22,11 @@ export type Business = {
   facebookLink?: string;
   instagramLink?: string;
   xLink?: string;
-  
+  //contact
+  phone1?: string;
+  phone2?: string;
+  email?: string;
+
   // config
   plan: BusinessPlan;
   displayProductPrice: boolean;
@@ -30,5 +34,5 @@ export type Business = {
   // UI relation DB
   Product?: Product[];
   Prize?: Prize[];
-  Schedule?: Schedule;
+  BusinessScheduled?: Schedule;
 };

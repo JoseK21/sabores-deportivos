@@ -35,7 +35,7 @@ export const Cell_: React.FC<Props> = ({ data }) => {
   const onConfirmRemove = async (id: string) => {
     setLoading(true);
 
-    const response = await deleteApi(`/api/business/${id}`);
+    const response = await deleteApi(`business/${id}`);
 
     setOpenRemove(response.isError);
 

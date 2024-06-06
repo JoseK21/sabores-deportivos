@@ -13,8 +13,8 @@ const HomeFooter = () => {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Siguenos En</h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <span className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Siguenos En</span>
+              <ul className="text-gray-500 mt-4 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <Link
                     href="https://www.facebook.com/share/T6AP32G5TDniLbgu/?mibextid=LQQJ4d"
@@ -36,8 +36,8 @@ const HomeFooter = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <span className="text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</span>
+              <ul className="text-gray-500 mt-4 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <Link href="/politicas-de-privacidad" className="hover:underline">
                     Politica de Privacidad

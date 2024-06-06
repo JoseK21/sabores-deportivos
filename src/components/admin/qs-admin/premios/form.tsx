@@ -127,7 +127,7 @@ export default function FormData({
         //  considera hacer el proceso por cada producto
         //  para esto necesito primero tener el premio en db
 
-        const response = await putApi(`/api/prize/${dataForm.id}`, dataToEdit);
+        const response = await putApi(`prize/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
@@ -156,13 +156,13 @@ export default function FormData({
 
         console.log("🚀 >>  onSubmit >>  updateDataForm:", updateDataForm);
 
-        const response = await postApi("/api/prize", updateDataForm);
+        const response = await postApi("prize", updateDataForm);
 
         setOpen(response.isError);
 
         if (response.data) {
           if (currentProducts.length > 0) {
-            const responsePrizeProduct = await postApi("/api/prize_products", {
+            const responsePrizeProduct = await postApi("prize_products", {
               idPrize: response.data["id"],
               productIds: currentProducts.map((product) => product.id),
             });

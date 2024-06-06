@@ -44,7 +44,7 @@ export default function UserAuthForm() {
     setLoading(true);
 
     try {
-      const { data, isError } = await getApi(`api/users/${form.email}`);
+      const { data, isError } = await getApi(`users/${form.email}`);
       const { isEmailFound, isClient } = data || {};
 
       if (isError) throw new Error("Error de Server");
