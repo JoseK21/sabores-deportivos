@@ -9,6 +9,7 @@ import { Product } from "@/types/product";
 import { Schedule } from "@/types/schedule";
 import { DAYS_MAP } from "@/utils/date";
 import { Facebook, Instagram, Locate, Mail, MapPin, Phone, X } from "lucide-react";
+import { SCHEDULE } from "@/app/constants";
 
 interface ProductMap {
   [key: string]: Product[]; // O utiliza ProductType en lugar de string si ProductType es un tipo específico
@@ -18,42 +19,38 @@ interface PrizeMap {
   [key: string]: Product[]; // O utiliza ProductType en lugar de string si ProductType es un tipo específico
 }
 
-const scheduleToSpanish = (schedule: Schedule | undefined): string => {
-  if (!schedule) return "";
+const scheduleToSpanish = (schedule: Schedule | undefined): string[] => {
+  if (!schedule) return [];
 
   try {
     const formatTime = (time: number): string => {
-      const date = new Date(time * 60 * 1000); // Convertir minutos a milisegundos
-      const hours = date.getUTCHours();
-      const minutes = date.getUTCMinutes();
-      const period = hours >= 12 ? "pm" : "am";
-      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-      return `${formattedHours}:${minutes.toString().padStart(2, "0")}${period}`;
+      return SCHEDULE.find(({ value }) => value == time)?.label || "-";
     };
 
-    let result = "";
-
-    (Object.keys(DAYS_MAP) as Array<keyof Schedule>).forEach((day) => {
+    return (Object.keys(DAYS_MAP) as Array<keyof Schedule>).reduce((acc, day) => {
       const openingKey = `${day}Opening` as keyof Schedule;
       const closingKey = `${day}Close` as keyof Schedule;
 
-      if (schedule[openingKey] !== undefined && schedule[closingKey] !== undefined) {
-        result += `${DAYS_MAP[day.replace("Opening", "").replace("Close", "")]}: ${formatTime(
-          schedule[openingKey] as number
-        )} a ${formatTime(schedule[closingKey] as number)}\n`;
+      if (schedule[openingKey] && schedule[closingKey]) {
+        acc.push(
+          `${DAYS_MAP[day.replace("Opening", "").replace("Close", "")]}: ${formatTime(
+            schedule[openingKey] as number
+          )} a ${formatTime(schedule[closingKey] as number)}`
+        );
       }
-    });
 
-    return result.trim();
+      return acc;
+    }, [] as string[]);
   } catch (error) {
     console.log("🚀 >>  scheduleToSpanish >>  error:", error);
-    return "Horario no Disponible.";
+    return ["Horario no Disponible."];
   }
 };
 
 const TabsInfo = ({ slug }: { slug: string }) => {
   const { isLoaded, business } = useBusinessInfoData(slug);
-  const { name, description, logoUrl, coverImageUrl, Product, Prize, displayProductPrice, Schedule } = business || {};
+  const { name, description, logoUrl, coverImageUrl, Product, Prize, displayProductPrice, BusinessScheduled } =
+    business || {};
 
   const menu: ProductMap =
     Product?.reduce((acc, item) => {
@@ -67,8 +64,6 @@ const TabsInfo = ({ slug }: { slug: string }) => {
   const premios: PrizeMap =
     Prize?.reduce((acc, item) => {
       const key = `${item.points} Pts | ${item.name}`;
-
-      console.log("🚀 >>  Prize?.reduce >>  item.ProductPrize:", item);
 
       acc[key] = item.ProductPrize?.map((product) => product.product) || ([] as Product[]);
 
@@ -164,45 +159,79 @@ const TabsInfo = ({ slug }: { slug: string }) => {
               </>
             )}
 
-            {Schedule && (
+            {BusinessScheduled && (
               <>
                 <span className=" font-semibold text-lg">HORARIOS</span>
-                <p>{scheduleToSpanish(business.Schedule)}</p>
+                {scheduleToSpanish(business.BusinessScheduled).map((value) => (
+                  <p key={value}>{value}</p>
+                ))}
                 <br />
               </>
             )}
 
-            {(business.wazeLink ||
-              business.googleMapLink ||
-              business.facebookLink ||
-              business.instagramLink ||
-              business.xLink) && (
+            {(business.facebookLink || business.instagramLink || business.xLink) && (
               <>
-                <span className=" font-semibold text-lg">SÍGUENOS</span>
+                <span className=" font-semibold text-lg">SÍGUENOS EN</span>
                 <div>
-                  {business.wazeLink && (
-                    <a href={business.wazeLink} target="_blank" rel="noopener noreferrer">
-                      <Locate size={24} />
-                    </a>
-                  )}
-                  {business.googleMapLink && (
-                    <a href={business.googleMapLink} target="_blank" rel="noopener noreferrer">
-                      <MapPin size={24} />
-                    </a>
-                  )}
                   {business.facebookLink && (
-                    <a href={business.facebookLink} target="_blank" rel="noopener noreferrer">
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={business.facebookLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Facebook size={24} />
+                      Facebook
                     </a>
                   )}
                   {business.instagramLink && (
-                    <a href={business.instagramLink} target="_blank" rel="noopener noreferrer">
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={business.instagramLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Instagram size={24} />
+                      Instagram
                     </a>
                   )}
                   {business.xLink && (
-                    <a href={business.xLink} target="_blank" rel="noopener noreferrer">
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={business.xLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <X size={24} />
+                    </a>
+                  )}
+                </div>
+                <br />
+              </>
+            )}
+
+            {(business.wazeLink || business.googleMapLink) && (
+              <>
+                <span className=" font-semibold text-lg">VISITANOS POR MEDIO DE</span>
+                <div>
+                  {business.wazeLink && (
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={business.wazeLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Locate size={24} /> Waze
+                    </a>
+                  )}
+                  {business.googleMapLink && (
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={business.googleMapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MapPin size={24} /> Google Maps
                     </a>
                   )}
                 </div>
@@ -215,17 +244,17 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                 <span className=" font-semibold text-lg">CONTACTO</span>
                 <div>
                   {business.phone1 && (
-                    <a href={`tel:${business.phone1}`}>
+                    <a className="w-fit flex flex-row gap-1 items-center hover:text-primary-300" href={`tel:${business.phone1}`}>
                       <Phone size={24} /> {business.phone1}
                     </a>
                   )}
                   {business.phone2 && (
-                    <a href={`tel:${business.phone2}`}>
+                    <a className="w-fit flex flex-row gap-1 items-center hover:text-primary-300" href={`tel:${business.phone2}`}>
                       <Phone size={24} /> {business.phone2}
                     </a>
                   )}
                   {business.email && (
-                    <a href={`mailto:${business.email}`}>
+                    <a className="w-fit flex flex-row gap-1 items-center hover:text-primary-300" href={`mailto:${business.email}`}>
                       <Mail size={24} /> {business.email}
                     </a>
                   )}

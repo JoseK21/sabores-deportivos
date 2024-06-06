@@ -77,8 +77,6 @@ const Contact = () => {
 
       const response = await postApi("subscription", dataFormSubscription);
 
-      console.log("🚀 >>  onSubmitSubscription >>  response:", response);
-
       setLoadingSubcription(false);
 
       if (response.isError) {

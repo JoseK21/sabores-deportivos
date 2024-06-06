@@ -101,14 +101,10 @@ export default function FormData({
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
     try {
-      console.log("🚀 >>  onSubmit >>  dataForm:", dataForm, currentProducts);
-
       setLoading(true);
 
       if (isEdition) {
         let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Prize), ["id"]);
-
-        console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -153,8 +149,6 @@ export default function FormData({
         setLoading(false);
       } else {
         const updateDataForm = dataForm;
-
-        console.log("🚀 >>  onSubmit >>  updateDataForm:", updateDataForm);
 
         const response = await postApi("prize", updateDataForm);
 
@@ -222,8 +216,6 @@ export default function FormData({
     },
     [currentProducts]
   );
-
-  // console.log("ERROR", form.formState.errors);
 
   return (
     <>

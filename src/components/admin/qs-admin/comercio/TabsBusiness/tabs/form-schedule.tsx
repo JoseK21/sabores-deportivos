@@ -14,7 +14,8 @@ import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { useBusinessStore } from "@/store/qs-admin";
 import { Schedule } from "@/types/schedule";
 import { SCHEDULE } from "@/app/constants";
-import { putApi } from "@/lib/api";
+import { postApi, putApi } from "@/lib/api";
+import { Business } from "@/types/business";
 
 const FormSchema = z.object({
   mondayOpening: z.number().optional(),
@@ -33,8 +34,9 @@ const FormSchema = z.object({
   sundayClose: z.number().optional(),
 });
 
-export default function FormBusinessSchedule({ schedule }: { schedule?: Schedule }) {
-  console.log("🚀 >>  FormBusinessSchedule >>  schedule:", schedule);
+export default function FormBusinessSchedule({ business }: { business?: Business }) {
+  const { id: idBusiness, BusinessScheduled: schedule } = business ?? ({} as Business);
+
   const { setData } = useBusinessStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -46,43 +48,43 @@ export default function FormBusinessSchedule({ schedule }: { schedule?: Schedule
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
-    console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
+    const isEdition = Boolean(schedule?.id);
+
     try {
       setLoading(true);
-      console.log("🚀 >>  onSubmit >>  schedule?.id:", schedule?.id);
+      let dataToEditOrAdd = { idBusiness, ...getObjectDiff(dataForm, schedule ?? ({} as Schedule)) };
 
-      let dataToEdit = getObjectDiff(dataForm, schedule ?? ({} as Schedule));
-
-      console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
-
-      if (isEmpty(dataToEdit)) {
+      if (isEmpty(dataToEditOrAdd)) {
         setLoading(false);
 
         toast({
           duration: 3000,
           variant: "info",
           title: "Sin cambios!",
-          description: "No ha nuevos datos por actualizar",
+          description: isEdition ? "No ha nuevos datos por actualizar" : "No hay datos por agregar",
         });
 
         return 0;
       }
 
-      console.log("🚀 >>  onSubmit >>  schedule?.id:", schedule?.id);
+      const response = isEdition
+        ? await putApi(`business_schedule/${schedule?.id}`, dataToEditOrAdd)
+        : await postApi(`business_schedule`, dataToEditOrAdd);
 
-      const response = await putApi(`business_schedule/${schedule?.id}`, dataToEdit);
+      // TODO debo actualizar o agregar la data en el Schedule, no en el propio Business - store
+      // if (response.data) {
+      //   const updateData = response.data;
 
-      if (response.data) {
-        const updateData = response.data;
-
-        setData(updateData);
-      }
+      //   setData(updateData);
+      // }
 
       toast({
         duration: 5000,
         variant: response.isError ? "destructive" : "success",
-        title: response.isError ? "Comercio no actualizado!" : "Comercio actualizado!",
-        description: response.isError ? "Hubo un error interno en el servidor" : `Horarios Guardado`,
+        title: response.isError
+          ? `Horario no ${isEdition ? "actualizado" : "creado"}!`
+          : `Horario ${isEdition ? "actualizado" : "creado"}!`,
+        description: response.isError ? "Hubo un error interno en el servidor" : `Horario Guardado`,
       });
 
       setLoading(false);

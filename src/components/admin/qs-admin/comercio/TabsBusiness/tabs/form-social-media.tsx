@@ -46,8 +46,6 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
 
       let dataToEdit = getObjectDiff(dataForm, business ?? ({} as Business));
 
-      console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
-
       if (isEmpty(dataToEdit)) {
         setLoading(false);
 

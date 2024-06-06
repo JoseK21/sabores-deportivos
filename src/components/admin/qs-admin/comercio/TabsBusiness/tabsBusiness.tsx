@@ -9,15 +9,13 @@ import FormBusinessSocialMedia from "@/components/admin/qs-admin/comercio/TabsBu
 export default function TabsBusiness({ idBusiness }: { idBusiness: string | undefined }) {
   const { business, isLoaded } = useBusinessData(idBusiness);
 
-  console.log("🚀 >>  TabsBusiness >>  business:", business);
-
   if (isLoaded) {
     return (
       <Tabs defaultValue="general-info" className="w-full">
         <TabsList>
           <TabsTrigger value="general-info">Información General</TabsTrigger>
           <TabsTrigger value="social-media">Redes Sociales</TabsTrigger>
-          <TabsTrigger value="schedule">Horarios</TabsTrigger>
+          <TabsTrigger value="schedule">Horario</TabsTrigger>
           <TabsTrigger value="gallery" disabled>
             Galeria de Fotos
           </TabsTrigger>
@@ -29,7 +27,7 @@ export default function TabsBusiness({ idBusiness }: { idBusiness: string | unde
           <FormBusinessSocialMedia business={business} />
         </TabsContent>
         <TabsContent className="pt-2 border-t" value="schedule">
-          <FormBusinessSchedule schedule={business.BusinessScheduled} />
+          <FormBusinessSchedule business={business} />
         </TabsContent>
         <TabsContent className="pt-2 border-t" value="gallery">
           <span>No Disponible</span>
