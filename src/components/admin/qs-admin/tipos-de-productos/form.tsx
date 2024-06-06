@@ -60,7 +60,7 @@ export default function FormData({
           return 0;
         }
 
-        const response = await putApi(`/api/product-type/${dataForm.id}`, dataToEdit);
+        const response = await putApi(`product-type/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
@@ -87,7 +87,7 @@ export default function FormData({
       } else {
         const updateDataForm = dataForm;
 
-        const response = await postApi("/api/product-type", updateDataForm);
+        const response = await postApi("product-type", updateDataForm);
 
         setOpen(response.isError);
 

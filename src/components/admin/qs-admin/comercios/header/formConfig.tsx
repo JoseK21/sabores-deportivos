@@ -60,7 +60,7 @@ export default function FormConfig({
         return 0;
       }
 
-      const response = await putApi(`/api/business/${data?.id}`, dataToEdit);
+      const response = await putApi(`business/${data?.id}`, dataToEdit);
 
       setOpen(response.isError);
 

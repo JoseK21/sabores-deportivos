@@ -2,7 +2,7 @@ import { deleteApi } from "@/lib/api";
 import { notFound } from "next/navigation";
 
 const unsubscribeUserByEmail = async (email: string) => {
-  const response = await deleteApi(`/api/subscription/${email}`);
+  const response = await deleteApi(`subscription/${email}`);
 
   return !response.isError;
 };

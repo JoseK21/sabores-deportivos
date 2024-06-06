@@ -12,7 +12,7 @@ const useData = () => {
     setIsLoaded(false);
 
     try {
-      const newData = await getApi("api/employee");
+      const newData = await getApi("employee");
       const data: User[] = newData?.data || [];
 
       setData(data);

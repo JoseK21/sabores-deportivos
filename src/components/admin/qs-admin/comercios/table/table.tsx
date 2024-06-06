@@ -9,8 +9,6 @@ import useBusinessData from "./useBusinessData";
 export default function BusinessTable() {
   const { isLoaded, businesses, error } = useBusinessData();
 
-  console.log("🚀 >>  BusinessTable >>  businesses:", businesses);
-
   if (isLoaded) {
     return (
       <DataTable

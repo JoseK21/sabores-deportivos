@@ -13,7 +13,7 @@ const useEmployersData = (idBusiness: string | undefined) => {
 
     try {
       if (idBusiness) {
-        const newData = await getApi(`api/employee/byBusiness/${idBusiness}`);
+        const newData = await getApi(`employee/byBusiness/${idBusiness}`);
         const employeesData: User[] = newData?.data || [];
 
         setData(employeesData);

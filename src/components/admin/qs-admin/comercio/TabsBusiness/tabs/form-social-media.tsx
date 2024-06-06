@@ -46,8 +46,6 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
 
       let dataToEdit = getObjectDiff(dataForm, business ?? ({} as Business));
 
-      console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
-
       if (isEmpty(dataToEdit)) {
         setLoading(false);
 
@@ -61,7 +59,7 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
         return 0;
       }
 
-      const response = await putApi(`/api/business/${business?.id}`, dataToEdit);
+      const response = await putApi(`business/${business?.id}`, dataToEdit);
 
       if (response.data) {
         setData(response.data);
@@ -109,9 +107,9 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Link de GoogleMap</FormLabel>
+                <FormLabel>Link de Google Maps</FormLabel>
                 <FormControl>
-                  <Input disabled={loading} placeholder="GoogleMap" {...field} />
+                  <Input disabled={loading} placeholder="Google Maps" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

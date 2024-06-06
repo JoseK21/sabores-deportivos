@@ -13,7 +13,7 @@ const useBusinessData = (idBusiness: string | undefined) => {
 
     try {
       if (idBusiness) {
-        const newData = await getApi(`api/business/${idBusiness}`);
+        const newData = await getApi(`business/${idBusiness}`);
 
         setData(newData.data);
       } else {

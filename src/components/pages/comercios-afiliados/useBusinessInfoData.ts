@@ -13,7 +13,7 @@ const useBusinessInfoData = (slug: string) => {
 
     try {
       const id = slug.split("-").pop()
-      const newData = await getApi(`api/business/full-info/${id}`);
+      const newData = await getApi(`business/full-info/${id}`);
       const data: Business = newData?.data || {};
 
       setData(data);

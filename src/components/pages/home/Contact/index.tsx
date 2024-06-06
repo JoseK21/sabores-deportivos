@@ -44,7 +44,7 @@ const Contact = () => {
     try {
       setLoading(true);
 
-      const response = await postApi("/api/contact", dataForm);
+      const response = await postApi("contact", dataForm);
 
       setLoading(false);
       if (response.isError) throw new Error(`response status: ${response.error}`);
@@ -75,9 +75,7 @@ const Contact = () => {
     try {
       setLoadingSubcription(true);
 
-      const response = await postApi("/api/subscription", dataFormSubscription);
-
-      console.log("🚀 >>  onSubmitSubscription >>  response:", response);
+      const response = await postApi("subscription", dataFormSubscription);
 
       setLoadingSubcription(false);
 

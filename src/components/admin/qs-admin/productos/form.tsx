@@ -105,7 +105,7 @@ export default function FormData({
         }
 
         if (dataToEdit?.image) {
-          const deletedPhoto = await deleteApi(`/api/images/upload?fileurl=${data?.image as string}`);
+          const deletedPhoto = await deleteApi(`images/upload?fileurl=${data?.image as string}`);
 
           if (deletedPhoto?.isError) {
             toast({
@@ -126,7 +126,7 @@ export default function FormData({
           dataToEdit = { ...dataToEdit, image: newBlob.url ?? "" };
         }
 
-        const response = await putApi(`/api/product/${dataForm.id}`, dataToEdit);
+        const response = await putApi(`product/${dataForm.id}`, dataToEdit);
 
         setOpen(response.isError);
 
@@ -162,7 +162,7 @@ export default function FormData({
 
         const updateDataForm = { ...dataForm, image: newBlob.url ?? "" };
 
-        const response = await postApi("/api/product", updateDataForm);
+        const response = await postApi("product", updateDataForm);
 
         setOpen(response.isError);
 

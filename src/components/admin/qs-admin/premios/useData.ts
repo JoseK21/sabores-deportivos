@@ -13,7 +13,7 @@ const useData = (idBusiness: string | undefined) => {
     setIsLoaded(false);
 
     try {
-      const data: Prize[] = (await getApi(`api/prize/byBusiness/${idBusiness}`))?.data || [];
+      const data: Prize[] = (await getApi(`prize/byBusiness/${idBusiness}`))?.data || [];
 
       setData(data);
     } catch (error: any) {

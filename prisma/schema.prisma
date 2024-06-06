@@ -207,13 +207,16 @@ model Business {
   facebookLink        String?
   instagramLink       String?
   xLink               String?
+  phone1              Int?
+  phone2              Int?
+  email               String?
   plan                BusinessPlan          @default(basic)
   displayProductPrice Boolean               @default(false)
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
   BusinessAdvertising BusinessAdvertising[]
   BusinessGallery     BusinessGallery[]
-  BusinessScheduled   BusinessScheduled[]
+  BusinessScheduled   BusinessScheduled?
   Forecast            Forecast[]
   User                User[]
   Prize               Prize[]
@@ -222,7 +225,7 @@ model Business {
 
 model BusinessScheduled {
   id               String   @id @default(cuid())
-  idBusiness       String
+  idBusiness       String   @unique
   mondayOpening    Int?
   mondayClose      Int?
   tuesdayOpening   Int?
