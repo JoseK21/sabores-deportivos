@@ -21,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <>
       <HomeHeader session={session} />
-      <div className="flex overflow-hidden max-w-7xl mx-auto">
+      <div className="flex overflow-hidden max-w-7xl mx-auto p-4">
         <main className="min-h-screen w-full">{children}</main>
       </div>
       <HomeFooter />

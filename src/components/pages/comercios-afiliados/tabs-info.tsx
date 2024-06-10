@@ -10,13 +10,24 @@ import { Schedule } from "@/types/schedule";
 import { DAYS_MAP } from "@/utils/date";
 import { Facebook, Instagram, Locate, Mail, MapPin, Phone, X } from "lucide-react";
 import { SCHEDULE } from "@/app/constants";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const TABS_HEADER: {
+  [key: string]: string;
+} = {
+  menu: "Menú",
+  premios: "Premios",
+  "informacion-general": "Información General",
+  "galeria-de-fotos": "Galería de Fotos",
+};
 
 interface ProductMap {
-  [key: string]: Product[]; // O utiliza ProductType en lugar de string si ProductType es un tipo específico
+  [key: string]: Product[];
 }
 
 interface PrizeMap {
-  [key: string]: Product[]; // O utiliza ProductType en lugar de string si ProductType es un tipo específico
+  [key: string]: Product[];
 }
 
 const scheduleToSpanish = (schedule: Schedule | undefined): string[] => {
@@ -48,9 +59,28 @@ const scheduleToSpanish = (schedule: Schedule | undefined): string[] => {
 };
 
 const TabsInfo = ({ slug }: { slug: string }) => {
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+
+  const [currentTab, setcurrentTab] = useState("menu");
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    const hash = params.get("tab") ?? "menu";
+
+    if (Object.keys(TABS_HEADER).includes(hash)) {
+      setcurrentTab(hash);
+    } else {
+      params.delete("tab");
+
+      replace(`${pathname}?${params.toString()}`);
+    }
+  }, []);
+
   const { isLoaded, business } = useBusinessInfoData(slug);
-  const { name, description, logoUrl, coverImageUrl, Product, Prize, displayProductPrice, BusinessScheduled } =
-    business || {};
+  const { name, logoUrl, Product, Prize: prize, displayProductPrice, BusinessScheduled } = business || {};
 
   const menu: ProductMap =
     Product?.reduce((acc, item) => {
@@ -62,7 +92,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
     }, {} as ProductMap) ?? {};
 
   const premios: PrizeMap =
-    Prize?.reduce((acc, item) => {
+    prize?.reduce((acc, item) => {
       const key = `${item.points} Pts | ${item.name}`;
 
       acc[key] = item.ProductPrize?.map((product) => product.product) || ([] as Product[]);
@@ -94,12 +124,22 @@ const TabsInfo = ({ slug }: { slug: string }) => {
 
         <h1 className=" ml-2 text-2xl font-medium uppercase">BIENVENIDOS A {name}</h1>
       </div>
-      <Tabs defaultValue="menu">
+      <Tabs
+        defaultValue={currentTab}
+        onValueChange={(tab) => {
+          const params = new URLSearchParams(searchParams);
+
+          tab == "menu" ? params.delete("tab") : params.set("tab", tab);
+
+          replace(`${pathname}?${params.toString()}`);
+        }}
+      >
         <TabsList>
-          <TabsTrigger value="menu">Menu</TabsTrigger>
-          <TabsTrigger value="premios">Premios</TabsTrigger>
-          <TabsTrigger value="informacion-general">Información General</TabsTrigger>
-          <TabsTrigger value="galeria-de-fotos">Galeria de Fotos</TabsTrigger>
+          {Object.keys(TABS_HEADER).map((key) => (
+            <TabsTrigger key={key} value={key}>
+              {TABS_HEADER[key]}
+            </TabsTrigger>
+          ))}
         </TabsList>
         <div className="mx-4">
           <TabsContent value="menu">
@@ -244,17 +284,26 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                 <span className=" font-semibold text-lg">CONTACTO</span>
                 <div>
                   {business.phone1 && (
-                    <a className="w-fit flex flex-row gap-1 items-center hover:text-primary-300" href={`tel:${business.phone1}`}>
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={`tel:${business.phone1}`}
+                    >
                       <Phone size={24} /> {business.phone1}
                     </a>
                   )}
                   {business.phone2 && (
-                    <a className="w-fit flex flex-row gap-1 items-center hover:text-primary-300" href={`tel:${business.phone2}`}>
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={`tel:${business.phone2}`}
+                    >
                       <Phone size={24} /> {business.phone2}
                     </a>
                   )}
                   {business.email && (
-                    <a className="w-fit flex flex-row gap-1 items-center hover:text-primary-300" href={`mailto:${business.email}`}>
+                    <a
+                      className="w-fit flex flex-row gap-1 items-center hover:text-primary-300"
+                      href={`mailto:${business.email}`}
+                    >
                       <Mail size={24} /> {business.email}
                     </a>
                   )}

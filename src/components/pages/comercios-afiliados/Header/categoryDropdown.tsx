@@ -1,6 +1,6 @@
 "use client";
 
-import { SetStateAction, useMemo, useState } from "react";
+import { SetStateAction, useEffect, useMemo, useState } from "react";
 
 import {
   Select,
@@ -18,8 +18,9 @@ import { Input } from "@/components/ui/input";
 import { InputWithClean } from "@/components/ui/input-with-clean";
 
 interface CategoryDropdownProps {
-  handleTextChange: (filterText: string) => void;
-  filterText: string;
+  search: string;
+  category: string;
+  handleSearch: (search: string) => void;
   handleCategories: (categoryName: string) => void;
 }
 
@@ -28,7 +29,7 @@ type CategoryT = {
   name: string;
 };
 
-const CategoryDropdown = ({ handleTextChange, filterText, handleCategories }: CategoryDropdownProps) => {
+const CategoryDropdown = ({ handleSearch, handleCategories, search, category }: CategoryDropdownProps) => {
   const { businesses } = useBusinessesStore();
 
   const categories: CategoryT[] = useMemo(
@@ -42,17 +43,20 @@ const CategoryDropdown = ({ handleTextChange, filterText, handleCategories }: Ca
     [businesses]
   );
 
+  useEffect(() => {
+    if (category && categories.length && !categories.find(({ type }) => category === type)) {
+      handleCategories("");
+    }
+  }, [category, categories]);
+
   return (
     <div className="flex justify-end my-7 px-2 gap-3">
-      <InputWithClean
-        type="text"
-        placeholder="Nombre"
-        className=" max-w-60"
-        value={filterText}
-        handle={handleTextChange}
-      />
+      <InputWithClean type="text" placeholder="Nombre" className=" max-w-60" value={search} handle={handleSearch} />
 
-      <Select onValueChange={(type) => handleCategories(categories.find(({ name }) => type === name)?.type || "")}>
+      <Select
+        value={categories.find(({ type }) => category === type)?.name || ""}
+        onValueChange={(type) => handleCategories(categories.find(({ name }) => type === name)?.type || "")}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Tipos" />
         </SelectTrigger>
@@ -61,7 +65,7 @@ const CategoryDropdown = ({ handleTextChange, filterText, handleCategories }: Ca
             <SelectLabel>Tipos</SelectLabel>
             <SelectItem value="*">Todos</SelectItem>
             {categories.map((category) => (
-              <SelectItem key={category.type} value={category.name}>
+              <SelectItem key={category.type} value={category.name} id={category.name}>
                 {category.name}
               </SelectItem>
             ))}

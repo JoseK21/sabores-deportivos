@@ -2,36 +2,37 @@
 
 import { z } from "zod";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getObjectDiff } from "@/utils/object";
-import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
-import { useBusinessStore } from "@/store/qs-admin";
-import { Schedule } from "@/types/schedule";
+
 import { SCHEDULE } from "@/app/constants";
-import { postApi, putApi } from "@/lib/api";
+import { Schedule } from "@/types/schedule";
 import { Business } from "@/types/business";
+import { postApi, putApi } from "@/lib/api";
+import { getObjectDiff } from "@/utils/object";
+import { useBusinessStore } from "@/store/qs-admin";
+import { useToast } from "@/components/ui/use-toast";
+import { DialogFooter } from "@/components/ui/dialog";
+import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const FormSchema = z.object({
-  mondayOpening: z.number().optional(),
-  mondayClose: z.number().optional(),
-  tuesdayOpening: z.number().optional(),
-  tuesdayClose: z.number().optional(),
-  wednesdayOpening: z.number().optional(),
-  wednesdayClose: z.number().optional(),
-  thursdayOpening: z.number().optional(),
-  thursdayClose: z.number().optional(),
-  fridayOpening: z.number().optional(),
-  fridayClose: z.number().optional(),
-  saturdayOpening: z.number().optional(),
-  saturdayClose: z.number().optional(),
-  sundayOpening: z.number().optional(),
-  sundayClose: z.number().optional(),
+  mondayOpening: z.union([z.number(), z.null()]).optional(),
+  mondayClose: z.union([z.number(), z.null()]).optional(),
+  tuesdayOpening: z.union([z.number(), z.null()]).optional(),
+  tuesdayClose: z.union([z.number(), z.null()]).optional(),
+  wednesdayOpening: z.union([z.number(), z.null()]).optional(),
+  wednesdayClose: z.union([z.number(), z.null()]).optional(),
+  thursdayOpening: z.union([z.number(), z.null()]).optional(),
+  thursdayClose: z.union([z.number(), z.null()]).optional(),
+  fridayOpening: z.union([z.number(), z.null()]).optional(),
+  fridayClose: z.union([z.number(), z.null()]).optional(),
+  saturdayOpening: z.union([z.number(), z.null()]).optional(),
+  saturdayClose: z.union([z.number(), z.null()]).optional(),
+  sundayOpening: z.union([z.number(), z.null()]).optional(),
+  sundayClose: z.union([z.number(), z.null()]).optional(),
 });
 
 export default function FormBusinessSchedule({ business }: { business?: Business }) {
@@ -71,12 +72,11 @@ export default function FormBusinessSchedule({ business }: { business?: Business
         ? await putApi(`business_schedule/${schedule?.id}`, dataToEditOrAdd)
         : await postApi(`business_schedule`, dataToEditOrAdd);
 
-      // TODO debo actualizar o agregar la data en el Schedule, no en el propio Business - store
-      // if (response.data) {
-      //   const updateData = response.data;
+      if (response.data) {
+        const updateData = response.data;
 
-      //   setData(updateData);
-      // }
+        setData({ ...business, BusinessScheduled: updateData } as Business);
+      }
 
       toast({
         duration: 5000,
@@ -115,9 +115,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -144,9 +144,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -178,9 +178,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -207,9 +207,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -241,9 +241,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -270,9 +270,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -304,9 +304,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -333,9 +333,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -367,9 +367,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -396,9 +396,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -430,9 +430,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -459,9 +459,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -493,9 +493,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Apertura</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>
@@ -522,9 +522,9 @@ export default function FormBusinessSchedule({ business }: { business?: Business
                     <FormLabel>Cierre</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(Number(value));
+                        field.onChange(Number(value) || null);
                       }}
-                      defaultValue={field.value + ""}
+                      defaultValue={`${field.value ?? "null"}`}
                     >
                       <FormControl>
                         <SelectTrigger disabled={loading}>

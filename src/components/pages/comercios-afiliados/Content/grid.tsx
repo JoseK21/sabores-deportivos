@@ -1,35 +1,30 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Business } from "@/types/business";
 import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import useBusinessData from "@/components/admin/qs-admin/comercios/table/useBusinessData";
 import { SearchX } from "lucide-react";
 
 type Props = {
-  filterText: string;
+  search: string;
   category: string;
 };
 
-const Grid = ({ filterText, category }: Props) => {
+const Grid = ({ search, category }: Props) => {
   const { error, isLoaded, businesses } = useBusinessData();
   const [filterBusinesses, setFilter] = useState<Business[]>([]);
 
   useEffect(() => {
-    let fb: Business[] = [];
+    setFilter(
+      businesses.filter((x) => {
+        const isNameIncluded = search ? x.name.toLowerCase().includes(search.toLowerCase()) : true;
+        const isSameCategory = category && category !== "*" ? x.type === category : true;
 
-    fb = businesses.filter((x) => {
-      const isNameIncluded = filterText ? x.name.toLowerCase().includes(filterText.toLowerCase()) : true;
-      const isSameCategory = category && category !== "*" ? x.type === category : true;
-
-      return isNameIncluded && isSameCategory;
-    });
-    setFilter(fb);
-  }, [filterText, category, businesses]);
-
-  useEffect(() => {
-    setFilter(isLoaded ? businesses : []);
-  }, [isLoaded, businesses]);
+        return isNameIncluded && isSameCategory;
+      })
+    );
+  }, [search, category, businesses]);
 
   if (!isLoaded) {
     return (
@@ -68,7 +63,7 @@ const Grid = ({ filterText, category }: Props) => {
       <>
         {!filterBusinesses.length && (
           <div className="flex items-center flex-col w-full gap-2">
-            <SearchX size={24} color="#9a9a9a"/>
+            <SearchX size={24} color="#9a9a9a" />
             <span>Sin resultados</span>
           </div>
         )}

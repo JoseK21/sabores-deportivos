@@ -22,13 +22,13 @@ export const viewport = {
 export const metadata = {
   title: __NAME,
   other: { google: "notranslate" },
-  authors: [{ name: "JDataByte" }],
+  authors: [{ name: "JDataByte", url: "https://jdatabyte.com" }],
   robots: { index: true, follow: true },
   verification: { google: "UmbI5KqAodg61vnQqbekEgSHPh5EsX_VzS2YrWVhh_M" },
   description: __DESCRIPTION,
   keywords:
     "Quinielas deportivas, Pronósticos deportivos, Premios en quinielas, Emoción del deporte, Plataforma deportiva en línea",
-  publisher: "JDataByte",
+  creator: "JDataByte",
   metadataBase: new URL(__URL),
   alternates: { canonical: `${__URL}/` },
   icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" },

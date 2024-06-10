@@ -37,8 +37,6 @@ const EventCard = ({ team1, team2 }: Props) => {
         </div>
       </CardContent>
       <CardFooter>
-        {/* <Button className="w-full">Pronosticar</Button> */}
-
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="default" className="w-full">

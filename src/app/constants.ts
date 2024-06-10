@@ -71,9 +71,10 @@ export const COUNTRIES = [
 ];
 
 export const SCHEDULE: {
-  value: number;
+  value: number | null;
   label: string;
 }[] = [
+  { value: null, label: "-" },
   { value: 0, label: "12:00 am" },
   { value: 50, label: "12:30 am" },
   { value: 100, label: "1:00 am" },
