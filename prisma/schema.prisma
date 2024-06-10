@@ -123,71 +123,81 @@ model ClaimedPrize {
 }
 
 model Sport {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  abbrName  String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id         String       @id @default(cuid())
+  name       String       @unique
+  abbrName   String       @unique
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  Tournament Tournament[]
 }
 
 model League {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  abbrName  String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id         String       @id @default(cuid())
+  name       String       @unique
+  abbrName   String       @unique
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  Tournament Tournament[]
+}
+
+model Tournament {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  abbrName    String           @unique
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  sportId     String
+  leagueId    String
+  status      TournamentStatus
+  sport       Sport            @relation(fields: [sportId], references: [id])
+  league      League           @relation(fields: [leagueId], references: [id])
+  Event       Event[]
 }
 
 model Team {
-  id        String      @id @default(cuid())
-  name      String      @unique
-  abbrName  String      @unique
-  logoUrl   String
-  colors    String[]
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  TeamEvent TeamEvent[]
-  events    Event[]     @relation("teamEvents")
+  id         String   @id @default(cuid())
+  name       String   @unique
+  abbrName   String   @unique
+  logoUrl    String
+  colors     String[]
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  homeEvents Event[]  @relation("homeTeamEvents")
+  awayEvents Event[]  @relation("awayTeamEvents")
 }
 
 model Event {
-  id          String      @id @default(cuid())
-  title       String
-  description String
-  startTime   DateTime
-  leagueId    Int
-  sportId     Int
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
-  status      EventStatus
-  TeamEvent   TeamEvent[]
-  teams       Team[]      @relation("teamEvents")
-}
+  id           String      @id @default(cuid())
+  title        String?
+  tournamentId String
+  startDate    DateTime
+  status       EventStatus
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+  homeTeamId   String
+  awayTeamId   String
+  homeTeam     Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
+  awayTeam     Team        @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
+  Tournament   Tournament  @relation(fields: [tournamentId], references: [id])
 
-model TeamEvent {
-  id        String   @id @default(cuid())
-  teamId    String
-  eventId   String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  event     Event    @relation(fields: [eventId], references: [id])
-  team      Team     @relation(fields: [teamId], references: [id])
-
-  @@unique([teamId, eventId])
+  @@unique([tournamentId, startDate])
 }
 
 model Forecast {
-  id         String         @id @default(cuid())
-  idBusiness String
-  idClient   Int
-  idEvent    Int
-  date       DateTime
-  status     ForecastStatus
-  team1Score Int
-  team2Score Int
-  createdAt  DateTime       @default(now()) @map("created_at")
-  updatedAt  DateTime       @updatedAt @map("updated_at")
-  business   Business       @relation(fields: [idBusiness], references: [id])
+  id            String         @id @default(cuid())
+  idBusiness    String
+  idClient      Int
+  idEvent       Int
+  date          DateTime
+  status        ForecastStatus
+  homeTeamScore Int
+  awayTeamScore Int
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  business      Business       @relation(fields: [idBusiness], references: [id])
 }
 
 model Business {
@@ -328,4 +338,11 @@ enum BusinessPlan {
   basic
   intermediate
   premium
+}
+
+enum TournamentStatus {
+  upcoming
+  ongoing
+  completed
+  cancelled
 }
