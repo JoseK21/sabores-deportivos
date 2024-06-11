@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
-// import { Product } from "@/types/product";
-import { requestMiddleware } from "@/middlewares/requestMiddleware";
 import { Product } from "@prisma/client";
+import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const GET = requestMiddleware(async () => {
   return await prisma.product.findMany({

@@ -1,10 +1,13 @@
 import { create } from "zustand";
 
 import { User } from "@/types/user";
-import { ProductType } from "@/types/product-type";
-import { Product } from "@/types/product";
 import { Prize } from "@/types/prize";
+import { Sport } from "@/types/sport";
+import { League } from "@/types/league";
+import { Product } from "@/types/product";
 import { Business } from "@/types/business";
+import { Tournament } from "@/types/tournament";
+import { ProductType } from "@/types/product-type";
 
 export const useAdminsStore = create<{
   admins: User[];
@@ -76,4 +79,40 @@ export const useBusinessesStore = create<{
   error: null,
   setData: (newData) => set({ businesses: newData, error: null }),
   setError: (error) => set({ error }),
+}));
+
+export const useLeaguesStore = create<{
+  leagues: League[];
+  error: Error | null;
+  setData: (newData: League[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  error: null,
+  leagues: [],
+  setError: (error) => set({ error }),
+  setData: (data) => set({ leagues: data, error: null }),
+}));
+
+export const useSportsStore = create<{
+  sports: Sport[];
+  error: Error | null;
+  setData: (newData: Sport[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  error: null,
+  sports: [],
+  setError: (error) => set({ error }),
+  setData: (data) => set({ sports: data, error: null }),
+}));
+
+export const useTournamentsStore = create<{
+  tournaments: Tournament[];
+  error: Error | null;
+  setData: (newData: Tournament[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  error: null,
+  tournaments: [],
+  setError: (error) => set({ error }),
+  setData: (data) => set({ tournaments: data, error: null }),
 }));

@@ -26,7 +26,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
       <Header session={session} />
       <div className="flex h-screen overflow-hidden">
         <Sidebar role={session?.user.role} />
-        <main className="w-full pt-16">{children}</main>
+        <main className="w-full flex-1 space-y-4 px-8 py-24 ">{children}</main>
       </div>
     </>
   );

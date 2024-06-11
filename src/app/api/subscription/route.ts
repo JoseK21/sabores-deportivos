@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Subscription } from "@/types/subscription";
+import { Subscription } from "@prisma/client";
 import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const POST = requestMiddleware(async ({ data }: { data: Subscription }) => {

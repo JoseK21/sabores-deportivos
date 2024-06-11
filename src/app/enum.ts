@@ -66,3 +66,10 @@ export enum BooleanOption {
   false = "false",
   true = "true",
 }
+
+export enum TournamentStatus {
+  upcoming = "upcoming",
+  ongoing = "ongoing",
+  completed = "completed",
+  cancelled = "cancelled",
+}

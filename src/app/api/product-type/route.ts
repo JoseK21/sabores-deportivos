@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { ProductType } from "@/types/product-type";
+import { ProductType } from "@prisma/client";
 import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const GET = requestMiddleware(async () => {

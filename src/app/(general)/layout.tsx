@@ -24,12 +24,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </nav>
 
-      <div className="mt-6 mb-6 text-gray-700">
+      {<div className="mt-6 mb-6 text-gray-700">
         <Button variant="secondary" onClick={goBack}>
           <ArrowLeft size={20} />
           <span className="ml-4 ">Atras</span>
         </Button>
-      </div>
+      </div>}
 
       <div className="flex overflow-hidden">
         <main className="w-full">{children}</main>

@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
-import { User } from "@/types/user";
 import { UserRole } from "@/app/enum";
+import { User } from "@prisma/client";
 import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const GET = requestMiddleware(async () => {

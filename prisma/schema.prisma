@@ -123,21 +123,25 @@ model ClaimedPrize {
 }
 
 model Sport {
-  id         String       @id @default(cuid())
-  name       String       @unique
-  abbrName   String       @unique
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @updatedAt @map("updated_at")
-  Tournament Tournament[]
+  id        String   @id @default(cuid())
+  name      String   @unique
+  abbrName  String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  League    League[]
 }
 
 model League {
   id         String       @id @default(cuid())
   name       String       @unique
   abbrName   String       @unique
+  sportId    String
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @updatedAt @map("updated_at")
   Tournament Tournament[]
+  Sport      Sport        @relation(fields: [sportId], references: [id])
+
+  @@unique([name, sportId])
 }
 
 model Tournament {
@@ -147,13 +151,13 @@ model Tournament {
   description String?
   startDate   DateTime
   endDate     DateTime
+  enabled     Boolean          @default(true)
   createdAt   DateTime         @default(now()) @map("created_at")
   updatedAt   DateTime         @updatedAt @map("updated_at")
   sportId     String
   leagueId    String
   status      TournamentStatus
-  sport       Sport            @relation(fields: [sportId], references: [id])
-  league      League           @relation(fields: [leagueId], references: [id])
+  League      League           @relation(fields: [leagueId], references: [id])
   Event       Event[]
 }
 

@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
-import { requestMiddleware } from "@/middlewares/requestMiddleware";
 import { Prize } from "@prisma/client";
+import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const GET = requestMiddleware(async () => {
   return await prisma.prize.findMany({ orderBy: { name: "asc" } });

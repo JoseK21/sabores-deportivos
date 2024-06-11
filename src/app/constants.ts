@@ -3,6 +3,7 @@ import {
   BusinessPlan,
   BusinessTypes,
   Countries,
+  TournamentStatus,
   UserRole,
   UserStaffBusinessRole,
   UserStatus,
@@ -69,6 +70,13 @@ export const COUNTRIES = [
   { value: Countries.mx, label: "Mexico", enabled: false },
   { value: Countries.es, label: "España", enabled: false },
 ];
+
+export const TOURNAMENT_STATUS: { [key in TournamentStatus]: string } = {
+  [TournamentStatus.upcoming]: "Próximo",
+  [TournamentStatus.ongoing]: "En Curso",
+  [TournamentStatus.completed]: "Terminado",
+  [TournamentStatus.cancelled]: "Cancelado",
+};
 
 export const SCHEDULE: {
   value: number | null;
