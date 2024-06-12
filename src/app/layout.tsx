@@ -30,7 +30,7 @@ export const metadata = {
     "Quinielas deportivas, Pronósticos deportivos, Premios en quinielas, Emoción del deporte, Plataforma deportiva en línea",
   creator: "JDataByte",
   metadataBase: new URL(__URL),
-  alternates: { canonical: `${__URL}/` },
+  alternates: { canonical: __URL },
   icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" },
   openGraph: {
     url: __URL,
