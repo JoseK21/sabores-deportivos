@@ -18,7 +18,7 @@ const formSchema = z.object({
 
 type StaffFormValue = z.infer<typeof formSchema>;
 
-export default function StaffAuthForm() {
+export default function LoginForm() {
   const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState<String | null>(null);

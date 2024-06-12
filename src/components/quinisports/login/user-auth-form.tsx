@@ -1,19 +1,19 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+
 import * as z from "zod";
-import GoogleSignInButton from "../google-auth-button";
-import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import FacebookSignInButton from "../facebook-auth-button";
+import { useState } from "react";
 import { getApi } from "@/lib/api";
-import { UserRole } from "@/app/enum";
+import { signIn } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import NewUserAuthDialog from "./new-user-auth-dialog";
+import GoogleSignInButton from "../google-auth-button";
+import FacebookSignInButton from "../facebook-auth-button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Introduzca una dirección de correo electrónico válida" }),
@@ -23,7 +23,6 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
@@ -151,9 +150,7 @@ export default function UserAuthForm() {
 
         <span className="text-sm text-muted-foreground text-center">
           No tienes una cuenta?
-          <Link href={"/auth/registro"} className="ml-2 text-blue-500 ">
-            Registrar
-          </Link>
+          <NewUserAuthDialog />
         </span>
       </Form>
 

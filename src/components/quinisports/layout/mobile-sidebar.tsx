@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import { MenuIcon } from "lucide-react";
 
 import { MENU_BY_ROLE } from "@/app/(admin)/qs-admin/constants";
-import { DashboardNav } from "@/components//template/dashboard-nav";
+import { DashboardNav } from "@/components/quinisports/dashboard-nav";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function MobileSidebar({ session }: { session: Session }) {

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Star } from "lucide-react";
-import { UserNav } from "@/components/template/layout/user-nav";
+import { UserNav } from "@/components/quinisports/layout/user-nav";
 import Logo from "../general/Logo";
 
 const posts = [

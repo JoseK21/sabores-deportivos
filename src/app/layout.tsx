@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { __DESCRIPTION, __NAME, __URL } from "./seo";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Providers from "@/components/template/layout/providers";
+import Providers from "@/components/quinisports/layout/providers";
 import { authOptions } from "./api/auth/[...nextauth]/options";
 import { ErrorHandler } from "@/components/quinisports/_error-handlers";
 

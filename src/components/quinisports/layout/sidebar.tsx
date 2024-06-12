@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardNav } from "@/components//template/dashboard-nav";
+import { DashboardNav } from "@/components/quinisports/dashboard-nav";
 import { cn } from "@/lib/utils";
 import { MENU_BY_ROLE } from "@/app/(admin)/qs-admin/constants";
 import { UserRole } from "@/app/enum";
