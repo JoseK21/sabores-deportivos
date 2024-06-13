@@ -9,10 +9,7 @@ type ProductPrizeInput = {
 export const POST = requestMiddleware(async ({ data }: { data: ProductPrizeInput }) => {
   const { idPrize, productIds } = data;
 
-  const prize = await prisma.prize.findUnique({
-    where: { id: idPrize },
-    include: { ProductPrize: true }, // Incluye los ProductPrize relacionados
-  });
+  const prize = await prisma.prize.findUnique({ where: { id: idPrize }, include: { ProductPrize: true }});
 
   if (!prize) {
     throw new Error(`Prize with id ${idPrize} not found`);
