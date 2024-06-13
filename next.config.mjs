@@ -42,7 +42,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "*", // Set your origin
+            value: "https://www.quinisports.com",
           },
           {
             key: "Access-Control-Allow-Methods",
@@ -57,17 +57,17 @@ const nextConfig = {
     ];
   },
   // reactStrictMode: false,
-  async rewrites() {
-    return [{ source: "/", destination: "/auth/login" }];
-  },
-  async headers() {
-    return [
-      {
-        source: "/auth/registro",
-        headers: [{ key: "r-key", value: "04-06-2002" }],
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [{ source: "/", destination: "/auth/login" }];
+  // },
+  // async headers() {
+  //   return [
+  //     {
+  //       source: "/auth/registro",
+  //       headers: [{ key: "r-key", value: "04-06-2002" }],
+  //     },
+  //   ];
+  // },
 };
 
 export default withSentryConfig(nextConfig, {
