@@ -24,6 +24,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { Textarea } from "@/components/ui/textarea";
 import Req from "@/components/quinisports/general/Req";
+import { BOOLEAN_OPTIONS } from "@/app/constants";
+import { BooleanOption } from "@/app/enum";
 
 const exceptThisSymbols = ["e", "E", "+", "-", ".", ","];
 
@@ -31,6 +33,7 @@ const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
   price: z.number().optional(),
+  enabled: z.boolean().optional(),
   image: z
     .any()
     .refine((file) => file?.size, "Imagen requerida")
@@ -66,8 +69,10 @@ export default function FormData({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
       ? data || ({} as Product)
-      : { name: "", description: "", productTypeId: "", image: "", price: 0, idBusiness },
+      : { name: "", description: "", productTypeId: "", image: "", price: 0, idBusiness, enabled: true },
   });
+
+  console.log("🚀 >>  data:", data);
 
   useFetchData(async () => {
     if (isEdition && data?.image) {
@@ -197,8 +202,7 @@ export default function FormData({
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
         <div className="flex items-center flex-col">
           <FormLabel>
-            Imagen de Producto
-            <Req />
+            Imagen de Producto <Req />
           </FormLabel>
           <FormField
             name="image"
@@ -222,13 +226,15 @@ export default function FormData({
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <FormField
             name="name"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre <Req /></FormLabel>
+                <FormLabel>
+                  Nombre <Req />
+                </FormLabel>
                 <FormControl>
                   <Input disabled={loading} placeholder="Nombre" {...field} />
                 </FormControl>
@@ -242,7 +248,9 @@ export default function FormData({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tipo de Producto <Req /></FormLabel>
+                <FormLabel>
+                  Tipo de Producto <Req />
+                </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger disabled={loading}>
@@ -275,13 +283,47 @@ export default function FormData({
                     placeholder="Precio"
                     {...field}
                     onKeyDown={(e) => exceptThisSymbols.includes(e.key) && e.preventDefault()}
+                    value={field.value}
+                    onChange={(e) => {
+                      field.onChange(Number(parseFloat(e.target.value)));
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          <FormField
+            name="enabled"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Habilitado</FormLabel>
+                <Select
+                  onValueChange={(value) => field.onChange(value === "true")}
+                  defaultValue={field.value ? "true" : "false"}
+                >
+                  <FormControl>
+                    <SelectTrigger disabled={loading}>
+                      <SelectValue placeholder="Habilitado" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Object.keys(BOOLEAN_OPTIONS).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {BOOLEAN_OPTIONS[key as BooleanOption]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
+
+        {/* Agregar Habilitar producto */}
         <FormField
           name="description"
           control={form.control}

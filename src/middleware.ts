@@ -1,35 +1,42 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export { default } from "next-auth/middleware";
+// export { default } from "next-auth/middleware";
 
-// export function middleware(request: NextRequest) {
-//   return NextResponse.redirect(new URL('/home', request.url))
-// }
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://quinisports.com",
+  "https://www.quinisports.com",
+];
 
-// export const config = { matcher: ["/qs-admin", "/qs-admin/:path*"] };
+export function middleware(req: NextRequest) {
+  const pathname = req.nextUrl.pathname;
 
-export const config = { matcher: [] };
+  console.log("🚀 >>  middleware >>  pathname:", pathname);
 
-export function middleware(request: NextRequest) {
-  console.log(`credentials:${request.credentials}`);
-  console.log(`method:${request.method}`);
+  const res = NextResponse.next();
+  // if the incoming is for the desired API endpoint
+  const origin1 = req.headers.get("origin") ?? "";
 
-  console.log(`headers: referer:${request.headers.get("referer")}`);
+  console.log("🚀 >>  middleware >>  origin1:", origin1)
 
-  return NextResponse.next();
+  // if the origin is an allowed one,
+  // add it to the 'Access-Control-Allow-Origin' header
+  if (allowedOrigins.includes(origin1)) {
+    res.headers.append("Access-Control-Allow-Origin", origin1);
+  }
+
+  // add the remaining CORS headers to the response
+  res.headers.append("Access-Control-Allow-Credentials", "true");
+  res.headers.append("Access-Control-Allow-Methods", "GET,DELETE,PATCH,POST,PUT");
+  res.headers.append(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+  return res;
 }
 
-// export function middleware(request: NextRequest) {
-//   const pathname = request.nextUrl.pathname;
-
-//   console.log("🚀 >>  middleware >>  pathname:", pathname);
-
-//   if (pathname.includes("qs-admin")) {
-//     return NextResponse.rewrite(new URL("/qs-admin/login", request.url));
-//   }
-
-//   if (pathname.startsWith("/")) {
-//     return NextResponse.rewrite(new URL("/auth/login", request.url));
-//   }
-// }
+// specify the path regex to apply the middleware to
+export const config = {
+  matcher: "/api/:path*",
+};

@@ -78,6 +78,7 @@ model Product {
   image         String
   productTypeId String
   description   String?
+  enabled       Boolean        @default(true)
   price         Int            @default(1)
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")

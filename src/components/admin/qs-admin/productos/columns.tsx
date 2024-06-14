@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Product } from "@/types/product";
 
 import { CellAction } from "./cell-action";
+import { MoveDown, MoveUp } from "lucide-react";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -34,6 +35,20 @@ export const columns: ColumnDef<Product>[] = [
 
       return <span>{productType?.name || '-'}</span>;
     },
+  },
+  {
+    accessorKey: "enabled",
+    header: "Estado",
+    cell: ({ row }) => (
+      <div className=" flex items-center gap-2">
+        {row.original.enabled ? (
+          <MoveUp size={18} className="text-primary-400" />
+        ) : (
+          <MoveDown size={18} className="text-red-500" />
+        )}
+        <span>{row.original.enabled ? "Habilitado" : "Deshabilitado"}</span>
+      </div>
+    ),
   },
   {
     id: "actions",

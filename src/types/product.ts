@@ -7,6 +7,7 @@ export type Product = {
   description: string;
   image: string;
   price: number;
+  enabled: boolean;
   productTypeId: string;
 
   productType?: ProductType;
