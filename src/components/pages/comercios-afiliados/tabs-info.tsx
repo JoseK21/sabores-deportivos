@@ -12,6 +12,7 @@ import { Facebook, Instagram, Locate, Mail, MapPin, Phone, X } from "lucide-reac
 import { SCHEDULE } from "@/app/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const TABS_HEADER: {
   [key: string]: string;
@@ -44,9 +45,9 @@ const scheduleToSpanish = (schedule: Schedule | undefined): string[] => {
 
       if (schedule[openingKey] && schedule[closingKey]) {
         acc.push(
-          `${DAYS_MAP[day.replace("Opening", "").replace("Close", "")]}: ${formatTime(
-            schedule[openingKey] as number
-          )} a ${formatTime(schedule[closingKey] as number)}`
+          `${DAYS_MAP[day]}: ${formatTime(schedule[openingKey] as number)} a ${formatTime(
+            schedule[closingKey] as number
+          )}`
         );
       }
 
@@ -148,8 +149,14 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                 <AccordionItem key={key} value={key}>
                   <AccordionTrigger>{key}</AccordionTrigger>
                   <AccordionContent>
-                    {menu?.[key].map((item) => (
-                      <div className="flex flex-col gap-2 items-center bg-slate-100 p-2 rounded" key={item.id}>
+                    {menu?.[key].map((item, i) => (
+                      <div
+                        className={cn(
+                          "flex flex-col gap-2 items-center bg-slate-100 p-2 rounded min-w-28",
+                          (!item?.enabled ?? false) && "grayscale"
+                        )}
+                        key={`menu-${i}-${item.id}`}
+                      >
                         <Avatar>
                           <AvatarImage src={item.image ?? ""} alt="-" className="object-cover" />
                           <AvatarFallback className="bg-slate-300 w-full h-full flex items-center justify-center">
@@ -174,15 +181,22 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                   <AccordionTrigger>{key}</AccordionTrigger>
                   <AccordionContent>
                     {premios?.[key].length === 0 && <div>No hay productos asociados!</div>}
-                    {premios?.[key].map((item) => (
-                      <div className=" flex flex-col gap-2 items-center bg-primary-100 p-2 rounded" key={item.id}>
-                        <Avatar>
-                          <AvatarImage src={item.image ?? ""} alt="-" className=" object-cover" />
-                          <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
-                            {name.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span>{item.name}</span>
+                    {premios?.[key].map((item, i) => (
+                      <div key={`premio-${i}-${item.id}`}>
+                        <div
+                          className={cn(
+                            "flex flex-col gap-2 items-center bg-slate-100 p-2 rounded min-w-28",
+                            (!item?.enabled ?? false) && "grayscale"
+                          )}
+                        >
+                          <Avatar>
+                            <AvatarImage src={item.image ?? ""} alt="-" className=" object-cover" />
+                            <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+                              {name.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{item.name}</span>
+                        </div>
                       </div>
                     ))}
                   </AccordionContent>
@@ -281,7 +295,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
 
             {(business.phone1 || business.phone2 || business.email) && (
               <>
-                <span className=" font-semibold text-lg">CONTACTO</span>
+                <span className=" font-semibold text-lg">CONTACTOS AL</span>
                 <div>
                   {business.phone1 && (
                     <a

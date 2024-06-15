@@ -14,20 +14,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { postApi } from "@/lib/api";
 import { PutBlobResult } from "@vercel/blob";
 import { cleanText } from "@/utils/string";
+import { Checkbox } from "@/components/ui/checkbox";
+
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Req from "@/components/quinisports/general/Req";
 
 const newUserFormSchema = z.object({
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
+  subscription: z.boolean().optional(),
   email: z.string({ required_error: "Correo requerido." }).email({ message: "Correo electrónico inválido" }),
   password: z.string().min(3, { message: "La contraseña debe menor al menos 3 letras" }),
   image: z
@@ -96,7 +91,9 @@ export default function NewUserAuthDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="link" className="px-1">Registrarse ahora!</Button>
+        <Button variant="link" className="px-1">
+          Registrarse ahora!
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -173,7 +170,7 @@ export default function NewUserAuthDialog() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <div className=" flex flex-row">
+                    <div className=" flex flex-row pt-1">
                       <FormLabel>
                         Contraseña <Req />
                       </FormLabel>
@@ -190,6 +187,23 @@ export default function NewUserAuthDialog() {
                       />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="subscription"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormControl>
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Recibir notificaciones por correo electronico, de novedad y asuntos de interes
+                      </FormLabel>
+                    </div>
                   </FormItem>
                 )}
               />

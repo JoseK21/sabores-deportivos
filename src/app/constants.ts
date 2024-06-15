@@ -1,6 +1,7 @@
 import {
   BooleanOption,
   BusinessPlan,
+  BusinessScheduleStatus,
   BusinessTypes,
   Countries,
   TournamentStatus,
@@ -8,6 +9,8 @@ import {
   UserStaffBusinessRole,
   UserStatus,
 } from "./enum";
+
+export const EXCEPT_NUMBER_SYMBOLS = ["e", "E", "+", "-", ".", ","];
 
 export const FULL_USER_ROLES = {
   [UserRole.unknown]: "Desconocido",
@@ -76,6 +79,25 @@ export const TOURNAMENT_STATUS: { [key in TournamentStatus]: string } = {
   [TournamentStatus.ongoing]: "En Curso",
   [TournamentStatus.completed]: "Terminado",
   [TournamentStatus.cancelled]: "Cancelado",
+};
+
+export const BUSINESS_SCHEDULE_STATUS: { [key in BusinessScheduleStatus]: { class: string; label: string } } = {
+  [BusinessScheduleStatus.to_open]: {
+    class: "text-blue-700", // #3d56aa
+    label: "Por Abrir",
+  },
+  [BusinessScheduleStatus.opened]: {
+    class: "text-primary-500", // #3daa47
+    label: "Abierto",
+  },
+  [BusinessScheduleStatus.to_close]: {
+    class: "text-yellow-700", // #aa7d3d
+    label: "Por Cerrar",
+  },
+  [BusinessScheduleStatus.closed]: {
+    class: "text-red-600", // #aa3d3d
+    label: "Cerrado",
+  },
 };
 
 export const SCHEDULE: {

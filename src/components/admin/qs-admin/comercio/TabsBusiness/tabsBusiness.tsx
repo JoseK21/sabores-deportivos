@@ -4,7 +4,7 @@ import useBusinessData from "./useBusinessData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FormBusiness from "@/components/admin/qs-admin/comercio/TabsBusiness/tabs/form";
 import FormBusinessSchedule from "@/components/admin/qs-admin/comercio/TabsBusiness/tabs/form-schedule";
-import FormBusinessSocialMedia from "@/components/admin/qs-admin/comercio/TabsBusiness/tabs/form-social-media";
+import FormBusinessContacts from "@/components/admin/qs-admin/comercio/TabsBusiness/tabs/form-social-media";
 
 export default function TabsBusiness({ idBusiness }: { idBusiness: string | undefined }) {
   const { business, isLoaded } = useBusinessData(idBusiness);
@@ -14,7 +14,7 @@ export default function TabsBusiness({ idBusiness }: { idBusiness: string | unde
       <Tabs defaultValue="general-info" className="w-full">
         <TabsList>
           <TabsTrigger value="general-info">Información General</TabsTrigger>
-          <TabsTrigger value="social-media">Redes Sociales</TabsTrigger>
+          <TabsTrigger value="contacts">Contactos</TabsTrigger>
           <TabsTrigger value="schedule">Horario</TabsTrigger>
           <TabsTrigger value="gallery" disabled>
             Galeria de Fotos
@@ -23,8 +23,8 @@ export default function TabsBusiness({ idBusiness }: { idBusiness: string | unde
         <TabsContent className="pt-2 border-t" value="general-info">
           <FormBusiness business={business} />
         </TabsContent>
-        <TabsContent className="pt-2 border-t" value="social-media">
-          <FormBusinessSocialMedia business={business} />
+        <TabsContent className="pt-2 border-t" value="contacts">
+          <FormBusinessContacts business={business} />
         </TabsContent>
         <TabsContent className="pt-2 border-t" value="schedule">
           <FormBusinessSchedule business={business} />
