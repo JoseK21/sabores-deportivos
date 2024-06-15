@@ -3,12 +3,57 @@ import { BusinessTypes } from "@/app/enum";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Business } from "@/types/business";
+import { Schedule } from "@/types/schedule";
 import { generateSlug } from "@/utils/url";
+import { format } from "date-fns";
 import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const ComercioCard = ({ id, name, coverImageUrl, phone1, phone2, province, canton, district, type }: Business) => {
+const getActualSchedule = (schedule: Schedule, actualDay: string) => {
+  const openKey = `${actualDay}Opening` as keyof Schedule;
+  const closeKey = `${actualDay}Close` as keyof Schedule;
+
+  return {
+    openTime: Number(schedule[openKey]) || -1,
+    closeTime: Number(schedule[closeKey]) || -1,
+  };
+};
+
+const scheduleValidation = (schedule?: Schedule) => {
+  if (schedule) {
+    const today = new Date();
+    const actualDay = format(today, "EEEE").toLowerCase();
+    const { openTime, closeTime } = getActualSchedule(schedule, actualDay);
+    const todayMinutes = 900 || today.getMinutes() + today.getHours() * 60;
+    if (openTime >= 0 && closeTime >= 0) {
+      //ToDo agregar caso de limites negativos y superiores 1440
+      const openLimit = openTime - 30;
+      const closeLimit = closeTime - 30;
+      if (todayMinutes >= openLimit && todayMinutes < openTime) {
+        return "Por Abrir";
+      } else if (todayMinutes >= closeLimit && todayMinutes < closeTime) {
+        return "Por Cerrar";
+      } else if (todayMinutes >= openTime && todayMinutes < closeTime) {
+        return "Abierto";
+      }
+    }
+  }
+  return "Cerrado";
+};
+
+const ComercioCard = ({
+  id,
+  name,
+  coverImageUrl,
+  phone1,
+  phone2,
+  province,
+  canton,
+  district,
+  type,
+  BusinessScheduled
+}: Business) => {
   return (
     <Link href={`/comercios-afiliados/${generateSlug(name, id)}`}>
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -40,7 +85,7 @@ const ComercioCard = ({ id, name, coverImageUrl, phone1, phone2, province, canto
 
           <div className="flex flex-row gap-1 items-center mt-1">
             <Clock size={18} />
-            <p className="text-sm text-primary-700 dark:text-gray-400 line-clamp-4">Por abrir</p>
+            <p className="text-sm text-primary-700 dark:text-gray-400 line-clamp-4">{scheduleValidation(BusinessScheduled)}</p>
           </div>
 
           <div className="flex justify-end items-center">

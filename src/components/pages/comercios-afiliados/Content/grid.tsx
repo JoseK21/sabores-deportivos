@@ -1,30 +1,38 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
+import { SearchX } from "lucide-react";
 import { Business } from "@/types/business";
+import { Schedule } from "@/types/schedule";
+import React, { use, useEffect, useState } from "react";
 import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import useBusinessData from "@/components/admin/qs-admin/comercios/table/useBusinessData";
-import { SearchX } from "lucide-react";
 
 type Props = {
   search: string;
   category: string;
 };
 
+// Function to calculate half an hour before in HHMM format
+
 const Grid = ({ search, category }: Props) => {
   const { error, isLoaded, businesses } = useBusinessData();
   const [filterBusinesses, setFilter] = useState<Business[]>([]);
 
   useEffect(() => {
-    setFilter(
-      businesses.filter((x) => {
-        const isNameIncluded = search ? x.name.toLowerCase().includes(search.toLowerCase()) : true;
-        const isSameCategory = category && category !== "*" ? x.type === category : true;
+    let fb: Business[] = [];
 
-        return isNameIncluded && isSameCategory;
-      })
-    );
+    fb = businesses.filter((x) => {
+      const isNameIncluded = search ? x.name.toLowerCase().includes(search.toLowerCase()) : true;
+      const isSameCategory = category && category !== "*" ? x.type === category : true;
+
+      return isNameIncluded && isSameCategory;
+    });
+    setFilter(fb);
   }, [search, category, businesses]);
+
+  useEffect(() => {
+    setFilter(isLoaded ? businesses : []);
+  }, [isLoaded, businesses]);
 
   if (!isLoaded) {
     return (
