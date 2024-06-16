@@ -85,7 +85,7 @@ export function UserNav({ session }: { session: Session }) {
     </>
   ) : (
     <Button asChild variant="outline">
-      <Link href="/auth/login" className="font-semibold">
+      <Link href="/iniciar-sesion" className="font-semibold">
         Iniciar Sesión
       </Link>
     </Button>

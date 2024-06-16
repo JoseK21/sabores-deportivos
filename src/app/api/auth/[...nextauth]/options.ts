@@ -76,13 +76,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  pages: {
-    // signIn: "/auth/login",
-    // --- DEFAULT VALUES ---
-    // signIn: '/auth/signin',
-    // signOut: '/auth/signout',
-    // error: '/auth/error',
-    // verifyRequest: '/auth/verify-request',
-    // newUser: '/auth/new-user'
-  },
 };

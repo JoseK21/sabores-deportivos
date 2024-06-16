@@ -10,21 +10,10 @@ const allowedOrigins = [
 ];
 
 export function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
-
-  console.log("🚀 >>  middleware >>  pathname:", pathname);
-
   const res = NextResponse.next();
-  // if the incoming is for the desired API endpoint
-  const origin1 = req.headers.get("origin") ?? "";
+  // const origin = req.headers.get("origin") ?? "";
 
-  console.log("🚀 >>  middleware >>  origin1:", origin1)
-
-  // if the origin is an allowed one,
-  // add it to the 'Access-Control-Allow-Origin' header
-  if (allowedOrigins.includes(origin1)) {
-    res.headers.append("Access-Control-Allow-Origin", origin1);
-  }
+  res.headers.append("Access-Control-Allow-Origin", "https://www.quinisports.com");
 
   // add the remaining CORS headers to the response
   res.headers.append("Access-Control-Allow-Credentials", "true");

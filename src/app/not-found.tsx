@@ -15,7 +15,7 @@ export default function NotFound() {
       <h2 className="my-2 font-heading text-2xl font-bold">Pagina no encontrada</h2>
       <p>Lo sentimos, la página que estás buscando no existe.</p>
       <div className="mt-8 flex justify-center">
-        <Button onClick={() => router.push("/auth/login")} variant="default" size="lg">
+        <Button onClick={() => router.push("/")} variant="default" size="lg">
           Ir al Incio
         </Button>
       </div>

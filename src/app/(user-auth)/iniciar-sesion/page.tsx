@@ -1,8 +1,5 @@
-import Link from "next/link";
-
-import UserAuthForm from "@/components/template/forms/user-auth-form";
-
 import Logo from "@/components/quinisports/general/Logo";
+import UserAuthForm from "@/components/quinisports/login/user-auth-form";
 
 export default function AuthenticationPage() {
   return (
@@ -32,15 +29,24 @@ export default function AuthenticationPage() {
           </div>
           <UserAuthForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
-            Al iniciar sesión, aceptas nuestra{" "}
-            <Link href="/terminos-y-condiciones" className="underline underline-offset-4 hover:text-primary">
-              Términos de servicio
-            </Link>{" "}
-            y{" "}
-            <Link href="/politicas-de-privacidad" className="underline underline-offset-4 hover:text-primary">
+            Al iniciar sesión, aceptas nuestros{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://quinisports.com/terminos-y-condiciones"
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              Términos & Condiciones
+            </a>{" "}
+            y la{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://quinisports.com/politicas-de-privacidad"
+              className="underline underline-offset-4 hover:text-primary"
+            >
               Política de privacidad
-            </Link>
-            .
+            </a>
           </p>
         </div>
       </div>

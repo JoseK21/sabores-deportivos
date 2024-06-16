@@ -73,3 +73,10 @@ export enum TournamentStatus {
   completed = "completed",
   cancelled = "cancelled",
 }
+
+export enum BusinessScheduleStatus {
+  to_open = "to_open",
+  opened = "opened",
+  to_close = "to_close",
+  closed = "closed",
+}

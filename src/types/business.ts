@@ -23,8 +23,8 @@ export type Business = {
   instagramLink?: string;
   xLink?: string;
   //contact
-  phone1?: string;
-  phone2?: string;
+  phone1?: number;
+  phone2?: number;
   email?: string;
 
   // config

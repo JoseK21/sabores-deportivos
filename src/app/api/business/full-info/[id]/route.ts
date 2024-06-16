@@ -8,7 +8,7 @@ export const GET = requestMiddleware(async ({ params }) => {
       BusinessGallery: true,
       BusinessScheduled: true,
       Prize: { include: { ProductPrize: { include: { product: true } } } },
-      Product: { include: { productType: true } },
+      Product: { include: { productType: true }, where: { enabled: true } },
     },
   });
 });

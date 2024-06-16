@@ -1,17 +1,75 @@
-import { BUSINESS_TYPES } from "@/app/constants";
+import { BUSINESS_SCHEDULE_STATUS, BUSINESS_TYPES } from "@/app/constants";
 import { BusinessTypes } from "@/app/enum";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Business } from "@/types/business";
+import { Schedule } from "@/types/schedule";
 import { generateSlug } from "@/utils/url";
+import { format } from "date-fns";
 import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const ComercioCard = ({ id, name, coverImageUrl, phone1, phone2, province, canton, district, type }: Business) => {
+function convertMinutesToTime(minutes: number) {
+  if (minutes < 0) return "";
+
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  const period = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedMinutes = mins.toString().padStart(2, "0");
+
+  return `${formattedHours}:${formattedMinutes} ${period}`;
+}
+
+const getActualSchedule = (schedule: Schedule, actualDay: string) => {
+  const openKey = `${actualDay}Opening` as keyof Schedule;
+  const closeKey = `${actualDay}Close` as keyof Schedule;
+
+  return {
+    openTime: Number(schedule[openKey]) || -1,
+    closeTime: Number(schedule[closeKey]) || -1,
+  };
+};
+
+const getScheduleInfo = (schedule?: Schedule): { class: string; label: string; extraInfo: string } => {
+  if (schedule) {
+    const today = new Date();
+    const actualDay = format(today, "EEEE").toLowerCase();
+    const todayMinutes = today.getMinutes() + today.getHours() * 60;
+    const { openTime, closeTime } = getActualSchedule(schedule, actualDay);
+
+    if (openTime >= 0 && closeTime >= 0) {
+      if (todayMinutes >= openTime - 30 && todayMinutes < openTime) {
+        return { ...BUSINESS_SCHEDULE_STATUS.to_open, extraInfo: `A las ${convertMinutesToTime(openTime)}` };
+      } else if (todayMinutes >= closeTime - 30 && todayMinutes < closeTime) {
+        return { ...BUSINESS_SCHEDULE_STATUS.to_close, extraInfo: `A las ${convertMinutesToTime(closeTime)}` };
+      } else if (todayMinutes >= openTime && todayMinutes < closeTime) {
+        return { ...BUSINESS_SCHEDULE_STATUS.opened, extraInfo: "" };
+      }
+    }
+  }
+  return { ...BUSINESS_SCHEDULE_STATUS.closed, extraInfo: "" };
+};
+
+const ComercioCard = ({
+  id,
+  name,
+  type,
+  phone1,
+  phone2,
+  canton,
+  province,
+  district,
+  coverImageUrl,
+  BusinessScheduled,
+}: Business) => {
+  const scheduleInfo = getScheduleInfo(BusinessScheduled);
+
   return (
     <Link href={`/comercios-afiliados/${generateSlug(name, id)}`}>
-      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
         <div style={{ position: "relative", height: "200px" }}>
           <Image fill alt={name} src={coverImageUrl} className="object-cover" sizes="100vw" />
           <Badge className=" z-10 absolute right-3 top-3 bg-white text-black">
@@ -19,7 +77,7 @@ const ComercioCard = ({ id, name, coverImageUrl, phone1, phone2, province, canto
           </Badge>
         </div>
 
-        <div className="p-5">
+        <div className="p-4">
           <p className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{name}</p>
           <div className="flex flex-row gap-1 items-center mt-1">
             <MapPin size={18} />
@@ -40,14 +98,16 @@ const ComercioCard = ({ id, name, coverImageUrl, phone1, phone2, province, canto
 
           <div className="flex flex-row gap-1 items-center mt-1">
             <Clock size={18} />
-            <p className="text-sm text-primary-700 dark:text-gray-400 line-clamp-4">Por abrir</p>
-          </div>
-
-          <div className="flex justify-end items-center">
-            <span className=" text-primary-500 mr-1">Ver más</span>
-            <ArrowRight size={16} color="#3daa47" className="-mt-1" />
+            <span className={cn("text-sm line-clamp-4", scheduleInfo.class)}>
+              <span>{scheduleInfo.label}</span>
+              {scheduleInfo.extraInfo ? `: ${scheduleInfo.extraInfo}` : ""}
+            </span>
           </div>
         </div>
+      <div className="flex justify-center items-center bg-slate-200">
+        <span className=" text-primary-600 mr-1 pt-1">Ver más</span>
+        <ArrowRight size={16} color="#3daa47" className="-mt-1" />
+      </div>
       </div>
     </Link>
   );

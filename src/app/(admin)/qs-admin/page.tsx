@@ -1,11 +1,11 @@
 import { getServerSession } from "next-auth";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Overview } from "@/components/template/overview";
-import { RecentSales } from "@/components/template/recent-sales";
+import { Overview } from "@/components/quinisports/overview";
+import { RecentSales } from "@/components/quinisports/recent-sales";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/components/template/date-range-picker";
+import { CalendarDateRangePicker } from "@/components/quinisports/date-range-picker";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Page = async () => {

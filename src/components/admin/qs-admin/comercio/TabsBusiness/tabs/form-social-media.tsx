@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Business } from "@/types/business";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { putApi } from "@/lib/api";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import ButtonLoadingSubmit from "@/components/quinisports/ButtonLoadingSubmit";
 import { useBusinessStore } from "@/store/qs-admin";
+import { EXCEPT_NUMBER_SYMBOLS } from "@/app/constants";
 
 const FormSchema = z.object({
   wazeLink: z.string().optional(),
@@ -21,9 +22,12 @@ const FormSchema = z.object({
   facebookLink: z.string().optional(),
   instagramLink: z.string().optional(),
   xLink: z.string().optional(),
+  phone1: z.number().optional(),
+  phone2: z.number().optional(),
+  email: z.string().optional(),
 });
 
-export default function FormBusinessSocialMedia({ business }: { business?: Business }) {
+export default function FormBusinessContacts({ business }: { business?: Business }) {
   const { setData } = useBusinessStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -34,6 +38,9 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
       facebookLink: business?.facebookLink ?? "",
       instagramLink: business?.instagramLink ?? "",
       xLink: business?.xLink ?? "",
+      phone1: business?.phone1,
+      phone2: business?.phone2,
+      email: business?.email ?? "",
     } as Business,
   });
 
@@ -87,6 +94,7 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
+        <p>Redes Sociales</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <FormField
             name="wazeLink"
@@ -152,6 +160,67 @@ export default function FormBusinessSocialMedia({ business }: { business?: Busin
                 <FormLabel>Link de X</FormLabel>
                 <FormControl>
                   <Input disabled={loading} placeholder="X" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <p>Contactos</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <FormField
+            name="phone1"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Teléfono Principal</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={loading}
+                    onKeyDown={(e) => EXCEPT_NUMBER_SYMBOLS.includes(e.key) && e.preventDefault()}
+                    value={field.value}
+                    onChange={(e) => {
+                      field.onChange(Number(parseFloat(e.target.value)));
+                    }}
+                    placeholder="Teléfono Principal"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="phone2"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Teléfono Secundario</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={loading}
+                    placeholder="Teléfono Secundario"
+                    onKeyDown={(e) => EXCEPT_NUMBER_SYMBOLS.includes(e.key) && e.preventDefault()}
+                    value={field.value}
+                    onChange={(e) => {
+                      field.onChange(Number(parseFloat(e.target.value)));
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="email"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Correo Eléctronico</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} placeholder="Correo Eléctronico" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

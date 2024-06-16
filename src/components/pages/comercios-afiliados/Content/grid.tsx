@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { SearchX } from "lucide-react";
 import { Business } from "@/types/business";
+import React, { useEffect, useState } from "react";
 import ComercioCard from "@/components/quinisports/general/ComercioCard";
 import useBusinessData from "@/components/admin/qs-admin/comercios/table/useBusinessData";
-import { SearchX } from "lucide-react";
 
 type Props = {
   search: string;
@@ -17,7 +17,7 @@ const Grid = ({ search, category }: Props) => {
 
   useEffect(() => {
     setFilter(
-      businesses.filter((x) => {
+      (businesses || []).filter((x) => {
         const isNameIncluded = search ? x.name.toLowerCase().includes(search.toLowerCase()) : true;
         const isSameCategory = category && category !== "*" ? x.type === category : true;
 
@@ -25,6 +25,10 @@ const Grid = ({ search, category }: Props) => {
       })
     );
   }, [search, category, businesses]);
+
+  useEffect(() => {
+    setFilter(isLoaded ? businesses : []);
+  }, [isLoaded, businesses]);
 
   if (!isLoaded) {
     return (

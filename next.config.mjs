@@ -50,7 +50,7 @@ const nextConfig = {
   // },
   // reactStrictMode: false,
   // async rewrites() {
-  //   return [{ source: "/", destination: "/auth/login" }];
+  //   return [{ source: "/", destination: "/auth/iniciar-sesion" }];
   // },
   // async headers() {
   //   return [

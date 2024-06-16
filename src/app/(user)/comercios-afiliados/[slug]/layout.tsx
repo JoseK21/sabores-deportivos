@@ -26,7 +26,7 @@ const Layout = ({ children }: Props) => {
       <div className="mt-6 text-gray-700">
         <Button variant="secondary" onClick={goBack}>
           <ArrowLeft size={20} />
-          <span className="ml-4 ">Atras</span>
+          <span className="ml-4">Atras</span>
         </Button>
       </div>
 

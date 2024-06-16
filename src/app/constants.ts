@@ -1,6 +1,7 @@
 import {
   BooleanOption,
   BusinessPlan,
+  BusinessScheduleStatus,
   BusinessTypes,
   Countries,
   TournamentStatus,
@@ -8,6 +9,8 @@ import {
   UserStaffBusinessRole,
   UserStatus,
 } from "./enum";
+
+export const EXCEPT_NUMBER_SYMBOLS = ["e", "E", "+", "-", ".", ","];
 
 export const FULL_USER_ROLES = {
   [UserRole.unknown]: "Desconocido",
@@ -78,59 +81,76 @@ export const TOURNAMENT_STATUS: { [key in TournamentStatus]: string } = {
   [TournamentStatus.cancelled]: "Cancelado",
 };
 
+export const BUSINESS_SCHEDULE_STATUS: { [key in BusinessScheduleStatus]: { class: string; label: string } } = {
+  [BusinessScheduleStatus.to_open]: {
+    class: "text-blue-700", // #3d56aa
+    label: "Por Abrir",
+  },
+  [BusinessScheduleStatus.opened]: {
+    class: "text-primary-500", // #3daa47
+    label: "Abierto",
+  },
+  [BusinessScheduleStatus.to_close]: {
+    class: "text-yellow-700", // #aa7d3d
+    label: "Por Cerrar",
+  },
+  [BusinessScheduleStatus.closed]: {
+    class: "text-red-600", // #aa3d3d
+    label: "Cerrado",
+  },
+};
+
 export const SCHEDULE: {
   value: number | null;
   label: string;
 }[] = [
   { value: null, label: "-" },
   { value: 0, label: "12:00 am" },
-  { value: 50, label: "12:30 am" },
-  { value: 100, label: "1:00 am" },
-  { value: 150, label: "1:30 am" },
-  { value: 200, label: "2:00 am" },
-  { value: 250, label: "2:30 am" },
-  { value: 300, label: "3:00 am" },
-  { value: 350, label: "3:30 am" },
-  { value: 400, label: "4:00 am" },
-  { value: 450, label: "4:30 am" },
-  { value: 500, label: "5:00 am" },
-  { value: 550, label: "5:30 am" },
-  { value: 600, label: "6:00 am" },
-  { value: 650, label: "6:30 am" },
-  { value: 700, label: "7:00 am" },
-  { value: 750, label: "7:30 am" },
-  { value: 800, label: "8:00 am" },
-  { value: 850, label: "8:30 am" },
-  { value: 900, label: "9:00 am" },
-  { value: 950, label: "9:30 am" },
-  { value: 1000, label: "10:00 am" },
-  { value: 1050, label: "10:30 am" },
-  { value: 1100, label: "11:00 am" },
-  { value: 1150, label: "11:30 am" },
-  { value: 1200, label: "12:00 md" },
-  { value: 1250, label: "12:30 pm" },
-  { value: 1300, label: "1:00 pm" },
-  { value: 1350, label: "1:30 pm" },
-  { value: 1400, label: "2:00 pm" },
-  { value: 1450, label: "2:30 pm" },
-  { value: 1500, label: "3:00 pm" },
-  { value: 1550, label: "3:30 pm" },
-  { value: 1600, label: "4:00 pm" },
-  { value: 1650, label: "4:30 pm" },
-  { value: 1700, label: "5:00 pm" },
-  { value: 1750, label: "5:30 pm" },
-  { value: 1800, label: "6:00 pm" },
-  { value: 1850, label: "6:30 pm" },
-  { value: 1900, label: "7:00 pm" },
-  { value: 1950, label: "7:30 pm" },
-  { value: 2000, label: "8:00 pm" },
-  { value: 2050, label: "8:30 pm" },
-  { value: 2100, label: "9:00 pm" },
-  { value: 2150, label: "9:30 pm" },
-  { value: 2200, label: "10:00 pm" },
-  { value: 2250, label: "10:30 pm" },
-  { value: 2300, label: "11:00 pm" },
-  { value: 2350, label: "11:30 pm" },
-  // 2359 -> 2359
-  // 2400 -> 0
+  { value: 30, label: "12:30 am" },
+  { value: 60, label: "1:00 am" },
+  { value: 90, label: "1:30 am" },
+  { value: 120, label: "2:00 am" },
+  { value: 150, label: "2:30 am" },
+  { value: 180, label: "3:00 am" },
+  { value: 210, label: "3:30 am" },
+  { value: 240, label: "4:00 am" },
+  { value: 270, label: "4:30 am" },
+  { value: 300, label: "5:00 am" },
+  { value: 330, label: "5:30 am" },
+  { value: 360, label: "6:00 am" },
+  { value: 390, label: "6:30 am" },
+  { value: 420, label: "7:00 am" },
+  { value: 450, label: "7:30 am" },
+  { value: 480, label: "8:00 am" },
+  { value: 510, label: "8:30 am" },
+  { value: 540, label: "9:00 am" },
+  { value: 570, label: "9:30 am" },
+  { value: 600, label: "10:00 am" },
+  { value: 630, label: "10:30 am" },
+  { value: 660, label: "11:00 am" },
+  { value: 690, label: "11:30 am" },
+  { value: 720, label: "12:00 md" },
+  { value: 750, label: "12:30 pm" },
+  { value: 780, label: "1:00 pm" },
+  { value: 810, label: "1:30 pm" },
+  { value: 840, label: "2:00 pm" },
+  { value: 870, label: "2:30 pm" },
+  { value: 900, label: "3:00 pm" },
+  { value: 930, label: "3:30 pm" },
+  { value: 960, label: "4:00 pm" },
+  { value: 990, label: "4:30 pm" },
+  { value: 1020, label: "5:00 pm" },
+  { value: 1050, label: "5:30 pm" },
+  { value: 1080, label: "6:00 pm" },
+  { value: 1110, label: "6:30 pm" },
+  { value: 1140, label: "7:00 pm" },
+  { value: 1170, label: "7:30 pm" },
+  { value: 1200, label: "8:00 pm" },
+  { value: 1230, label: "8:30 pm" },
+  { value: 1260, label: "9:00 pm" },
+  { value: 1290, label: "9:30 pm" },
+  { value: 1320, label: "10:00 pm" },
+  { value: 1350, label: "10:30 pm" },
+  { value: 1380, label: "11:00 pm" },
+  { value: 1410, label: "11:30 pm" },
 ];
