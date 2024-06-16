@@ -11,11 +11,9 @@ const allowedOrigins = [
 
 export function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const origin = req.headers.get("origin") ?? "";
+  // const origin = req.headers.get("origin") ?? "";
 
-  if (allowedOrigins.includes(origin)) {
-    res.headers.append("Access-Control-Allow-Origin", origin);
-  }
+  res.headers.append("Access-Control-Allow-Origin", "https://www.quinisports.com");
 
   // add the remaining CORS headers to the response
   res.headers.append("Access-Control-Allow-Credentials", "true");
