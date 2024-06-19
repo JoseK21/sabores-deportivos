@@ -52,7 +52,7 @@ const getNextOpeningDay = (todayNumber: number, schedule?: Schedule): string => 
       const daySpanish = DAYS_MAP[`${day}`];
 
       if (openTime >= 0 && closeTime >= 0 && daySpanish) {
-        return `Abre el ${daySpanish} a las ${openTime}`;
+        return `Abre el ${daySpanish} a las ${convertMinutesToTime(openTime)}`;
       }
     }
   }
