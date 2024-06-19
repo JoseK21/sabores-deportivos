@@ -13,6 +13,7 @@ import { SCHEDULE } from "@/app/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { getActualSchedule } from "@/components/quinisports/general/ComercioCard";
 
 const TABS_HEADER: {
   [key: string]: string;
@@ -31,30 +32,24 @@ interface PrizeMap {
   [key: string]: Product[];
 }
 
+const formatTime = (time: number): string => {
+  return SCHEDULE.find(({ value }) => value == time)?.label || "-";
+};
+
 const scheduleToSpanish = (schedule: Schedule | undefined): string[] => {
   if (!schedule) return [];
 
   try {
-    const formatTime = (time: number): string => {
-      return SCHEDULE.find(({ value }) => value == time)?.label || "-";
-    };
-
     return (Object.keys(DAYS_MAP) as Array<keyof Schedule>).reduce((acc, day) => {
-      const openingKey = `${day}Opening` as keyof Schedule;
-      const closingKey = `${day}Close` as keyof Schedule;
+      const { openTime, closeTime } = getActualSchedule(schedule, day);
 
-      if (schedule[openingKey] && schedule[closingKey]) {
-        acc.push(
-          `${DAYS_MAP[day]}: ${formatTime(schedule[openingKey] as number)} a ${formatTime(
-            schedule[closingKey] as number
-          )}`
-        );
+      if (openTime && closeTime) {
+        acc.push(`${DAYS_MAP[day]}: ${formatTime(openTime as number)} a ${formatTime(closeTime as number)}`);
       }
 
       return acc;
     }, [] as string[]);
   } catch (error) {
-    console.log("🚀 >>  scheduleToSpanish >>  error:", error);
     return ["Horario no Disponible."];
   }
 };
