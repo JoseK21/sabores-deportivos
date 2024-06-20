@@ -66,7 +66,7 @@ const HomeHeader = ({ session }: Props) => {
                   className="block py-2 px-2 rounded hover:text-primary-400 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110"
                   href={post.slug}
                 >
-                  <span className={pathname === post.slug ? "text-primary-600" : ""}>{post.title}</span>
+                  <span className={`/${pathname.split('/')?.[1]}` === post.slug ? "text-primary-600" : ""}>{post.title}</span>
                 </Link>
               </li>
             ))}
@@ -78,6 +78,7 @@ const HomeHeader = ({ session }: Props) => {
               Puntos: <strong>{userPoints}</strong>
             </span>
           </Button>
+
           {/* <SquareUserRound className="size-8 cursor-pointer" /> */}
 
           <UserNav session={session} />
