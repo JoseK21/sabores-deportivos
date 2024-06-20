@@ -178,7 +178,7 @@ model Event {
   id           String      @id @default(cuid())
   title        String?
   tournamentId String
-  startDate    DateTime
+  startDate    DateTime // todo - use UTC TIME
   status       EventStatus
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt @map("updated_at")
@@ -315,7 +315,6 @@ enum EventStatus {
   live
   finished
   canceled
-  pending
   postponed
 }
 

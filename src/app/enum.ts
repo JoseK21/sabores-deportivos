@@ -26,7 +26,6 @@ export enum EventStatus {
   live = "live",
   finished = "finished",
   canceled = "canceled",
-  pending = "pending",
   postponed = "postponed",
 }
 

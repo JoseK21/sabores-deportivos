@@ -1,57 +1,13 @@
-import { BUSINESS_SCHEDULE_STATUS, BUSINESS_TYPES } from "@/app/constants";
-import { BusinessTypes } from "@/app/enum";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { Business } from "@/types/business";
-import { Schedule } from "@/types/schedule";
-import { generateSlug } from "@/utils/url";
-import { format } from "date-fns";
-import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-
-function convertMinutesToTime(minutes: number) {
-  if (minutes < 0) return "";
-
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-
-  const period = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  const formattedMinutes = mins.toString().padStart(2, "0");
-
-  return `${formattedHours}:${formattedMinutes} ${period}`;
-}
-
-const getActualSchedule = (schedule: Schedule, actualDay: string) => {
-  const openKey = `${actualDay}Opening` as keyof Schedule;
-  const closeKey = `${actualDay}Close` as keyof Schedule;
-
-  return {
-    openTime: Number(schedule[openKey]) || -1,
-    closeTime: Number(schedule[closeKey]) || -1,
-  };
-};
-
-const getScheduleInfo = (schedule?: Schedule): { class: string; label: string; extraInfo: string } => {
-  if (schedule) {
-    const today = new Date();
-    const actualDay = format(today, "EEEE").toLowerCase();
-    const todayMinutes = today.getMinutes() + today.getHours() * 60;
-    const { openTime, closeTime } = getActualSchedule(schedule, actualDay);
-
-    if (openTime >= 0 && closeTime >= 0) {
-      if (todayMinutes >= openTime - 30 && todayMinutes < openTime) {
-        return { ...BUSINESS_SCHEDULE_STATUS.to_open, extraInfo: `A las ${convertMinutesToTime(openTime)}` };
-      } else if (todayMinutes >= closeTime - 30 && todayMinutes < closeTime) {
-        return { ...BUSINESS_SCHEDULE_STATUS.to_close, extraInfo: `A las ${convertMinutesToTime(closeTime)}` };
-      } else if (todayMinutes >= openTime && todayMinutes < closeTime) {
-        return { ...BUSINESS_SCHEDULE_STATUS.opened, extraInfo: "" };
-      }
-    }
-  }
-  return { ...BUSINESS_SCHEDULE_STATUS.closed, extraInfo: "" };
-};
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { BusinessTypes } from "@/app/enum";
+import { generateSlug } from "@/utils/url";
+import { Business } from "@/types/business";
+import { Badge } from "@/components/ui/badge";
+import { BUSINESS_TYPES } from "@/app/constants";
+import { getScheduleInfo } from "@/helpers/businessSchedule";
+import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 
 const ComercioCard = ({
   id,
@@ -104,10 +60,10 @@ const ComercioCard = ({
             </span>
           </div>
         </div>
-      <div className="flex justify-center items-center bg-slate-200">
-        <span className=" text-primary-600 mr-1 pt-1">Ver más</span>
-        <ArrowRight size={16} color="#3daa47" className="-mt-1" />
-      </div>
+        <div className="flex justify-center items-center bg-slate-200">
+          <span className=" text-primary-600 mr-1 pt-1">Ver más</span>
+          <ArrowRight size={16} color="#3daa47" className="-mt-1" />
+        </div>
       </div>
     </Link>
   );
