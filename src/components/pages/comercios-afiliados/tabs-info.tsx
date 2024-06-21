@@ -1,6 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -60,6 +68,19 @@ const scheduleToSpanish = (schedule: Schedule | undefined): string[] => {
 };
 
 const TabsInfo = ({ slug }: { slug: string }) => {
+  const [selectedItem, setSelectedItem] = useState({} as Product);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleClick = (item: Product) => {
+    setSelectedItem(item);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedItem({} as Product);
+  };
+
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -152,10 +173,11 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                     {menu?.[key].map((item, i) => (
                       <div
                         className={cn(
-                          "flex flex-col gap-2 items-center bg-slate-100 p-2 rounded min-w-28",
+                          "flex flex-col gap-2 items-center bg-slate-100 p-2 rounded min-w-28 mr-0.5",
                           (!item?.enabled ?? false) && "grayscale"
                         )}
                         key={`menu-${i}-${item.id}`}
+                        onClick={() => handleClick(item)}
                       >
                         <Avatar>
                           <AvatarImage src={item.image ?? ""} alt="-" className="object-cover" />
@@ -416,6 +438,17 @@ const TabsInfo = ({ slug }: { slug: string }) => {
           </TabsContent>
         </div>
       </Tabs>
+      <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
+        <DialogContent className="w-72">
+          <div>
+            <div className="flex flex-col items-center">
+              <img src={selectedItem?.image ?? ""} alt="Logo" className="w-36 h-36"/>
+              <span className="font-semibold">{selectedItem?.name}</span>
+              <span>₡ {Number(selectedItem?.price ?? 0).toLocaleString()}</span>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 };
