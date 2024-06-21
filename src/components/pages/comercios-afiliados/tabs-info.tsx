@@ -443,7 +443,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
           <div>
             <div className="flex flex-col items-center">
               <img src={selectedItem?.image ?? ""} alt="Logo" className="w-36 h-36"/>
-              <span className="font-semibold">{selectedItem?.name}</span>
+              <span className="font-semibold mt-4">{selectedItem?.name}</span>
               <span>₡ {Number(selectedItem?.price ?? 0).toLocaleString()}</span>
             </div>
           </div>
