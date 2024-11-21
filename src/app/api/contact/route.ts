@@ -5,8 +5,11 @@ import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const POST = requestMiddleware(async ({ data }: { data: EmailContact }) => {
   try {
-    const email_ = process.env.NEXT_PUBLIC_BURNER_EMAIL;
-    const password_ = process.env.NEXT_PUBLIC_BURNER_PASSWORD;
+    // const email_ = process.env.NEXT_PUBLIC_BURNER_EMAIL;
+    // const password_ = process.env.NEXT_PUBLIC_BURNER_PASSWORD;
+
+    const email_ = "";
+    const password_ = "";
 
     const { name, email, message } = data;
 

@@ -1,5 +1,8 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('client', 'master', 'admin_rest', 'cashier_rest', 'waiter_rest', 'bartender_rest');
+CREATE TYPE "UserRole" AS ENUM ('unknown', 'client', 'master', 'admin_rest', 'cashier_rest', 'waiter_rest', 'bartender_rest');
+
+-- CreateEnum
+CREATE TYPE "UserStatus" AS ENUM ('unknown', 'actived', 'suspented', 'deactivated');
 
 -- CreateEnum
 CREATE TYPE "EventStatus" AS ENUM ('incoming', 'live', 'finished', 'canceled', 'pending', 'postponed');
@@ -8,7 +11,13 @@ CREATE TYPE "EventStatus" AS ENUM ('incoming', 'live', 'finished', 'canceled', '
 CREATE TYPE "ForecastStatus" AS ENUM ('pending', 'canceled', 'completed', 'lost', 'won');
 
 -- CreateEnum
-CREATE TYPE "BusinessTypes" AS ENUM ('bar', 'cafe', 'hotel', 'sportbar', 'restaurant', 'sports_club', 'shopping_center', 'recreation_center');
+CREATE TYPE "BusinessTypes" AS ENUM ('bar', 'cafe', 'hotel', 'sportbar', 'restaurant', 'sports_club', 'bar_restaurant', 'shopping_center', 'recreation_center');
+
+-- CreateEnum
+CREATE TYPE "BusinessPlan" AS ENUM ('basic', 'intermediate', 'premium');
+
+-- CreateEnum
+CREATE TYPE "TournamentStatus" AS ENUM ('upcoming', 'ongoing', 'completed', 'cancelled');
 
 -- CreateTable
 CREATE TABLE "Account" (
@@ -48,9 +57,11 @@ CREATE TABLE "User" (
     "totalPoints" INTEGER DEFAULT 0,
     "claimedPoints" INTEGER DEFAULT 0,
     "password" TEXT,
-    "businessId" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "status" "UserStatus" NOT NULL DEFAULT 'deactivated',
+    "role" "UserRole" NOT NULL DEFAULT 'client',
+    "idBusiness" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -64,7 +75,7 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateTable
 CREATE TABLE "ProductType" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -74,12 +85,14 @@ CREATE TABLE "ProductType" (
 
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "idBussiness" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
-    "imageUrl" TEXT NOT NULL,
-    "typeId" INTEGER NOT NULL,
+    "idBusiness" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "productTypeId" TEXT NOT NULL,
+    "description" TEXT,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "price" INTEGER NOT NULL DEFAULT 1,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -88,15 +101,12 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "Prize" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "idBussiness" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
-    "imageUrl" TEXT NOT NULL,
+    "idBusiness" TEXT NOT NULL,
     "points" INTEGER NOT NULL,
+    "description" TEXT,
     "enabled" BOOLEAN NOT NULL DEFAULT true,
-    "startDate" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -105,9 +115,9 @@ CREATE TABLE "Prize" (
 
 -- CreateTable
 CREATE TABLE "ProductPrize" (
-    "id" SERIAL NOT NULL,
-    "idPrize" INTEGER NOT NULL,
-    "idProduct" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idPrize" TEXT NOT NULL,
+    "idProduct" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -116,10 +126,10 @@ CREATE TABLE "ProductPrize" (
 
 -- CreateTable
 CREATE TABLE "ClaimedPrize" (
-    "id" SERIAL NOT NULL,
-    "idPrize" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idPrize" TEXT NOT NULL,
     "idUser" TEXT NOT NULL,
-    "idUserS" TEXT NOT NULL,
+    "idUserStaff" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -128,7 +138,7 @@ CREATE TABLE "ClaimedPrize" (
 
 -- CreateTable
 CREATE TABLE "Sport" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "abbrName" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -139,9 +149,10 @@ CREATE TABLE "Sport" (
 
 -- CreateTable
 CREATE TABLE "League" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "abbrName" TEXT NOT NULL,
+    "sportId" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -149,8 +160,26 @@ CREATE TABLE "League" (
 );
 
 -- CreateTable
+CREATE TABLE "Tournament" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "abbrName" TEXT NOT NULL,
+    "description" TEXT,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "sportId" TEXT NOT NULL,
+    "leagueId" TEXT NOT NULL,
+    "status" "TournamentStatus" NOT NULL,
+
+    CONSTRAINT "Tournament_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Team" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "abbrName" TEXT NOT NULL,
     "logoUrl" TEXT NOT NULL,
@@ -164,39 +193,28 @@ CREATE TABLE "Team" (
 -- CreateTable
 CREATE TABLE "Event" (
     "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "startTime" TIMESTAMP(3) NOT NULL,
-    "leagueId" INTEGER NOT NULL,
-    "sportId" INTEGER NOT NULL,
+    "title" TEXT,
+    "tournamentId" TEXT NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "status" "EventStatus" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "status" "EventStatus" NOT NULL,
+    "homeTeamId" TEXT NOT NULL,
+    "awayTeamId" TEXT NOT NULL,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "TeamEvent" (
-    "id" SERIAL NOT NULL,
-    "teamId" INTEGER NOT NULL,
-    "eventId" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "TeamEvent_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Forecast" (
     "id" TEXT NOT NULL,
-    "idBusiness" INTEGER NOT NULL,
+    "idBusiness" TEXT NOT NULL,
     "idClient" INTEGER NOT NULL,
     "idEvent" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "status" "ForecastStatus" NOT NULL,
-    "team1Score" INTEGER NOT NULL,
-    "team2Score" INTEGER NOT NULL,
+    "homeTeamScore" INTEGER NOT NULL,
+    "awayTeamScore" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -205,22 +223,27 @@ CREATE TABLE "Forecast" (
 
 -- CreateTable
 CREATE TABLE "Business" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "type" "BusinessTypes" NOT NULL,
     "logoUrl" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "coverImageUrl" TEXT NOT NULL,
     "country" TEXT NOT NULL,
-    "province" TEXT,
-    "canton" TEXT,
-    "district" TEXT,
-    "address" TEXT,
+    "province" TEXT NOT NULL,
+    "canton" TEXT NOT NULL,
+    "district" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "wazeLink" TEXT,
     "googleMapLink" TEXT,
     "facebookLink" TEXT,
     "instagramLink" TEXT,
     "xLink" TEXT,
+    "phone1" INTEGER,
+    "phone2" INTEGER,
+    "email" TEXT,
+    "plan" "BusinessPlan" NOT NULL DEFAULT 'basic',
+    "displayProductPrice" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -229,8 +252,8 @@ CREATE TABLE "Business" (
 
 -- CreateTable
 CREATE TABLE "BusinessScheduled" (
-    "id" SERIAL NOT NULL,
-    "idBusiness" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idBusiness" TEXT NOT NULL,
     "mondayOpening" INTEGER,
     "mondayClose" INTEGER,
     "tuesdayOpening" INTEGER,
@@ -253,10 +276,10 @@ CREATE TABLE "BusinessScheduled" (
 
 -- CreateTable
 CREATE TABLE "BusinessGallery" (
-    "id" SERIAL NOT NULL,
-    "idBusiness" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idBusiness" TEXT NOT NULL,
     "ord" INTEGER,
-    "imageUrl" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -265,10 +288,10 @@ CREATE TABLE "BusinessGallery" (
 
 -- CreateTable
 CREATE TABLE "BusinessAdvertising" (
-    "id" SERIAL NOT NULL,
-    "idBusiness" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idBusiness" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "imageUrl" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "href" TEXT,
     "priority" INTEGER,
     "enabled" BOOLEAN NOT NULL DEFAULT true,
@@ -281,9 +304,12 @@ CREATE TABLE "BusinessAdvertising" (
 );
 
 -- CreateTable
-CREATE TABLE "_teamEvents" (
-    "A" TEXT NOT NULL,
-    "B" INTEGER NOT NULL
+CREATE TABLE "Subscription" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+
+    CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -302,9 +328,6 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Product_typeId_key" ON "Product"("typeId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Sport_name_key" ON "Sport"("name");
 
 -- CreateIndex
@@ -317,19 +340,28 @@ CREATE UNIQUE INDEX "League_name_key" ON "League"("name");
 CREATE UNIQUE INDEX "League_abbrName_key" ON "League"("abbrName");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "League_name_sportId_key" ON "League"("name", "sportId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Tournament_name_key" ON "Tournament"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Tournament_abbrName_key" ON "Tournament"("abbrName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Team_name_key" ON "Team"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Team_abbrName_key" ON "Team"("abbrName");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TeamEvent_teamId_eventId_key" ON "TeamEvent"("teamId", "eventId");
+CREATE UNIQUE INDEX "Event_tournamentId_startDate_key" ON "Event"("tournamentId", "startDate");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_teamEvents_AB_unique" ON "_teamEvents"("A", "B");
+CREATE UNIQUE INDEX "BusinessScheduled_idBusiness_key" ON "BusinessScheduled"("idBusiness");
 
 -- CreateIndex
-CREATE INDEX "_teamEvents_B_index" ON "_teamEvents"("B");
+CREATE UNIQUE INDEX "Subscription_email_key" ON "Subscription"("email");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -338,10 +370,16 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_idBusiness_fkey" FOREIGN KEY ("idBusiness") REFERENCES "Business"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Product" ADD CONSTRAINT "Product_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "ProductType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Product" ADD CONSTRAINT "Product_productTypeId_fkey" FOREIGN KEY ("productTypeId") REFERENCES "ProductType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_idBusiness_fkey" FOREIGN KEY ("idBusiness") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Prize" ADD CONSTRAINT "Prize_idBusiness_fkey" FOREIGN KEY ("idBusiness") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProductPrize" ADD CONSTRAINT "ProductPrize_idPrize_fkey" FOREIGN KEY ("idPrize") REFERENCES "Prize"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -356,10 +394,22 @@ ALTER TABLE "ClaimedPrize" ADD CONSTRAINT "ClaimedPrize_idPrize_fkey" FOREIGN KE
 ALTER TABLE "ClaimedPrize" ADD CONSTRAINT "ClaimedPrize_idUser_fkey" FOREIGN KEY ("idUser") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TeamEvent" ADD CONSTRAINT "TeamEvent_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ClaimedPrize" ADD CONSTRAINT "ClaimedPrize_idUserStaff_fkey" FOREIGN KEY ("idUserStaff") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TeamEvent" ADD CONSTRAINT "TeamEvent_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "League" ADD CONSTRAINT "League_sportId_fkey" FOREIGN KEY ("sportId") REFERENCES "Sport"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Tournament" ADD CONSTRAINT "Tournament_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "League"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Event" ADD CONSTRAINT "Event_homeTeamId_fkey" FOREIGN KEY ("homeTeamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Event" ADD CONSTRAINT "Event_awayTeamId_fkey" FOREIGN KEY ("awayTeamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Event" ADD CONSTRAINT "Event_tournamentId_fkey" FOREIGN KEY ("tournamentId") REFERENCES "Tournament"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Forecast" ADD CONSTRAINT "Forecast_idBusiness_fkey" FOREIGN KEY ("idBusiness") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -372,9 +422,3 @@ ALTER TABLE "BusinessGallery" ADD CONSTRAINT "BusinessGallery_idBusiness_fkey" F
 
 -- AddForeignKey
 ALTER TABLE "BusinessAdvertising" ADD CONSTRAINT "BusinessAdvertising_idBusiness_fkey" FOREIGN KEY ("idBusiness") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_teamEvents" ADD CONSTRAINT "_teamEvents_A_fkey" FOREIGN KEY ("A") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_teamEvents" ADD CONSTRAINT "_teamEvents_B_fkey" FOREIGN KEY ("B") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
