@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "QuiniSports | Inicio",
+  title: "Sabores Deportivos | Inicio",
 };
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {

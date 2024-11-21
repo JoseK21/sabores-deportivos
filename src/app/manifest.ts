@@ -2,10 +2,9 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "QuiniSports",
-    short_name: "QuiniSports",
-    description:
-      "¡Experimenta la emoción deportiva con QUINISPORTS! Haz pronósticos, gana premios y disfruta de la pasión del deporte. ¡Únete ahora y vive la adrenalina!",
+    name: "Sabores Deportivos",
+    short_name: "Sabores Deportivos",
+    description: "Encuentra el mejor lugar para disfrutar del deporte y la buena cocida cerca de ti.",
     start_url: "/",
     display: "standalone",
     background_color: "#fff",

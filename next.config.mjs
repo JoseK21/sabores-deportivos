@@ -35,31 +35,6 @@ const nextConfig = {
       },
     ],
   },
-  // async headers() {
-  //   return [
-  //     {
-  //       source: "/api/:path*",
-  //       headers: [
-  //         { key: "Access-Control-Allow-Credentials", value: "true" },
-  //         { key: "Access-Control-Allow-Origin", value: "https://www.quinisports.com" },
-  //         { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" },
-  //         { key: "Access-Control-Allow-Headers", value: "Accept, Content-Type, Authorization" },
-  //       ],
-  //     },
-  //   ];
-  // },
-  // reactStrictMode: false,
-  // async rewrites() {
-  //   return [{ source: "/", destination: "/auth/iniciar-sesion" }];
-  // },
-  // async headers() {
-  //   return [
-  //     {
-  //       source: "/auth/registro",
-  //       headers: [{ key: "r-key", value: "04-06-2002" }],
-  //     },
-  //   ];
-  // },
 };
 
 export default withSentryConfig(nextConfig, {
@@ -67,7 +42,7 @@ export default withSentryConfig(nextConfig, {
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
   org: "jdatabyte",
-  project: "quinisports",
+  project: "saboresdeportivos",
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,

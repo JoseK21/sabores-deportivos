@@ -1,6 +1,5 @@
 import HomeFooter from "@/components/quinisports/footers/HomeFooter";
 import HomeHeader from "@/components/quinisports/headers/HomeHeader";
-import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
@@ -21,7 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <>
       <HomeHeader session={session} />
-      <div className="flex overflow-hidden max-w-7xl mx-auto p-4">
+      <div className="flex overflow-hidden max-w-7xl mx-auto p-4 pt-24">
         <main className="min-h-screen w-full">{children}</main>
       </div>
       <HomeFooter />

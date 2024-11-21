@@ -8,7 +8,7 @@ const HomeFooter = () => {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <a href="/" className="flex items-center">
-              <Image src="/logo.png" width={120} height={120} alt="Picture of the author" />
+              <Image src="/new-logo.png" width={120} height={120} alt="Picture of the author" />
             </a>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">

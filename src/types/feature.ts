@@ -1,6 +1,7 @@
+import { LucideIcon } from "lucide-react";
+
 export type Feature = {
-  id: number;
-  icon: JSX.Element;
+  icon: LucideIcon;
   title: string;
   paragraph: string;
 };

@@ -32,9 +32,9 @@
 <img src="public/logoQS.svg" alt="Logo" width="400" height="400">
 
   <p align="center">
-    QUINISPORTS es una plataforma innovadora que ofrece quinielas deportivas en línea para entusiastas del deporte. Este proyecto se centra en proporcionar una experiencia emocionante y entretenida para los aficionados al deporte al permitirles pronosticar los resultados de diferentes eventos deportivos, desde partidos de fútbol hasta competiciones de baloncesto y más.
+En Sabores Deportivos, unimos la pasión por los deportes y la gastronomía en un solo lugar. Somos la plataforma que conecta a los amantes del deporte con los mejores comercios de tu ciudad, ofreciendo información detallada sobre sus menús, horarios, eventos y más. Nuestro objetivo es potenciar la visibilidad de los comercios locales mientras brindamos a los usuarios una experiencia única para disfrutar de sus deportes favoritos, deliciosos platillos y un ambiente inolvidable. ¡Explora, encuentra y vive la experiencia Sabores Deportivos!
     <br />
-    <a href="www.quinisports.com" ta>Ver Demo</a>
+    <a href="www.saboresdeportivos.com" ta>Ver Demo</a>
   </p>
 </div>
 
@@ -94,7 +94,7 @@ _Below is an example of how you can instruct your audience on installing and set
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/JoseK21/quinisports
+   git clone https://github.com/JoseK21/saboresdeportivos
    ```
 3. Install NPM packages
    ```sh
@@ -175,3 +175,4 @@ https://flowbite.com/docs/components/accordion/
 
 
 https://ui.shadcn.com/docs/components/
+https://themewagon.github.io/landwind/

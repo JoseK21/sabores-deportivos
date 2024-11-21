@@ -16,7 +16,7 @@ export default function Header() {
             onClick={() => setNavbarOpen(!navbarOpen)}
           >
             {/* <Logo width={40} fill="#FFF" fillLabel="#235544" fillStar="#FFF" fillLine="#FFF" /> */}
-            QuiniSports
+            Sabores Deportivos
           </button>
         </div>
         <div className={"md:flex flex-grow items-center" + (navbarOpen ? " flex" : " hidden")}>

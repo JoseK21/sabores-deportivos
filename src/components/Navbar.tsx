@@ -7,7 +7,7 @@ async function Navbar() {
 
   return (
     <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-3">
-      <h1 className="text-xl font-bold">QuiniSports</h1>
+      <h1 className="text-xl font-bold">Sabores Deportivos</h1>
 
       <ul className="flex gap-x-2">
         {!session?.user ? (

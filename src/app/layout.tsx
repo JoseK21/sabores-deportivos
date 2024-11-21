@@ -31,14 +31,14 @@ export const metadata = {
   creator: "JDataByte",
   metadataBase: new URL(__URL),
   alternates: { canonical: __URL },
-  icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" },
+  icons: { icon: "/new-logo.png", shortcut: "/new-logo.png", apple: "/new-logo.png" },
   openGraph: {
     url: __URL,
     title: __NAME,
     type: "website",
     siteName: __NAME,
     description: __DESCRIPTION,
-    images: [{ url: "/logo.png" }],
+    images: [{ url: "/new-logo.png" }],
   },
 };
 
