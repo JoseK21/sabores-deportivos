@@ -1,4 +1,4 @@
-import Logo from "@/components/quinisports/general/Logo";
+import Logo from "@/components/saboresdeportivos/general/Logo";
 
 export default function Page() {
   return (

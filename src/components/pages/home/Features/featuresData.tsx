@@ -1,5 +1,5 @@
 import { Feature } from "@/types/feature";
-import { Calendar, Store, MenuSquare, Megaphone, MessageSquareText, FastForwardIcon, Star } from "lucide-react";
+import { Store, MenuSquare, Megaphone, MessageSquareText, FastForwardIcon, Star } from "lucide-react";
 
 const featuresData: Feature[] = [
   {

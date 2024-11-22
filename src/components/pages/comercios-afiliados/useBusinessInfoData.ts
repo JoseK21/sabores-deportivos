@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { getApi } from "@/lib/api";
-import { useBusinessStore } from "@/store/qs-admin";
+import { useBusinessStore } from "@/store/sd-admin";
 import { Business } from "@/types/business";
 import { useState } from "react";
 

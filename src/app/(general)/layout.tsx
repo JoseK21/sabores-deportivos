@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import Logo from "@/components/quinisports/general/Logo";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +7,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <nav className="bg-white border-gray-200 dark:bg-gray-900 ">
         <div className="flex flex-wrap items-center justify-between p-4">
           <Link href="/">
-            <Logo />{" "}
+            <img src="/logo-horizontal-black.png" className="w-44 mb-5" alt="Logo - Sabores Deportivos" />
+
           </Link>
         </div>
       </nav>

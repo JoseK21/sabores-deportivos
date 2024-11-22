@@ -1,5 +1,5 @@
-import Logo from "@/components/quinisports/general/Logo";
-import UserAuthForm from "@/components/quinisports/login/user-auth-form";
+import Logo from "@/components/saboresdeportivos/general/Logo";
+import UserAuthForm from "@/components/saboresdeportivos/login/user-auth-form";
 
 export default function AuthenticationPage() {
   return (
@@ -33,7 +33,7 @@ export default function AuthenticationPage() {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://quinisports.com/terminos-y-condiciones"
+              href="https://saboresdeportivos.com/terminos-y-condiciones"
               className="underline underline-offset-4 hover:text-primary"
             >
               Términos & Condiciones
@@ -42,7 +42,7 @@ export default function AuthenticationPage() {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://quinisports.com/politicas-de-privacidad"
+              href="https://saboresdeportivos.com/politicas-de-privacidad"
               className="underline underline-offset-4 hover:text-primary"
             >
               Política de privacidad

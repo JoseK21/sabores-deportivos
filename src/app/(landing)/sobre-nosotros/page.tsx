@@ -6,7 +6,7 @@ import Hero from "@/components/pages/home/Hero";
 
 const Page = () => {
   return (
-    <main className="mt-10">
+    <main>
       <ScrollUp />
       <Hero />
       <Brands />

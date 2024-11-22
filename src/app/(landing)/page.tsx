@@ -2,41 +2,12 @@
 "use client";
 
 import Features from "@/components/pages/home/Features";
-import SingleTestimonial from "@/components/pages/home/Testimonials/SingleTestimonial";
+import Testimonials from "@/components/pages/home/Testimonials";
 import { Testimonial } from "@/types/testimonial";
 import { YouTubeEmbed } from "@next/third-parties/google";
+import { Store, MonitorPlayIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-
-const testimonialData: Testimonial[] = [
-  {
-    id: "1",
-    name: "Luis Martínez",
-    designation: "Dueño de Bar Deportivo 'El Golazo'",
-    content:
-      "Implementar Sabores Deportivos en nuestro bar ha sido una decisión excelente. Nuestros clientes disfrutan mucho más de los partidos con las estadísticas en tiempo real y las predicciones que ofrece la plataforma. Además, ha aumentado la interacción y las apuestas amigables entre los asistentes. Definitivamente lo recomiendo a otros dueños de sportbars.",
-    image: "/assets/testimonials/auth-1.webp",
-    star: 5,
-  },
-  {
-    id: "2",
-    name: "María Rodríguez",
-    designation: "Propietaria de Restaurante 'La Cancha'",
-    content:
-      "Sabores Deportivos ha revolucionado la experiencia de nuestros clientes durante eventos deportivos. Las funciones de predicción y análisis en vivo han generado un ambiente más dinámico y entretenido. Hemos notado un incremento en la afluencia de clientes durante los días de partidos importantes. ¡Una herramienta indispensable para cualquier negocio orientado al deporte!",
-    image: "/assets/testimonials/auth-2.webp",
-    star: 5,
-  },
-  {
-    id: "3",
-    name: "Juan Pérez",
-    designation: "Gerente del Bar 'Tiempo Extra'",
-    content:
-      "Desde que introdujimos Sabores Deportivos en nuestro bar, la respuesta de los clientes ha sido increíble. Las predicciones deportivas y los datos en tiempo real han creado una atmósfera emocionante y competitiva. Esto no solo ha mejorado la satisfacción de nuestros clientes, sino que también ha incrementado nuestras ventas en días de juego. Muy recomendable.",
-    image: "/assets/testimonials/auth-3.png",
-    star: 5,
-  },
-];
 
 export default function Page() {
   const [date, setDate] = useState<Date>();
@@ -61,14 +32,16 @@ export default function Page() {
             <div className="">
               <Link
                 href="/comercios"
-                className="inline-flex items-center justify-center w-full px-5 py-3 mb-2 mr-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 "
+                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 mb-2 mr-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 "
               >
+                <Store size={20} />
                 <span>Explorar Comercios</span>
               </Link>
               <Link
-                href="/eventos"
-                className="inline-flex items-center justify-center w-full px-5 py-3 mb-2 mr-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 "
+                href="/eventos-deportivos"
+                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 mb-2 mr-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 "
               >
+                <MonitorPlayIcon size={20} />
                 <span>Ver Eventos Deportivos</span>
               </Link>
             </div>
@@ -130,7 +103,7 @@ export default function Page() {
             <figcaption className="flex items-center justify-center mt-6 space-x-3">
               <img
                 className="w-6 h-6 rounded-full"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
+                src="https://avatars.githubusercontent.com/u/26444128?v=4&size=64"
                 alt="profile picture"
               />
               <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
@@ -156,11 +129,7 @@ export default function Page() {
               visibilidad y aumentar sus visitas
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-            {testimonialData.map((testimonial) => (
-              <SingleTestimonial key={testimonial.id} testimonial={testimonial} />
-            ))}
-          </div>
+          <Testimonials />
         </div>
       </section>
     </main>

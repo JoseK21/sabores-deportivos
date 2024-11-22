@@ -154,3 +154,5 @@ export const SCHEDULE: {
   { value: 1380, label: "11:00 pm" },
   { value: 1410, label: "11:30 pm" },
 ];
+
+export const ACCESS_HEADER = "sd-access";

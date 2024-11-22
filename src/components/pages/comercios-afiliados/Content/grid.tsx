@@ -3,8 +3,8 @@
 import { SearchX } from "lucide-react";
 import { Business } from "@/types/business";
 import React, { useEffect, useState } from "react";
-import ComercioCard from "@/components/quinisports/general/ComercioCard";
-import useBusinessData from "@/components/admin/qs-admin/comercios/table/useBusinessData";
+import ComercioCard from "@/components/saboresdeportivos/general/ComercioCard";
+import useBusinessData from "@/components/admin/sd-admin/comercios/table/useBusinessData";
 
 type Props = {
   search: string;

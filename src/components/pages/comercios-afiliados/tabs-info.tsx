@@ -13,7 +13,7 @@ import { SCHEDULE } from "@/app/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { getActualSchedule } from "@/components/quinisports/general/ComercioCard";
+import { getActualSchedule } from "@/components/saboresdeportivos/general/ComercioCard";
 
 const TABS_HEADER: {
   [key: string]: string;

@@ -1,11 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
-import Link from "next/link";
-
 const Hero = () => {
   return (
-    <>
-      <section className="relative z-10 overflow-hidden py-12">
+      <section className="relative z-10 overflow-hidden pb-12">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
@@ -13,7 +9,7 @@ const Hero = () => {
                 className="wow fadeInUp mx-auto max-w-[800px] text-center flex justify-center flex-col items-center"
                 data-wow-delay=".2s"
               >
-                <img src="/new-logo.png" className="w-44" alt="Logo - Sabores Deportivos" />
+                <img src="/new-logo.png" className="w-44 mb-5" alt="Logo - Sabores Deportivos" />
 
                 <p className="mt-4 mb-12 text-base font-medium !leading-relaxed text-body-color dark:text-white dark:opacity-90 sm:text-lg md:text-xl">
                   En Sabores Deportivos, unimos la pasión por los deportes y la gastronomía en un solo lugar. Somos la
@@ -28,7 +24,6 @@ const Hero = () => {
           </div>
         </div>
       </section>
-    </>
   );
 };
 

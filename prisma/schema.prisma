@@ -210,7 +210,7 @@ model Business {
   name                String
   type                BusinessTypes
   logoUrl             String
-  description         String
+  description         String?
   coverImageUrl       String
   country             String
   province            String

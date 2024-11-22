@@ -1,6 +1,6 @@
 "use client";
 
-import { SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import {
   Select,
@@ -11,10 +11,9 @@ import {
   SelectContent,
   SelectTrigger,
 } from "@/components/ui/select";
-import { useBusinessesStore } from "@/store/qs-admin";
+import { useBusinessesStore } from "@/store/sd-admin";
 import { BUSINESS_TYPES } from "@/app/constants";
 import { BusinessTypes } from "@/app/enum";
-import { Input } from "@/components/ui/input";
 import { InputWithClean } from "@/components/ui/input-with-clean";
 
 interface CategoryDropdownProps {
@@ -50,7 +49,7 @@ const CategoryDropdown = ({ handleSearch, handleCategories, search, category }: 
   }, [category, categories]);
 
   return (
-    <div className="flex justify-end my-7 px-2 gap-3">
+    <div className="flex justify-end mb-7 px-2 gap-3">
       <InputWithClean type="text" placeholder="Nombre" className=" max-w-60" value={search} handle={handleSearch} />
 
       <Select
