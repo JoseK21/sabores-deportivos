@@ -51,11 +51,17 @@ export default function FormData({
 
   const { leagues } = useLeaguesStore();
 
+  const dataFromDB = {
+    ...data,
+    startDate: new Date(data?.startDate || ""),
+    endDate: new Date(data?.endDate || ""),
+  } as Tournament;
+
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
-      ? data || ({} as Tournament)
+      ? dataFromDB || ({} as Tournament)
       : {
           name: "",
           abbrName: "",
@@ -76,7 +82,7 @@ export default function FormData({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Tournament), ["id"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["id"]);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);

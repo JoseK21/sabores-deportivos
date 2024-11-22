@@ -7,7 +7,6 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 
-// MODELs
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -49,10 +48,10 @@ model User {
   role               UserRole       @default(client)
   idBusiness         String?
   accounts           Account[]
+  claimedPrizesStaff ClaimedPrize[] @relation("ClaimedPrizesByStaff")
+  claimedPrizes      ClaimedPrize[] @relation("ClaimedPrizesByUser")
   sessions           Session[]
   business           Business?      @relation(fields: [idBusiness], references: [id])
-  claimedPrizes      ClaimedPrize[] @relation("ClaimedPrizesByUser")
-  claimedPrizesStaff ClaimedPrize[] @relation("ClaimedPrizesByStaff")
 }
 
 model VerificationToken {
@@ -82,8 +81,8 @@ model Product {
   price         Int            @default(1)
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
-  productType   ProductType    @relation(fields: [productTypeId], references: [id])
   business      Business       @relation(fields: [idBusiness], references: [id])
+  productType   ProductType    @relation(fields: [productTypeId], references: [id])
   ProductPrize  ProductPrize[]
 }
 
@@ -96,8 +95,8 @@ model Prize {
   enabled      Boolean        @default(true)
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
-  business     Business       @relation(fields: [idBusiness], references: [id])
   ClaimedPrize ClaimedPrize[]
+  business     Business       @relation(fields: [idBusiness], references: [id])
   ProductPrize ProductPrize[]
 }
 
@@ -119,8 +118,8 @@ model ClaimedPrize {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
   prize       Prize    @relation(fields: [idPrize], references: [id])
-  user        User     @relation("ClaimedPrizesByUser", fields: [idUser], references: [id])
   userStaff   User     @relation("ClaimedPrizesByStaff", fields: [idUserStaff], references: [id])
+  user        User     @relation("ClaimedPrizesByUser", fields: [idUser], references: [id])
 }
 
 model Sport {
@@ -139,8 +138,8 @@ model League {
   sportId    String
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @updatedAt @map("updated_at")
-  Tournament Tournament[]
   Sport      Sport        @relation(fields: [sportId], references: [id])
+  Tournament Tournament[]
 
   @@unique([name, sportId])
 }
@@ -157,8 +156,8 @@ model Tournament {
   updatedAt   DateTime         @updatedAt @map("updated_at")
   leagueId    String
   status      TournamentStatus
-  League      League           @relation(fields: [leagueId], references: [id])
   Event       Event[]
+  League      League           @relation(fields: [leagueId], references: [id])
 }
 
 model Team {
@@ -169,8 +168,8 @@ model Team {
   colors     String[]
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
-  homeEvents Event[]  @relation("homeTeamEvents")
   awayEvents Event[]  @relation("awayTeamEvents")
+  homeEvents Event[]  @relation("homeTeamEvents")
 }
 
 model Event {
@@ -183,8 +182,8 @@ model Event {
   updatedAt    DateTime    @updatedAt @map("updated_at")
   homeTeamId   String
   awayTeamId   String
-  homeTeam     Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
   awayTeam     Team        @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
+  homeTeam     Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
   Tournament   Tournament  @relation(fields: [tournamentId], references: [id])
 
   @@unique([tournamentId, startDate])
@@ -229,13 +228,13 @@ model Business {
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
   BusinessAdvertising BusinessAdvertising[]
-  BusinessGallery     BusinessGallery[]
   BusinessEvent       BusinessEvent[]
+  BusinessGallery     BusinessGallery[]
   BusinessScheduled   BusinessScheduled?
   Forecast            Forecast[]
-  User                User[]
   Prize               Prize[]
   Product             Product[]
+  User                User[]
 }
 
 model BusinessScheduled {
@@ -302,7 +301,6 @@ model Subscription {
   email String @unique
 }
 
-// ENUMs
 enum UserRole {
   unknown
   client

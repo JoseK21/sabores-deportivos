@@ -109,7 +109,7 @@ export default function Form_({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Business));
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);

@@ -45,7 +45,7 @@ export default function FormConfig({
     try {
       setLoading(true);
 
-      let dataToEdit = getObjectDiff(dataForm, data ?? ({} as Business));
+      let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
       if (isEmpty(dataToEdit)) {
         setLoading(false);

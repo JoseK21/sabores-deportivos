@@ -61,20 +61,17 @@ export default function FormEmployee({
   const { employees, setData } = useEmployeesStore();
   const [displayPassword, setDisplayPassword] = useState(false);
 
+  const dataFromDB = {
+    ...data,
+    ...(isEdition ? { password: "password" } : ""),
+  } as User;
+
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
-      ? { ...data, ...(isEdition ? { password: "password" } : "") } || ({} as User)
-      : {
-          name: "",
-          image: "",
-          email: "",
-          password: "",
-          role: "",
-          status: "",
-          idBusiness,
-        },
+      ? dataFromDB || ({} as User)
+      : { name: "", image: "", email: "", password: "", role: "", status: "", idBusiness },
   });
 
   useFetchData(async () => {
@@ -97,7 +94,7 @@ export default function FormEmployee({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as User), ["email", "password"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["email", "password"]);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);

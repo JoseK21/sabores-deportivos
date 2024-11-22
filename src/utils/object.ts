@@ -17,8 +17,18 @@ export function getObjectDiff<T extends object>(updated: T, original: T, exclude
       return; // Omitir la propiedad 'image' si su tipo MIME es 'application/octet-stream'
     }
 
-    if (updated[keyStr] !== original[keyStr]) {
-      diff[keyStr] = updated[keyStr];
+    const updatedValue = updated[keyStr];
+    const originalValue = original[keyStr];
+
+    // Comparar fechas correctamente
+    const isDateComparison = updatedValue instanceof Date && originalValue instanceof Date;
+
+    if (isDateComparison) {
+      if (updatedValue.getTime() !== originalValue.getTime()) {
+        diff[keyStr] = updatedValue;
+      }
+    } else if (updatedValue !== originalValue) {
+      diff[keyStr] = updatedValue;
     }
   });
 

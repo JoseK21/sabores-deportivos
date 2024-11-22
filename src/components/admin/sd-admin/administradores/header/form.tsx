@@ -65,11 +65,16 @@ export default function FormAdmin({
   const { admins, setData } = useAdminsStore();
   const [displayPassword, setDisplayPassword] = useState(false);
 
+  const dataFromDB = {
+    ...data,
+    ...(isEdition ? { password: "password" } : ""),
+  } as User;
+
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
-      ? { ...data, ...(isEdition ? { password: "password" } : "") } || ({} as User)
+      ? dataFromDB || ({} as User)
       : {
           name: "",
           image: "",
@@ -103,7 +108,7 @@ export default function FormAdmin({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, data ?? ({} as User), ["email", "password"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["email", "password"]);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);

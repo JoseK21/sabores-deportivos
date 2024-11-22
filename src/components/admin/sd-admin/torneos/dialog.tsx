@@ -32,7 +32,7 @@ export const FormDialog = ({ open, setOpen, data, isEdition, isShowing = false }
                 <strong>Nombre Abreviado:</strong> {abbrName}
               </span>
               <span>
-                <strong>Liga:</strong> {League.name} ({League?.Sport?.name || "-"})
+                <strong>Liga:</strong> {League?.name} ({League?.Sport?.name || "-"})
               </span>
               <span>
                 <strong>Estado:</strong> {enabled ? "Habilitado" : "Deshabilitado"}

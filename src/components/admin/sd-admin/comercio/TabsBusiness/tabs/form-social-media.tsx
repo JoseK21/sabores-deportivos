@@ -51,7 +51,7 @@ export default function FormBusinessContacts({ business }: { business?: Business
     try {
       setLoading(true);
 
-      let dataToEdit = getObjectDiff(dataForm, business ?? ({} as Business));
+      let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
       if (isEmpty(dataToEdit)) {
         setLoading(false);

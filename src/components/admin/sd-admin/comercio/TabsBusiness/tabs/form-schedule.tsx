@@ -53,7 +53,7 @@ export default function FormBusinessSchedule({ business }: { business?: Business
 
     try {
       setLoading(true);
-      let dataToEditOrAdd = { idBusiness, ...getObjectDiff(dataForm, schedule ?? ({} as Schedule)) };
+      let dataToEditOrAdd = { idBusiness, ...getObjectDiff(dataForm, form.control._defaultValues) };
 
       if (isEmpty(dataToEditOrAdd)) {
         setLoading(false);
