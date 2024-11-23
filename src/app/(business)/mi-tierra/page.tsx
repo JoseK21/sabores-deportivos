@@ -1,6 +1,9 @@
+"use client";
 /* eslint-disable @next/next/no-img-element */
 import FooterMiTierra from "@/components/(business)/mi-tierra/footer/footer";
 import HeaderMiTierra from "@/components/(business)/mi-tierra/header/header";
+
+import { motion } from "framer-motion";
 
 const top_food = [
   {
@@ -76,21 +79,26 @@ export default function PageMiTierra() {
     <div>
       <HeaderMiTierra />
       <section className="mb-20">
-        {/*  */}
+        {/* hero */}
         <div className="w-full h-screen bg-fixed bg-[url('https://mitierrarestaurante.com/wp-content/uploads/2020/10/IMG_6710.jpg')] bg-cover bg-center z-0">
           <div className="container flex flex-col justify-center h-full text-white ">
-            <p className="text-[128px] font-yanone-kaffeesatz font-semibold leading-none">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              className="text-[128px] font-yanone-kaffeesatz font-semibold leading-none"
+            >
               <span className="">
                 LO MEJOR <br /> DE LA COMIDA COSTARRICENSE
               </span>
-            </p>
+            </motion.p>
 
             <span className="my-5">Un lugar diferente para disfrutar con mi gente</span>
 
             <button className="bg-[#EB262A] w-fit text-3xl px-3 py-2 font-yanone-kaffeesatz">Ver Menú</button>
           </div>
         </div>
-        {/*  */}
+        {/* 4 foods */}
         <div className="flex flex-row justify-center space-x-20 bg-[#EB262A] w-full h-80 text-white">
           {top_food.map((food) => (
             <div key={food.title} className="flex items-center flex-col justify-center gap-5">
@@ -107,14 +115,19 @@ export default function PageMiTierra() {
           </div>
           <div className="grid grid-cols-3 gap-5 items-start gap-y-16">
             {menu_options.map((option) => (
-              <div key={option.title} className="flex flex-col items-center justify-center text-center">
+              <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              viewport={{ once: true }} 
+              key={option.title} className="flex flex-col items-center justify-center text-center">
                 <img src={option.img} alt="menu" className="" />
                 <h4 className="font-bold text-4xl font-yanone-kaffeesatz pt-3">{option.title}</h4>
                 <span className="py-4 text-gray-600 text-sm">{option.description}</span>
                 <button className="bg-[#EB262A] w-fit text-3xl text-white px-3 py-2 font-yanone-kaffeesatz">
                   Ver Menú
                 </button>
-              </div>
+              </motion.div>
             ))}
           </div>
           <div className="flex justify-center mb-14">
@@ -213,7 +226,14 @@ export default function PageMiTierra() {
             // q="Mi Tierra Restaurant"
           /> */}
 
-<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d503124.6076312446!2d-83.901321!3d9.878782!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0dfbac0c7e1c3%3A0xa6f62892d5179801!2sMi%20Tierra%20Restaurant!5e0!3m2!1sen!2sus!4v1732351663624!5m2!1sen!2sus" width="100%" height="450" allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d503124.6076312446!2d-83.901321!3d9.878782!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0dfbac0c7e1c3%3A0xa6f62892d5179801!2sMi%20Tierra%20Restaurant!5e0!3m2!1sen!2sus!4v1732351663624!5m2!1sen!2sus"
+            width="100%"
+            height="450"
+            allowFullScreen={false}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </section>
 
