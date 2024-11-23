@@ -70,3 +70,5 @@ https://ui.shadcn.com/docs/components/
 https://themewagon.github.io/landwind/
 
 https://www.figma.com/design/9gybH4tyXcBV3w1DPm9HfP/Sabores-Deportivos?node-id=207-27&node-type=frame&t=z1YSxyoUcT5fnDJM-0
+
+https://tw-elements.com/docs/standard/components/social-buttons/
