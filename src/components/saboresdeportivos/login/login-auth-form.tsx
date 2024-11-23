@@ -48,7 +48,7 @@ export default function LoginForm() {
       setLoading(false);
 
       if (res?.error) {
-        setErrorMessage(res?.error || "Credenciales invalidas");
+        setErrorMessage("Credenciales invalidas");
       } else {
         setRedirecting(true)
         router.push("/sd-admin");

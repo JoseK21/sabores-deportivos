@@ -60,14 +60,14 @@ export default function UserAuthForm() {
 
         setLoading(false);
         if (res?.error) {
-          setErrorMessage(res?.error || "Credenciales invalidas");
+          setErrorMessage("Credenciales invalidas");
         } else {
           setRedirecting(true);
           router.push("/");
         }
       } else {
         setLoading(false);
-        setErrorMessage("Credenciales invalidas *");
+        setErrorMessage("Credenciales invalidas");
       }
     } catch (error) {
       console.error("Error during sign in:", error);

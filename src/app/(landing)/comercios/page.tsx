@@ -1,4 +1,4 @@
-import GridFilter from "../../../components/pages/comercios-afiliados/GridFilter";
+import GridFilter from "../../../components/pages/comercios/GridFilter";
 
 const Page = () => {
   return (

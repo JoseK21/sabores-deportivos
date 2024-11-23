@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-import Grid from "@/components/pages/comercios-afiliados/Content/grid";
-import CategoryDropdown from "@/components/pages/comercios-afiliados/Header/categoryDropdown";
+import Grid from "@/components/pages/comercios/Content/grid";
+import CategoryDropdown from "@/components/pages/comercios/Header/categoryDropdown";
 
 const GridFilter = () => {
   const searchParams = useSearchParams();
@@ -20,7 +20,7 @@ const GridFilter = () => {
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
 
     search ? params.set("search", search) : params.delete("search");
     category ? params.set("category", category) : params.delete("category");

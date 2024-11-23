@@ -226,6 +226,7 @@ export default function FormAdmin({
                     disabled={loading}
                     onChange={onChange}
                     size={SIZES_UNIT.xl}
+                    placeholder="/assets/default-user-2.webp"
                     src={form.getValues().image}
                   />
                 </FormControl>
@@ -360,6 +361,7 @@ export default function FormAdmin({
                       <Button
                         role="combobox"
                         variant="outline"
+                        disabled={loading}
                         className={cn("w-full justify-between", !field.value && "text-muted-foreground")}
                       >
                         {field.value

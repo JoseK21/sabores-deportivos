@@ -62,7 +62,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
   const [currentTab, setcurrentTab] = useState("menu");
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
 
     const hash = params.get("tab") ?? "menu";
 
@@ -123,7 +123,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
       <Tabs
         defaultValue={currentTab}
         onValueChange={(tab) => {
-          const params = new URLSearchParams(searchParams);
+          const params = new URLSearchParams(searchParams.toString());
 
           tab == "menu" ? params.delete("tab") : params.set("tab", tab);
 
@@ -148,7 +148,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                       <div
                         className={cn(
                           "flex flex-col gap-2 items-center bg-slate-100 p-2 rounded min-w-28",
-                          (!item?.enabled ?? false) && "grayscale"
+                          (item?.enabled ?? false) && "grayscale"
                         )}
                         key={`menu-${i}-${item.id}`}
                       >
@@ -181,7 +181,7 @@ const TabsInfo = ({ slug }: { slug: string }) => {
                         <div
                           className={cn(
                             "flex flex-col gap-2 items-center bg-slate-100 p-2 rounded min-w-28",
-                            (!item?.enabled ?? false) && "grayscale"
+                            (item?.enabled ?? false) && "grayscale"
                           )}
                         >
                           <Avatar>

@@ -1,4 +1,4 @@
-import TabsInfo from "@/components/pages/comercios-afiliados/tabs-info";
+import TabsInfo from "@/components/pages/comercios/tabs-info";
 
 const Page = ({ params }: { params: { slug: string } }) => {
 
