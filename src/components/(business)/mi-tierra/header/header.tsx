@@ -1,7 +1,17 @@
 import Link from "next/link";
 
+const BASE_URL = "/mi-tierra";
+
+const itemsMenu = [
+  { href: "/", title: "Inicio" },
+  { href: "/quienes-somos", title: "Quienes Somos" },
+  { href: "/contactos", title: "Contactos" },
+  { href: "/menu", title: "Menú" },
+];
+
 /* eslint-disable @next/next/no-img-element */
 const HeaderMiTierra = () => {
+  
   return (
     <header className="flex justify-between items-center container h-16">
       <img
@@ -12,11 +22,12 @@ const HeaderMiTierra = () => {
       ></img>
 
       <nav>
-        <ul className=" text-[#3d1510] space-x-5">
-          <Link href={"Inicio"}>Inicio</Link>
-          <Link href={"Quienes Somos"}>Quienes Somos</Link>
-          <Link href={"Contactos"}>Contactos</Link>
-          <Link href={"Menú"}>Menú</Link>
+        <ul className=" text-[#3d1510] space-x-6">
+          {itemsMenu.map((item) => (
+            <Link key={item.title} href={`${BASE_URL}${item.href}`}>
+              {item.title}
+            </Link>
+          ))}
         </ul>
       </nav>
     </header>
