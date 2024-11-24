@@ -59,6 +59,9 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      maxWidth: {
+        "90": "90%",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -81,7 +84,7 @@ const config = {
         // ...animations.animation,
       },
       fontFamily: {
-        'yanone-kaffeesatz': ['Yanone Kaffeesatz', 'sans-serif'], // Usar Anone Kaffeesatz como fuente principal
+        "yanone-kaffeesatz": ["Yanone Kaffeesatz", "sans-serif"], // Usar Anone Kaffeesatz como fuente principal
         // roboto: ['Roboto', 'sans-serif'],
         // poppins: ['Poppins', 'sans-serif'],
       },
