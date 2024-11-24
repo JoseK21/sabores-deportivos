@@ -227,6 +227,7 @@ model Business {
   displayProductPrice Boolean               @default(false)
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
+  slug                String?
   BusinessAdvertising BusinessAdvertising[]
   BusinessEvent       BusinessEvent[]
   BusinessGallery     BusinessGallery[]
@@ -288,10 +289,11 @@ model BusinessEvent {
   id          String   @id @default(cuid())
   idBusiness  String
   title       String
-  description String?
   date        DateTime
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  description String?
+  image       String?
   business    Business @relation(fields: [idBusiness], references: [id])
 }
 
