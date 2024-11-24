@@ -227,7 +227,7 @@ model Business {
   displayProductPrice Boolean               @default(false)
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
-  slug                String?
+  slug                String                @unique
   BusinessAdvertising BusinessAdvertising[]
   BusinessEvent       BusinessEvent[]
   BusinessGallery     BusinessGallery[]
