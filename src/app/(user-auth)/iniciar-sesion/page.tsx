@@ -6,7 +6,7 @@ export default function AuthenticationPage() {
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="hidden h-full justify-center flex-col bg-muted p-10 text-white dark:border-r lg:flex bg-zinc-900 z-20 gap-16">
         <div className="flex items-center justify-center">
-          <Logo />{" "}
+          <Logo size={80} />{" "}
         </div>
         <div>
           <blockquote className="space-y-2">

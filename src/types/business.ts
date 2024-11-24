@@ -6,6 +6,7 @@ import { Schedule } from "./schedule";
 export type Business = {
   id: string;
   name: string;
+  slug: string;
   photoUrl: string;
   type: BusinessTypes;
   logoUrl: string;

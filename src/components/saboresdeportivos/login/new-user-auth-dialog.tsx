@@ -95,7 +95,7 @@ export default function NewUserAuthDialog() {
           Registrarse ahora!
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]  ">
         <DialogHeader>
           <DialogTitle>Registro</DialogTitle>
         </DialogHeader>
@@ -119,6 +119,7 @@ export default function NewUserAuthDialog() {
                             onChange={onChange}
                             size={SIZES_UNIT.md}
                             src={form.getValues().image}
+                            placeholder="/assets/default-user-2.webp"
                           />
                         </FormControl>
                         <FormMessage />

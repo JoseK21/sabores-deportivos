@@ -87,6 +87,7 @@ const getScheduleInfo = (schedule?: Schedule): { class: string; label: string; e
 const ComercioCard = ({
   id,
   name,
+  slug,
   type,
   phone1,
   phone2,
@@ -99,7 +100,7 @@ const ComercioCard = ({
   const scheduleInfo = getScheduleInfo(BusinessScheduled);
 
   return (
-    <Link href={`/comercios/${generateSlug(name, id)}`} target="_blank">
+    <Link href={slug} target="_blank">
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl">
         <div style={{ position: "relative", height: "200px" }}>
           <Image fill alt={name} src={coverImageUrl} className="object-cover" sizes="100vw" />

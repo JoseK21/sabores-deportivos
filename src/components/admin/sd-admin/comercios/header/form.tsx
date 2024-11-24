@@ -27,6 +27,7 @@ import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSub
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
+  slug: z.string().min(3, { message: "Slug de al menos de 3 letras" }),
   address: z.string().min(10, { message: "La Dirección al menos de tener 10 letras" }),
   coverImageUrl: z
     .any()
@@ -69,6 +70,7 @@ export default function Form_({
       ? data || ({} as Business)
       : {
           name: "",
+          slug: "",
           type: "",
           description: "",
           province: "",
@@ -316,6 +318,20 @@ export default function Form_({
           />
 
           <FormField
+            name="slug"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Slug</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} placeholder="Slug" {...field} autoComplete="new-email" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
             name="description"
             control={form.control}
             render={({ field }) => (
@@ -479,7 +495,7 @@ export default function Form_({
             name="address"
             control={form.control}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-2">
                 <FormLabel>Dirección</FormLabel>
                 <FormControl>
                   <Input disabled={loading} placeholder="Dirección" {...field} />
