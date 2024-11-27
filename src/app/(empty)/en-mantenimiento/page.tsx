@@ -144,11 +144,7 @@ export default function Page() {
             fill="#cbcbcb"
           ></path>
         </svg>
-        <div className="mt-8">
-          <Logo size={180} />
-        </div>
-
-        <p className="text-4xl font-bold text-gray-700 capitalize tracking-wide2">¡Sitio web bajo mantenimiento!</p>
+        <p className="text-4xl font-bold text-gray-700 capitalize tracking-wide2 mt-6">¡Sitio web bajo mantenimiento!</p>
         <p className="text-xl text-gray-700 uppercase mt-4 mb-8">Estaremos de vuelta pronto</p>
       </div>
       <div className="w-full py-4 border-t border-gray-300">
