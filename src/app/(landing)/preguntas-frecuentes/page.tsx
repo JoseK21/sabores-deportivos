@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Store, User } from "lucide-react";
 
 const faq_users = [
   {
@@ -86,7 +87,10 @@ export default function Page() {
     <section className="flex gap-3 flex-col">
       <span className="text-2xl font-bold">Preguntas Frecuentes (FAQ)</span>
 
-      <span className="font-bold mt-5">Usuarios</span>
+      <div className="flex flex-row gap-3 mt-5">
+        <User />
+        <span className="font-bold ">Usuarios</span>
+      </div>
       <Accordion type="single" collapsible className="w-full">
         {faq_users.map((faq, index) => (
           <AccordionItem key={`item-${index}`} value={`item-${index}`}>
@@ -96,7 +100,10 @@ export default function Page() {
         ))}
       </Accordion>
 
-      <span className="font-bold mt-9">Comercios</span>
+      <div className="flex flex-row gap-3 mt-9">
+        <Store />
+        <span className="font-bold">Comercios</span>
+      </div>
       <Accordion type="single" collapsible className="w-full">
         {faq_owners.map((faq, index) => (
           <AccordionItem key={`item-${index}`} value={`item-${index}`}>
