@@ -50,149 +50,8 @@ const itemsMenu = [
 ];
 
 import { Team } from "@prisma/client";
-
-const TEAMS: Team[] = [
-  {
-    id: "herediano",
-    name: "Herediano",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/862.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "san-carlos",
-    name: "San Carlos",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/859.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "alajuelense",
-    name: "Alajuelense",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2057.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "municipal-liberia",
-    name: "Municipal Liberia",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9361.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "ad-guanacasteca",
-    name: "AD Guanacasteca",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20982.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "saprissa",
-    name: "Saprissa",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/858.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "sporting-san-jose",
-    name: "Sporting San José",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20705.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "pere-zeledon",
-    name: "Perez Zeledon",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7234.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "cartagines",
-    name: "Cartagines",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7239.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "puntarenas",
-    name: "Puntarenas",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7237.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "grecia",
-    name: "Grecia",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18763.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "santos",
-    name: "Santos",
-    abbrName: "",
-    logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/913.png&h=200&w=200",
-    colors: ["#000000", "#000000"],
-    leagueId: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
-const LEAGUES = [
-  "Primera División de Costa Rica",
-  "Copa América",
-  "Eliminatorias CONMEBOL",
-  "UEFA Europa League",
-  "LALIGA",
-  "Serie A de Italia",
-  "Liga Portugal",
-  "Liga Profesional de Bélgica",
-  "Concacaf Nations League",
-  "Liga MX",
-  "UEFA Champions League",
-  "UEFA Champions League",
-  "German Bundesliga",
-  "Ligue 1 de Francia",
-  "Eredivisie de Holanda",
-  "Eredivisie de Holanda",
-  "Major League Soccer de EE.UU.",
-];
+import { getESDate } from "@/utils/date";
+import { LEAGUES, TEAMS } from "@/app/(landing)/eventos-deportivos/page";
 
 export function QuinielaDialog() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -275,7 +134,7 @@ export function QuinielaDialog() {
                     className={cn("w-[280px] justify-start text-left font-normal", !date && "text-muted-foreground")}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP", { locale: es }) : <span>Fecha</span>}
+                    {getESDate(date, "Fecha")}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">

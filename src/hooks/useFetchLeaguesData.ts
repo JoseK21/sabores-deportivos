@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { getApi } from "@/lib/api";
 
-import { League } from "@/types/league";
 import { useFetchData } from "@/lib/useFetchData";
 import { useLeaguesStore } from "@/store/sd-admin";
+import { RLeague } from "@/relatedTypes/league";
 
 const useFetchLeaguesData = () => {
   const { leagues, setData, setError } = useLeaguesStore();
@@ -14,7 +14,7 @@ const useFetchLeaguesData = () => {
 
     if (!leagues.length) {
       try {
-        const data: League[] = (await getApi("league"))?.data || [];
+        const data: RLeague[] = (await getApi("league"))?.data || [];
 
         setData(data);
       } catch (error: any) {

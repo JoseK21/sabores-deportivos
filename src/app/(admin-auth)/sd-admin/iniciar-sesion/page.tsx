@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import LoginForm from "@/components/saboresdeportivos/login/login-auth-form";
 
 export default function AuthenticationPage() {

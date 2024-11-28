@@ -1,11 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Sport } from "@/types/sport";
 
 import { CellAction } from "./cell-action";
+import { RSport } from "@/relatedTypes/sport";
 
-export const columns: ColumnDef<Sport>[] = [
+export const columns: ColumnDef<RSport>[] = [
   {
     accessorKey: "name",
     header: "Nombre",

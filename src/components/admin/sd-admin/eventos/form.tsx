@@ -25,11 +25,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { es } from "date-fns/locale";
 import { REvent } from "@/relatedTypes/event";
+import { getESDate } from "@/utils/date";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional().nullable(),
-  tournamentId: z.string().min(1, { message: "Evento requerido" }),
+  tournamentId: z.string().min(1, { message: "Evento requerido" }).nullable(),
   dateTime: z.date({ required_error: "Fecha de inicio requerida." }),
   homeTeamId: z.string().min(1, { message: "Equipo Casa requerido" }),
   awayTeamId: z.string().min(1, { message: "Equipo Visita requerido" }),
@@ -77,7 +78,7 @@ export default function FormData({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["id"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -187,7 +188,7 @@ export default function FormData({
                       }
                       field.onChange(value);
                     }}
-                    defaultValue={field.value}
+                    defaultValue={field.value ?? undefined}
                   >
                     <FormControl>
                       <SelectTrigger disabled={loading}>
@@ -271,7 +272,7 @@ export default function FormData({
                           disabled={loading}
                           className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                         >
-                          {field.value ? format(field.value, "PPP", { locale: es }) : <span>Fecha</span>}
+                          {getESDate(field.value, "Fecha")}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>

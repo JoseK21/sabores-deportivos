@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { COUNTRIES, BUSINESS_TYPES } from "@/app/constants";
 
 import { Cell_ } from "./cell-action";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -18,7 +17,7 @@ export const columns: ColumnDef<RTeam>[] = [
         <div className="flex flex-row gap-2 items-center">
           <Avatar>
             <AvatarImage src={logoUrl ?? ""} alt={name} className=" object-cover" />
-            <AvatarFallback className=" bg-slate-300 w-full h-full flex items-center justify-center">
+            <AvatarFallback className="bg-slate-300 w-full h-full flex items-center justify-center">
               {name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -26,6 +25,11 @@ export const columns: ColumnDef<RTeam>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: "shortName",
+    header: "Nombre Corto",
+    cell: ({ row }) => <span>{row.original.shortName ?? "-"}</span>,
   },
   {
     id: "actions",

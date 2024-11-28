@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { useState } from "react";
 import { isEmpty } from "lodash";
-import { Sport } from "@/types/sport";
 import { useForm } from "react-hook-form";
 import { postApi, putApi } from "@/lib/api";
 import { Input } from "@/components/ui/input";
@@ -14,11 +13,11 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { useSportsStore } from "@/store/sd-admin";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { RSport } from "@/relatedTypes/sport";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(3, { message: "Nombre al menos de 3 letras" }),
-  abbrName: z.string().min(2, { message: "Nombre al menos de 2 letras" }),
 });
 
 export default function FormData({
@@ -26,7 +25,7 @@ export default function FormData({
   setOpen,
   isEdition = false,
 }: {
-  data?: Sport;
+  data?: RSport;
   isEdition?: boolean;
   setOpen: (open: boolean) => void;
 }) {
@@ -35,7 +34,7 @@ export default function FormData({
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: isEdition ? data || ({} as Sport) : { name: "", abbrName: "" },
+    defaultValues: isEdition ? data || ({} as RSport) : { name: "" },
   });
 
   const { toast } = useToast();
@@ -46,7 +45,7 @@ export default function FormData({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["id"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -138,19 +137,6 @@ export default function FormData({
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="Nombre" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="abbrName"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre Abreviado</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Nombre Abreviado" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

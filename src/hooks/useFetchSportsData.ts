@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { getApi } from "@/lib/api";
 
-import { Sport } from "@/types/sport";
 import { useSportsStore } from "@/store/sd-admin";
 import { useFetchData } from "@/lib/useFetchData";
+import { RSport } from "@/relatedTypes/sport";
 
 const useFetchSportsData = () => {
   const { sports, setData, setError } = useSportsStore();
@@ -13,7 +13,7 @@ const useFetchSportsData = () => {
     setIsLoaded(false);
 
     try {
-      const data: Sport[] = (await getApi("sport"))?.data || [];
+      const data: RSport[] = (await getApi("sport"))?.data || [];
 
       setData(data);
     } catch (error: any) {

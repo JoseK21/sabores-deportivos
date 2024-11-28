@@ -1,20 +1,19 @@
 "use client";
 
 import { z } from "zod";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { isEmpty } from "lodash";
 import { useForm } from "react-hook-form";
-import { postApi, putApi } from "@/lib/api";
+import { getApi, postApi, putApi } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import { getObjectDiff } from "@/utils/object";
-import { Tournament } from "@/types/tournament";
 import { useToast } from "@/components/ui/use-toast";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { useLeaguesStore, useTournamentsStore } from "@/store/sd-admin";
+import { useLeaguesStore, useSportsStore, useTournamentsStore } from "@/store/sd-admin";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -25,17 +24,18 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { es } from "date-fns/locale";
+import { RTournament } from "@/relatedTypes/tournament";
+import { getESDate } from "@/utils/date";
+import { RLeague } from "@/relatedTypes/league";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, { message: "Nombre requerido" }),
-  abbrName: z.string().min(1, { message: "Nombre Abreviado requerido" }),
-  description: z.string().optional(),
   startDate: z.date({ required_error: "Fecha de inicio requerida." }),
   endDate: z.date({ required_error: "Fecha de fin requerida." }),
-  leagueId: z.string().min(1, { message: "Liga requerido" }),
+  sportId: z.string().min(1, { message: "Deporte requerido" }),
+  leagueId: z.string().optional().nullable(),
   enabled: z.boolean(),
-  status: z.string().min(1, { message: "Estado requerido" }),
 });
 
 export default function FormData({
@@ -43,46 +43,59 @@ export default function FormData({
   setOpen,
   isEdition = false,
 }: {
-  data?: Tournament;
+  data?: RTournament;
   isEdition?: boolean;
   setOpen: (open: boolean) => void;
 }) {
   const { tournaments, setData } = useTournamentsStore();
 
-  const { leagues } = useLeaguesStore();
+  const { sports } = useSportsStore();
 
   const dataFromDB = {
     ...data,
     startDate: new Date(data?.startDate || ""),
     endDate: new Date(data?.endDate || ""),
-  } as Tournament;
+  } as RTournament;
 
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: isEdition
-      ? dataFromDB || ({} as Tournament)
+      ? dataFromDB || ({} as RTournament)
       : {
           name: "",
-          abbrName: "",
-          description: "",
-          startDate: new Date(),
-          endDate: new Date(),
+          startDate: undefined,
+          endDate: undefined,
+          sportId: "",
           leagueId: "",
           enabled: true,
-          status: "",
         },
   });
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [leaguesBySportId, setLeaguesBySportId] = useState<RLeague[]>([]);
+
+  const fetchLeaguesBySportId = useCallback(async (sportId: string) => {
+    try {
+      form.setValue("leagueId", null);
+
+      setLeaguesBySportId([]);
+
+      const newData = await getApi(`league/bySportId/${sportId}`);
+
+      setLeaguesBySportId(newData.data);
+    } catch (error: any) {
+      setLeaguesBySportId([]);
+    }
+  }, []);
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
     try {
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["id"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -172,39 +185,12 @@ export default function FormData({
                 </FormItem>
               )}
             />
-            <FormField
-              name="abbrName"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre Abreviado</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Nombre Abreviado" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="description"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descripción (Opcional)</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Descripción" {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}
               name="startDate"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Fecha de Inicio</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -214,7 +200,7 @@ export default function FormData({
                           disabled={loading}
                           className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                         >
-                          {field.value ? format(field.value, "PPP", { locale: es }) : <span>Fecha</span>}
+                          <span>{getESDate(field.value, "Fecha")}</span>
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
@@ -248,7 +234,7 @@ export default function FormData({
                           disabled={loading}
                           className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                         >
-                          {field.value ? format(field.value, "PPP", { locale: es }) : <span>Fecha</span>}
+                          <span>{getESDate(field.value, "Fecha")}</span>
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
@@ -267,6 +253,63 @@ export default function FormData({
                 </FormItem>
               )}
             />
+
+            <FormField
+              name="sportId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Deporte</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      fetchLeaguesBySportId(value);
+                      field.onChange(value);
+                    }}
+                    defaultValue={field.value ?? undefined}
+                  >
+                    <FormControl>
+                      <SelectTrigger disabled={loading}>
+                        <SelectValue placeholder="Seleccione una liga" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {sports.map((sport) => (
+                        <SelectItem key={sport.id} value={sport.id}>
+                          {sport.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="leagueId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Liga (Opcional)</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
+                    <FormControl>
+                      <SelectTrigger disabled={loading}>
+                        <SelectValue placeholder="Seleccione una liga" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {leaguesBySportId.map((league) => (
+                        <SelectItem key={league.id} value={league.id}>
+                          {league.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               name="enabled"
               control={form.control}
@@ -283,56 +326,6 @@ export default function FormData({
                       {Object.keys(BOOLEAN_OPTIONS).map((key) => (
                         <SelectItem key={key} value={key}>
                           {BOOLEAN_OPTIONS[key as BooleanOption]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="status"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Estado</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione un estado" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.keys(TOURNAMENT_STATUS).map((key) => (
-                        <SelectItem key={key} value={key}>
-                          {TOURNAMENT_STATUS[key as TournamentStatus]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="leagueId"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Liga</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione una liga" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {leagues.map((league) => (
-                        <SelectItem key={league.id} value={league.id}>
-                          {league.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

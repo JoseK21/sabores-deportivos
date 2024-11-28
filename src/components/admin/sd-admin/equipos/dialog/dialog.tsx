@@ -15,7 +15,7 @@ interface Props {
 
 export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: Props) => {
   if (isShowing) {
-    const { name, logoUrl, abbrName, colors, League } = data || ({} as RTeam);
+    const { name, logoUrl, shortName, colors } = data || ({} as RTeam);
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -46,14 +46,13 @@ export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: P
               <span>
                 <strong>Nombre:</strong> {name}
               </span>
-              <span>
-                <strong>Nombre Abreviado:</strong> {abbrName ?? "N/A"}
-              </span>
+              {shortName && (
+                <span>
+                  <strong>Nombre Corto:</strong> {shortName}
+                </span>
+              )}
               <span>
                 <strong>Colors:</strong> {colors ?? "N/A"}
-              </span>
-              <span>
-                <strong>Liga:</strong> {League?.name ?? ""}
               </span>
             </div>
           </div>

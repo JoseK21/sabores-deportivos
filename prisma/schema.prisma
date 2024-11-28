@@ -20,6 +20,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
+  // Relations
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -30,6 +31,7 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  // Relations
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -47,11 +49,13 @@ model User {
   status             UserStatus     @default(deactivated)
   role               UserRole       @default(client)
   idBusiness         String?
+  // Relations
+  sessions           Session[]
   accounts           Account[]
+  Forecast           Forecast[]
+  business           Business?      @relation(fields: [idBusiness], references: [id])
   claimedPrizesStaff ClaimedPrize[] @relation("ClaimedPrizesByStaff")
   claimedPrizes      ClaimedPrize[] @relation("ClaimedPrizesByUser")
-  sessions           Session[]
-  business           Business?      @relation(fields: [idBusiness], references: [id])
 }
 
 model VerificationToken {
@@ -67,6 +71,7 @@ model ProductType {
   name      String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
+  // Relations
   Product   Product[]
 }
 
@@ -81,6 +86,7 @@ model Product {
   price         Int            @default(1)
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
+  // Relations
   business      Business       @relation(fields: [idBusiness], references: [id])
   productType   ProductType    @relation(fields: [productTypeId], references: [id])
   ProductPrize  ProductPrize[]
@@ -95,8 +101,9 @@ model Prize {
   enabled      Boolean        @default(true)
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
-  ClaimedPrize ClaimedPrize[]
+  // Relations
   business     Business       @relation(fields: [idBusiness], references: [id])
+  ClaimedPrize ClaimedPrize[]
   ProductPrize ProductPrize[]
 }
 
@@ -106,6 +113,7 @@ model ProductPrize {
   idProduct String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  // Relations
   prize     Prize    @relation(fields: [idPrize], references: [id])
   product   Product  @relation(fields: [idProduct], references: [id])
 }
@@ -117,95 +125,134 @@ model ClaimedPrize {
   idUserStaff String
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  // Relations
   prize       Prize    @relation(fields: [idPrize], references: [id])
   userStaff   User     @relation("ClaimedPrizesByStaff", fields: [idUserStaff], references: [id])
   user        User     @relation("ClaimedPrizesByUser", fields: [idUser], references: [id])
 }
 
 model Sport {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  abbrName  String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  League    League[]
+  id         String       @id @default(cuid())
+  name       String       @unique
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  // Relations
+  League     League[]
+  Tournament Tournament[]
 }
 
 model League {
   id         String       @id @default(cuid())
   name       String       @unique
-  abbrName   String       @unique
   sportId    String
+  startDate  DateTime
+  endDate    DateTime
+  enabled    Boolean      @default(true)
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @updatedAt @map("updated_at")
+  // Relations
   Sport      Sport        @relation(fields: [sportId], references: [id])
   Tournament Tournament[]
-  Team       Team[]
+  TeamLeague TeamLeague[]
+  Event      Event[]
 
   @@unique([name, sportId])
 }
 
 model Tournament {
-  id          String           @id @default(cuid())
-  name        String           @unique
-  abbrName    String           @unique
-  description String?
-  startDate   DateTime
-  endDate     DateTime
-  enabled     Boolean          @default(true)
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  leagueId    String
-  status      TournamentStatus
-  Event       Event[]
-  League      League           @relation(fields: [leagueId], references: [id])
+  id             String           @id @default(cuid())
+  name           String           @unique
+  sportId        String
+  leagueId       String?
+  startDate      DateTime
+  endDate        DateTime
+  enabled        Boolean          @default(true)
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  // Relations
+  Sport          Sport            @relation(fields: [sportId], references: [id])
+  League         League?          @relation(fields: [leagueId], references: [id])
+  TeamTournament TeamTournament[]
+  Event          Event[]
 }
 
 model Team {
-  id         String   @id @default(cuid())
-  name       String
-  abbrName   String?
-  logoUrl    String?
-  colors     String? // "#436651, #F40035"
-  leagueId   String
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  awayEvents Event[]  @relation("awayTeamEvents")
-  homeEvents Event[]  @relation("homeTeamEvents")
-  League     League   @relation(fields: [leagueId], references: [id])
+  id             String           @id @default(cuid())
+  name           String
+  logoUrl        String?
+  shortName      String?
+  colors         String? //       "#436651, #F40035"
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  // Relations
+  homeEvents     Event[]          @relation("homeTeamEvents")
+  awayEvents     Event[]          @relation("awayTeamEvents")
+  TeamTournament TeamTournament[]
+  TeamLeague     TeamLeague[]
+}
 
-  @@unique([leagueId, name])
+model TeamLeague {
+  id       Int    @id @default(autoincrement())
+  teamId   String
+  leagueId String
+  // Relations
+  Team     Team   @relation(fields: [teamId], references: [id])
+  League   League @relation(fields: [leagueId], references: [id])
+
+  @@unique([teamId, leagueId])
+}
+
+model TeamTournament {
+  id           Int        @id @default(autoincrement())
+  teamId       String
+  tournamentId String
+  // Relations
+  Team         Team       @relation(fields: [teamId], references: [id])
+  Tournament   Tournament @relation(fields: [tournamentId], references: [id])
+
+  @@unique([teamId, tournamentId])
 }
 
 model Event {
-  id           String      @id @default(cuid())
-  title        String?
-  tournamentId String
-  dateTime     DateTime
-  status       EventStatus
-  createdAt    DateTime    @default(now()) @map("created_at")
-  updatedAt    DateTime    @updatedAt @map("updated_at")
-  homeTeamId   String
-  awayTeamId   String
-  awayTeam     Team        @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
-  homeTeam     Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
-  Tournament   Tournament  @relation(fields: [tournamentId], references: [id])
+  id            String      @id @default(cuid())
+  title         String?
+  tournamentId  String?
+  leagueId      String?
+  dateTime      DateTime
+  status        EventStatus
+  homeTeamId    String
+  awayTeamId    String
+  homeTeamScore Int         @default(0)
+  awayTeamScore Int         @default(0)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  // Relations
+  homeTeam      Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
+  awayTeam      Team        @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
+  Tournament    Tournament? @relation(fields: [tournamentId], references: [id])
+  League        League?     @relation(fields: [leagueId], references: [id])
+  Forecast      Forecast[]
 
-  @@unique([tournamentId, homeTeamId, awayTeamId, dateTime])
+  @@unique([homeTeamId, awayTeamId, dateTime])
 }
 
 model Forecast {
   id            String         @id @default(cuid())
   idBusiness    String
-  idClient      Int
-  idEvent       Int
+  idUser        String
+  idEvent       String
   date          DateTime
-  status        ForecastStatus
+  status        ForecastStatus @default(pending)
   homeTeamScore Int
   awayTeamScore Int
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
+  // Relations
   business      Business       @relation(fields: [idBusiness], references: [id])
+  User          User           @relation(fields: [idUser], references: [id])
+  Event         Event          @relation(fields: [idEvent], references: [id])
+
+  @@unique([idUser, idEvent])
 }
 
 model Business {
@@ -233,13 +280,14 @@ model Business {
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
   slug                String                @unique
+  // Relations
   BusinessAdvertising BusinessAdvertising[]
-  BusinessEvent       BusinessEvent[]
-  BusinessGallery     BusinessGallery[]
   BusinessScheduled   BusinessScheduled?
+  BusinessGallery     BusinessGallery[]
+  BusinessEvent       BusinessEvent[]
   Forecast            Forecast[]
-  Prize               Prize[]
   Product             Product[]
+  Prize               Prize[]
   User                User[]
 }
 
@@ -262,6 +310,7 @@ model BusinessScheduled {
   sundayClose      Int?
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
+  // Relations
   business         Business @relation(fields: [idBusiness], references: [id])
 }
 
@@ -272,6 +321,7 @@ model BusinessGallery {
   image      String
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+  // Relations
   business   Business @relation(fields: [idBusiness], references: [id])
 }
 
@@ -287,6 +337,7 @@ model BusinessAdvertising {
   endDate    DateTime?
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
+  // Relations
   business   Business  @relation(fields: [idBusiness], references: [id])
 }
 
@@ -299,6 +350,7 @@ model BusinessEvent {
   updatedAt   DateTime @updatedAt @map("updated_at")
   description String?
   image       String?
+  // Relations
   business    Business @relation(fields: [idBusiness], references: [id])
 }
 

@@ -4,12 +4,12 @@ import { useState } from "react";
 import { FormDialog } from "./dialog";
 
 import { Heading } from "@/components/ui/heading";
-import useFetchLeaguesData from "@/hooks/useFetchLeaguesData";
+import useFetchSportsData from "@/hooks/useFetchSportsData";
 
 export default function TournamentsHeader() {
   const [open, setOpen] = useState(false);
 
-  useFetchLeaguesData();
+  useFetchSportsData()
 
   return (
     <div className="flex items-start justify-between">

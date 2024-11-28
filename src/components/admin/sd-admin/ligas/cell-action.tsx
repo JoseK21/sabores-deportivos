@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { deleteApi } from "@/lib/api";
 import { FormDialog } from "./dialog";
-import { League } from "@/types/league";
 import { useToast } from "@/components/ui/use-toast";
 import { useLeaguesStore } from "@/store/sd-admin";
 import { AlertModal } from "@/components/saboresdeportivos/general/AlertModal";
 import { ActionDropdown } from "@/components/saboresdeportivos/general/ActionDropdown";
+import { RLeague } from "@/relatedTypes/league";
 
 interface Props {
-  data: League;
+  data: RLeague;
 }
 
 export const CellAction: React.FC<Props> = ({ data }) => {

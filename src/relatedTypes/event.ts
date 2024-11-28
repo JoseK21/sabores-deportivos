@@ -1,7 +1,9 @@
-import { Event, Team, Tournament } from "@prisma/client";
+import { Event } from "@prisma/client";
+import { RTeam } from "./team";
+import { RTournament } from "./tournament";
 
 export type REvent = Event & {
-  Tournament?: Tournament;
-  homeTeam?: Team;
-  awayTeam?: Team;
+  Tournament?: RTournament;
+  homeTeam?: RTeam;
+  awayTeam?: RTeam;
 };

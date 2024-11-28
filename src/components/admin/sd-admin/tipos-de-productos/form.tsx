@@ -45,7 +45,7 @@ export default function FormData({
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["id"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);

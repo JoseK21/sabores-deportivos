@@ -4,7 +4,7 @@ import { Heading } from "@/components/ui/heading";
 import { useState } from "react";
 
 import { FormDialog } from "./dialog";
-import useFetchSportsData from "../deportes/useFetchSportsData";
+import useFetchSportsData from "../../../../hooks/useFetchSportsData";
 
 export default function LeaguesHeader() {
   const [open, setOpen] = useState(false);

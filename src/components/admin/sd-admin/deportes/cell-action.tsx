@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { deleteApi } from "@/lib/api";
 import { FormDialog } from "./dialog";
-import { Sport } from "@/types/sport";
 import { useToast } from "@/components/ui/use-toast";
 import { useSportsStore } from "@/store/sd-admin";
 import { AlertModal } from "@/components/saboresdeportivos/general/AlertModal";
 import { ActionDropdown } from "@/components/saboresdeportivos/general/ActionDropdown";
+import { RSport } from "@/relatedTypes/sport";
 
 interface Props {
-  data: Sport;
+  data: RSport;
 }
 
 export const CellAction: React.FC<Props> = ({ data }) => {

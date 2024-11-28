@@ -1,11 +1,11 @@
 import FormData from "./form";
 import { Plus } from "lucide-react";
-import { League } from "@/types/league";
 import { Button } from "@/components/ui/button";
 import { DialogContent, DialogTrigger, Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { RLeague } from "@/relatedTypes/league";
 
 interface Props {
-  data?: League;
+  data?: RLeague;
   open: boolean;
   isEdition: boolean;
   isShowing: boolean;
@@ -14,7 +14,7 @@ interface Props {
 
 export const FormDialog = ({ open, setOpen, data, isEdition, isShowing = false }: Props) => {
   if (isShowing) {
-    const { name, abbrName, Sport } = data || ({} as League);
+    const { name, Sport } = data || ({} as RLeague);
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -27,9 +27,6 @@ export const FormDialog = ({ open, setOpen, data, isEdition, isShowing = false }
             <div className=" rounded-sm bg-slate-100 p-2 flex flex-col flex-1">
               <span>
                 <strong>Nombre:</strong> {name}
-              </span>
-              <span>
-                <strong>Nombre Abreviado:</strong> {abbrName}
               </span>
               <span>
                 <strong>Deporte:</strong> {Sport?.name || "-"}

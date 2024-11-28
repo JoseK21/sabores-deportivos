@@ -13,18 +13,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteApi, postApi, putApi } from "@/lib/api";
-import { useLeaguesStore, useTeamsStore } from "@/store/sd-admin";
+import { useTeamsStore } from "@/store/sd-admin";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
 import FileInputPreview, { SIZES_UNIT } from "@/components/saboresdeportivos/FileInputPreview";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
 import { RTeam } from "@/relatedTypes/team";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, { message: "Nombre requerido" }),
-  abbrName: z.string().optional().nullable(),
+  shortName: z.string().optional().nullable(),
   logoUrl: z
     .any()
     .refine((file) => file?.size, "Logo requerido")
@@ -34,7 +33,6 @@ const FormSchema = z.object({
       "Only .jpg, .jpeg, .png and .webp formats are supported."
     ),
   colors: z.string().optional().nullable(), // "#436651, #F40035"
-  leagueId: z.string().min(1, { message: "Nombre requerido" }),
 });
 
 export default function Form_({
@@ -48,8 +46,6 @@ export default function Form_({
 }) {
   const { teams, setData } = useTeamsStore();
 
-  const { leagues } = useLeaguesStore();
-
   const dataFromDB = {
     ...data,
   } as RTeam;
@@ -60,10 +56,9 @@ export default function Form_({
       ? dataFromDB || ({} as RTeam)
       : {
           name: "",
-          abbrName: "",
+          shortName: "",
           logoUrl: "",
-          colors: "",
-          leagueId: "",
+          colors: null,
         },
   });
 
@@ -242,19 +237,21 @@ export default function Form_({
               </FormItem>
             )}
           />
+
           <FormField
-            name="abbrName"
+            name="shortName"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre Abreviado (Opcional)</FormLabel>
+                <FormLabel>Nombre Corto</FormLabel>
                 <FormControl>
-                  <Input disabled={loading} placeholder="Nombre Abreviado" {...field} value={field.value ?? ""} />
+                  <Input disabled={loading} placeholder="Nombre Corto" {...field} value={field.value ?? undefined} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             name="colors"
             control={form.control}
@@ -264,31 +261,6 @@ export default function Form_({
                 <FormControl>
                   <Input disabled={loading} placeholder="Colores (#FFF, #000)" {...field} value={field.value ?? ""} />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            name="leagueId"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Liga</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value ?? ""}>
-                  <FormControl>
-                    <SelectTrigger disabled={loading}>
-                      <SelectValue placeholder="Seleccione una liga" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {leagues.map((league) => (
-                      <SelectItem key={league.id} value={league.id}>
-                        {league.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
                 <FormMessage />
               </FormItem>
             )}

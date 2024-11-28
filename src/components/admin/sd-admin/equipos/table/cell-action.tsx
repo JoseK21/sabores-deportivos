@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteApi } from "@/lib/api";
 import { Dialog_ } from "../dialog/dialog";
 import { Button } from "@/components/ui/button";

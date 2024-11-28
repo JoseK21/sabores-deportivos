@@ -2,8 +2,8 @@
 
 import { orderBy } from "lodash";
 import { columns } from "./columns";
-import useFetchSportsData from "./useFetchSportsData";
 import { DataTable } from "@/components/ui/data-table";
+import useFetchSportsData from "@/hooks/useFetchSportsData";
 
 export default function SportsTable() {
   const { isLoaded, sports } = useFetchSportsData();

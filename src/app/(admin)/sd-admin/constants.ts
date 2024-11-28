@@ -1,5 +1,5 @@
 import { UserRole } from "@/app/enum";
-import { Award, Beef, Component, Gift, LandPlot, LayoutDashboard, Store, Trophy, User, Users, UserSquare } from "lucide-react";
+import { Award, Beef, Component, Gift, Hexagon, LandPlot, LayoutDashboard, Store, Trophy, User, Users, UserSquare } from "lucide-react";
 
 export const MENU_BY_ROLE = {
   [UserRole.unknown]: {
@@ -42,8 +42,8 @@ export const MENU_BY_ROLE = {
       { title: "Administradores", icon: Users, href: "/sd-admin/administradores" },
       { title: "Comercios", icon: Store, href: "/sd-admin/comercios" },
       { title: "Tipos de Productos", icon: LayoutDashboard, href: "/sd-admin/tipos-de-productos" },
-      { title: "Equipos", icon: UserSquare , href: "/sd-admin/equipos" },
       { title: "Eventos", icon: LandPlot, href: "/sd-admin/eventos" },
+      { title: "Equipos", icon: Hexagon , href: "/sd-admin/equipos" },
       { title: "Torneos", icon: Trophy, href: "/sd-admin/torneos" },
       { title: "Ligas", icon: Component, href: "/sd-admin/ligas" },
       { title: "Deportes", icon: Award, href: "/sd-admin/deportes" },
