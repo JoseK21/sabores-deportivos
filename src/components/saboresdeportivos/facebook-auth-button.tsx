@@ -13,8 +13,7 @@ export default function FacebookSignInButton() {
       className="w-full"
       variant="outline"
       type="button"
-      disabled
-      // onClick={() => signIn("facebook", { callbackUrl: callbackUrl ?? "/auth/login" })}
+      onClick={() => signIn("facebook", { callbackUrl: callbackUrl ?? "/" })}
     >
       <div className="mr-4">
         <svg viewBox="0 0 48 48" width="24" height="24" preserveAspectRatio="xMidYMid meet">
