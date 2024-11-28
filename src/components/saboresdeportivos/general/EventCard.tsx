@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Team } from "@prisma/client";
+import { RTeam } from "@/relatedTypes/team";
 
 interface Props {
-  team1: Team;
-  team2: Team;
+  team1: RTeam;
+  team2: RTeam;
 }
 
 const EventCard = ({ team1, team2 }: Props) => {

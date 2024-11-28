@@ -1,13 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { RTeam } from "@/relatedTypes/team";
 
 import { getFirstChars } from "@/utils/string";
-import { Team } from "@prisma/client";
 
-const TeamInfo = ({ id, name, logoUrl, colors }: Team) => {
+const TeamInfo = ({ id, name, logoUrl, colors }: RTeam) => {
   return (
     <div className="p-4 flex flex-col items-center justify-center self-start min-w-14 max-w-20">
       <Avatar>
-        <AvatarImage src={logoUrl} alt={getFirstChars(name)} />
+        <AvatarImage src={logoUrl ?? '/assets/default-team.png'} alt={getFirstChars(name)} />
         <AvatarFallback>{getFirstChars(name)}</AvatarFallback>
       </Avatar>
 

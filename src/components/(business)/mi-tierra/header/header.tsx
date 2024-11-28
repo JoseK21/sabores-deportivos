@@ -49,9 +49,9 @@ const itemsMenu = [
   { href: "/menu", title: "Menú" },
 ];
 
-import { Team } from "@prisma/client";
 import { getESDate } from "@/utils/date";
-import { LEAGUES, TEAMS } from "@/app/(landing)/eventos-deportivos/page";
+import { LEAGUES } from "@/mocks/leagues";
+import { TEAMS } from "@/mocks/teams";
 
 export function QuinielaDialog() {
   const [date, setDate] = useState<Date | undefined>(new Date());

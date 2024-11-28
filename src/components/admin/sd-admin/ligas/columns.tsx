@@ -5,8 +5,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { RLeague } from "@/relatedTypes/league";
 import { MoveDown, MoveUp } from "lucide-react";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { getESDate } from "@/utils/date";
 
 export const columns: ColumnDef<RLeague>[] = [
