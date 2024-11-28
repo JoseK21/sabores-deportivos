@@ -164,9 +164,9 @@ model Tournament {
 model Team {
   id         String   @id @default(cuid())
   name       String
-  abbrName   String
-  logoUrl    String
-  colors     String[]
+  abbrName   String?
+  logoUrl    String?
+  colors     String? // "#436651, #F40035"
   leagueId   String
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
