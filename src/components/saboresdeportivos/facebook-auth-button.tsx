@@ -13,6 +13,7 @@ export default function FacebookSignInButton() {
       className="w-full"
       variant="outline"
       type="button"
+      disabled
       onClick={() => signIn("facebook", { callbackUrl: callbackUrl ?? "/" })}
     >
       <div className="mr-4">

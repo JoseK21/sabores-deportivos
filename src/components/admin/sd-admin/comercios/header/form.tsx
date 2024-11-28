@@ -10,7 +10,7 @@ import { Business } from "@/types/business";
 import { PutBlobResult } from "@vercel/blob";
 import { Input } from "@/components/ui/input";
 import { getObjectDiff } from "@/utils/object";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";

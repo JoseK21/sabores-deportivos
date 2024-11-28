@@ -87,13 +87,6 @@ export function UserNav({ session }: { session: Session }) {
       </DropdownMenu>
     </>
   ) : (
-
-    // llamar modal
-    // <Button asChild variant="outline">
-    //   <Link href="/iniciar-sesion" className="font-semibold">
-    //     Iniciar Sesión C
-    //   </Link>
-    // </Button>
     <LoginDialog />
   );
 }

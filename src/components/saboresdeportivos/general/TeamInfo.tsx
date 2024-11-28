@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { getFirstChars } from "@/utils/string";
-import { Team } from "@/types/team";
+import { Team } from "@prisma/client";
 
-const TeamInfo = ({ id, name, abbr, logoUrl, colors }: Team) => {
+const TeamInfo = ({ id, name, logoUrl, colors }: Team) => {
   return (
     <div className="p-4 flex flex-col items-center justify-center self-start min-w-14 max-w-20">
       <Avatar>

@@ -14,7 +14,7 @@ import { getObjectDiff } from "@/utils/object";
 import { Button } from "@/components/ui/button";
 import type { PutBlobResult } from "@vercel/blob";
 import { useAdminsStore } from "@/store/sd-admin";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";

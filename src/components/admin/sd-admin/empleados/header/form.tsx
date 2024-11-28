@@ -13,7 +13,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { cleanText } from "@/utils/string";
 import { PutBlobResult } from "@vercel/blob";
 import { getObjectDiff } from "@/utils/object";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";

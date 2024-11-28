@@ -1,3 +1,4 @@
+import { LucideIcon } from "lucide-react";
 
 export interface NavItem {
   title: string;
@@ -5,6 +6,7 @@ export interface NavItem {
   disabled?: boolean;
   external?: boolean;
   label?: string;
+  icon?: LucideIcon;
   description?: string;
 }
 

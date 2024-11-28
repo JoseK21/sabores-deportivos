@@ -17,7 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { MAX_FILE_SIZE, ACCEPTED_IMAGE_TYPES, urlToFile } from "@/utils/image";
 import FileInputPreview, { SIZES_UNIT } from "@/components/saboresdeportivos/FileInputPreview";
 import { ProductType } from "@/types/product-type";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { cleanText } from "@/utils/string";
 import { PutBlobResult } from "@vercel/blob";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

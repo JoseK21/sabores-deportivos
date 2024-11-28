@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Team } from "@/types/team";
+import { Team } from "@prisma/client";
 
 interface Props {
   team1: Team;

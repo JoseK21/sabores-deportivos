@@ -9,6 +9,9 @@ import { Business } from "@/types/business";
 import { Tournament } from "@/types/tournament";
 import { ProductType } from "@/types/product-type";
 
+import { REvent } from "@/relatedTypes/event";
+import { RTeam } from "@/relatedTypes/team";
+
 export const useAdminsStore = create<{
   admins: User[];
   error: Error | null;
@@ -115,4 +118,28 @@ export const useTournamentsStore = create<{
   tournaments: [],
   setError: (error) => set({ error }),
   setData: (data) => set({ tournaments: data, error: null }),
+}));
+
+export const useEventsStore = create<{
+  events: REvent[];
+  error: Error | null;
+  setData: (newData: REvent[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  error: null,
+  events: [],
+  setError: (error) => set({ error }),
+  setData: (data) => set({ events: data, error: null }),
+}));
+
+export const useTeamsStore = create<{
+  teams: RTeam[];
+  error: Error | null;
+  setData: (newData: RTeam[]) => void;
+  setError: (error: Error) => void;
+}>((set) => ({
+  error: null,
+  teams: [],
+  setError: (error) => set({ error }),
+  setData: (data) => set({ teams: data, error: null }),
 }));

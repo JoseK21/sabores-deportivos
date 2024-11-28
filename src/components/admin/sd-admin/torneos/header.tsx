@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FormDialog } from "./dialog";
 
 import { Heading } from "@/components/ui/heading";
-import useFetchLeaguesData from "../ligas/useFetchLeaguesData";
+import useFetchLeaguesData from "@/hooks/useFetchLeaguesData";
 
 export default function TournamentsHeader() {
   const [open, setOpen] = useState(false);

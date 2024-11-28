@@ -3,7 +3,7 @@ import { getApi } from "@/lib/api";
 
 import { Sport } from "@/types/sport";
 import { useSportsStore } from "@/store/sd-admin";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 
 const useFetchSportsData = () => {
   const { sports, setData, setError } = useSportsStore();

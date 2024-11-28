@@ -1,4 +1,4 @@
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { getApi } from "@/lib/api";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { User } from "@/types/user";

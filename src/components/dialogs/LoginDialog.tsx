@@ -48,7 +48,7 @@ const formSchema = z.object({
 
 type UserFormValue = z.infer<typeof formSchema>;
 
-export function LoginDialog() {
+export function LoginDialog({ className }: { className?: string }) {
   const pathname = usePathname(); // Obtiene la ruta actual
   const searchParams = useSearchParams(); // Lee los query params
   const router = useRouter(); // Para actualizar la URL
@@ -61,9 +61,6 @@ export function LoginDialog() {
 
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
   const [redirecting, setRedirecting] = useState(false);
-  const [loadingLogin, setLoadingLogin] = useState(false);
-
-  const [displayPasswordLogin, setDisplayPasswordLogin] = useState(false);
 
   const defaultValues = { email: "", password: "" };
 
@@ -179,7 +176,7 @@ export function LoginDialog() {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={() => setIsModalOpen(true)}>
+        <Button variant="outline" onClick={() => setIsModalOpen(true)} className={className}>
           Iniciar Sesión
         </Button>
       </DialogTrigger>

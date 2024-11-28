@@ -3,7 +3,7 @@
 import { orderBy } from "lodash";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import useFetchLeaguesData from "./useFetchLeaguesData";
+import useFetchLeaguesData from "../../../../hooks/useFetchLeaguesData";
 
 export default function LeaguesTable() {
   const { isLoaded, leagues } = useFetchLeaguesData();

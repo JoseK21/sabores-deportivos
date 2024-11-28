@@ -22,23 +22,26 @@ export function DashboardNav({ items, setOpen }: DashboardNavProps) {
   return (
     <nav className="grid items-start gap-2">
       {items.map((item, index) => {
+        const { href, disabled, title } = item;
         return (
-          item.href && (
+          href && (
             <Link
               key={index}
-              href={item.disabled ? "/" : item.href}
+              href={disabled ? "/" : href}
               onClick={() => {
                 if (setOpen) setOpen(false);
               }}
             >
               <span
                 className={cn(
-                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                  path === item.href ? "bg-accent" : "transparent",
-                  item.disabled && "cursor-not-allowed opacity-80",
+                  "group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                  path === href ? "bg-accent" : "transparent",
+                  disabled && "cursor-not-allowed opacity-80"
                 )}
               >
-                <span>{item.title}</span>
+                {item.icon && <item.icon size={18} />}
+
+                <span>{title}</span>
               </span>
             </Link>
           )

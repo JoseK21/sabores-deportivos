@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getApi } from "@/lib/api";
 
 import { Tournament } from "@/types/tournament";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useTournamentsStore } from "@/store/sd-admin";
 
 const useData = () => {

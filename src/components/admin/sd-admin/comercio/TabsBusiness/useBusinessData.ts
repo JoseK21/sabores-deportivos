@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getApi } from "@/lib/api";
 
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useBusinessStore } from "@/store/sd-admin";
 
 const useBusinessData = (idBusiness: string | undefined) => {

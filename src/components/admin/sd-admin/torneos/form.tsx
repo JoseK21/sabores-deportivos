@@ -191,7 +191,7 @@ export default function FormData({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descripción</FormLabel>
+                  <FormLabel>Descripción (Opcional)</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="Descripción" {...field} value={field.value || ""} />
                   </FormControl>
@@ -204,7 +204,7 @@ export default function FormData({
               control={form.control}
               name="startDate"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem >
                   <FormLabel>Fecha de Inicio</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -238,7 +238,7 @@ export default function FormData({
               control={form.control}
               name="endDate"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem>
                   <FormLabel>Fecha de Fin</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>

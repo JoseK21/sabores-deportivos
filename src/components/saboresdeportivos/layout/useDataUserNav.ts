@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getApi } from "@/lib/api";
 import { Business } from "@/types/business";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useUserBusinessStore } from "@/store/userBusinessStore";
 import { isEmpty } from "lodash";
 

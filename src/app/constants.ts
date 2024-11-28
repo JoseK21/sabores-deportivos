@@ -1,3 +1,4 @@
+import { EventStatus } from "@prisma/client";
 import {
   BooleanOption,
   BusinessPlan,
@@ -98,6 +99,15 @@ export const BUSINESS_SCHEDULE_STATUS: { [key in BusinessScheduleStatus]: { clas
     class: "text-red-600", // #aa3d3d
     label: "Cerrado",
   },
+};
+
+export const EVENT_STATUS: { [key in EventStatus]: string } = {
+  [EventStatus.canceled]: "Cancelado",
+  [EventStatus.finished]: "Finalizado",
+  [EventStatus.incoming]: "Proximamente",
+  [EventStatus.live]: "En Vivo",
+  [EventStatus.pending]: "Pendiente",
+  [EventStatus.postponed]: "Pospuesto",
 };
 
 export const SCHEDULE: {

@@ -11,7 +11,7 @@ import { PutBlobResult } from "@vercel/blob";
 import { Input } from "@/components/ui/input";
 import { deleteApi, putApi } from "@/lib/api";
 import { getObjectDiff } from "@/utils/object";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useBusinessStore } from "@/store/sd-admin";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";

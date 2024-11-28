@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getApi } from "@/lib/api";
 
 import { Product } from "@/types/product";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { useProductsStore } from "@/store/sd-admin";
 
 const useProductsData = (idBusiness: string | undefined) => {

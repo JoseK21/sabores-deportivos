@@ -1,4 +1,4 @@
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/lib/useFetchData";
 import { getApi } from "@/lib/api";
 import { useAdminsStore } from "@/store/sd-admin";
 import { User } from "@/types/user";

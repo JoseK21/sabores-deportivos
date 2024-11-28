@@ -49,90 +49,128 @@ const itemsMenu = [
   { href: "/menu", title: "Menú" },
 ];
 
-const TEAMS = [
+import { Team } from "@prisma/client";
+
+const TEAMS: Team[] = [
   {
     id: "herediano",
     name: "Herediano",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/862.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "san-carlos",
     name: "San Carlos",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/859.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "alajuelense",
     name: "Alajuelense",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2057.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "municipal-liberia",
     name: "Municipal Liberia",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9361.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "ad-guanacasteca",
     name: "AD Guanacasteca",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20982.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "saprissa",
     name: "Saprissa",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/858.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "sporting-san-jose",
     name: "Sporting San José",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20705.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "pere-zeledon",
     name: "Perez Zeledon",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7234.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "cartagines",
     name: "Cartagines",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7239.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "puntarenas",
     name: "Puntarenas",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7237.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "grecia",
     name: "Grecia",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18763.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "santos",
     name: "Santos",
-    abbr: "",
+    abbrName: "",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/913.png&h=200&w=200",
     colors: ["#000000", "#000000"],
+    leagueId: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
 
@@ -204,12 +242,9 @@ export function QuinielaDialog() {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        {/* <Button variant="outline">Ver Quiniela</Button> */}
         <Button variant="default" className="text-white py-2 px-3 ml-4 flex items-center text-sm font-semibold">
           <Star className="size-4 cursor-pointer mr-2 -mt-1" />
-          <span>
-            Ver Quiniela | <strong>0 pts</strong>
-          </span>
+          <span>Ver Quiniela</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-90 h-5/6 overflow-auto">
@@ -348,7 +383,7 @@ const HeaderMiTierra = ({ session }: { session: Session | null }) => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <LoginDialog />
+            <LoginDialog className="border-[#3d1510] text-[#3d1510]" />
           )}
         </div>
       </div>
