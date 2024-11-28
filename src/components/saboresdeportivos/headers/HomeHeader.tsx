@@ -75,16 +75,7 @@ const HomeHeader = ({ session }: Props) => {
             </ul>
           </div>
           <div className="hidden w-full md:flex md:w-auto items-center" id="navbar-default-b">
-            <Button variant="default" className="text-white py-2 px-3 mx-6 flex items-center text-sm font-semibold">
-              <Star className="size-4 cursor-pointer mr-2 -mt-1" />
-              <span>
-                Puntos: <strong>{userPoints}</strong>
-              </span>
-            </Button>
-            {/* <SquareUserRound className="size-8 cursor-pointer" /> */}
-
             <UserNav session={session} />
-            {/* <ThemeToggle /> */}
           </div>
         </div>
       </nav>

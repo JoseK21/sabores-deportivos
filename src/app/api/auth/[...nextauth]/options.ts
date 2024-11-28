@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 import prisma from "@/lib/prisma";
 
+import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
@@ -26,6 +27,21 @@ export const authOptions: NextAuthOptions = {
           image: profile.picture,
           role: profile.role ? profile.role : UserRole.unknown,
           status: profile.status ? profile.status : UserStatus.unknown,
+        };
+      },
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID || "",
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
+      profile(profile) {
+        console.log("🚀 >>  profile >>  profile:", profile)
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          role: UserRole.client,
+          status: UserStatus.actived,
+          image: profile.picture?.data?.url,
         };
       },
     }),
@@ -77,3 +93,4 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+

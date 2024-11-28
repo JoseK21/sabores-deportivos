@@ -6,10 +6,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuShortcut,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 import { isEmpty } from "lodash";
 import { Session } from "next-auth";
 import { UserRole } from "@/app/enum";
@@ -18,7 +16,9 @@ import useDataUserNav from "./useDataUserNav";
 import { getFirstChars } from "@/utils/string";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ALLOWER_ROLES_TO_BUSINESS_LOGIC, BUSINESS_TYPES, FULL_USER_ROLES } from "@/app/constants";
+import { ALLOWER_ROLES_TO_BUSINESS_LOGIC, BUSINESS_TYPES } from "@/app/constants";
+import { LogOut, Star } from "lucide-react";
+import { LoginDialog } from "@/components/dialogs/LoginDialog";
 
 export function UserNav({ session }: { session: Session }) {
   const { isLoaded, business } = useDataUserNav(session?.user?.idBusiness || "");
@@ -29,15 +29,13 @@ export function UserNav({ session }: { session: Session }) {
     <>
       {user.role != UserRole.master && (
         <>
-          {isLoaded ? (
-            !isEmpty(business) && (
-              <span className="mr-2 text-sm">
-                {BUSINESS_TYPES[business.type] || "-"} {business.name}
-              </span>
-            )
-          ) : (
-            <div className="w-36 h-4 rounded-md animate-pulse bg-slate-200" />
-          )}
+          {isLoaded
+            ? !isEmpty(business) && (
+                <span className="mr-2 text-sm">
+                  {BUSINESS_TYPES[business.type] || "-"} {business.name}
+                </span>
+              )
+            : null}
         </>
       )}
       <DropdownMenu>
@@ -62,32 +60,40 @@ export function UserNav({ session }: { session: Session }) {
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
                 {user?.name}{" "}
-                {user?.role !== UserRole.client && (
+                {/* {user?.role !== UserRole.client && (
                   <>| {FULL_USER_ROLES[user?.role as UserRole] || FULL_USER_ROLES[UserRole.unknown]}</>
-                )}
+                )} */}
               </p>
               <p className="text-xs leading-none text-muted-foreground">{user?.email || "-"}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => {}} className="flex gap-2 items-center">
+            <Star size={18} />
+            Ver Puntos
+          </DropdownMenuItem>
           <DropdownMenuItem
+            className="flex gap-2 items-center"
             onClick={() =>
               signOut({
                 callbackUrl: ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role) ? "/sd-admin" : "/",
               })
             }
           >
+            <LogOut size={18} />
             Cerrar Sesión
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
   ) : (
-    <Button asChild variant="outline">
-      <Link href="/iniciar-sesion" className="font-semibold">
-        Iniciar Sesión
-      </Link>
-    </Button>
+
+    // llamar modal
+    // <Button asChild variant="outline">
+    //   <Link href="/iniciar-sesion" className="font-semibold">
+    //     Iniciar Sesión C
+    //   </Link>
+    // </Button>
+    <LoginDialog />
   );
 }

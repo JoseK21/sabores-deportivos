@@ -136,9 +136,9 @@ const ComercioCard = ({
             </span>
           </div>
         </div>
-        <div className="flex justify-center items-center bg-slate-200">
-          <span className=" text-primary-600 mr-1 pt-1">Ver más</span>
-          <ArrowRight size={16} color="#3daa47" className="-mt-1" />
+        <div className="flex justify-center items-center bg-black text-white ">
+          <span className=" mr-1 pt-1">Ver más</span>
+          <ArrowRight size={16} />
         </div>
       </div>
     </Link>
