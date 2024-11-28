@@ -12,12 +12,14 @@ const useFetchSportsData = () => {
   useFetchData(async () => {
     setIsLoaded(false);
 
-    try {
-      const data: RSport[] = (await getApi("sport"))?.data || [];
+    if (!sports.length) {
+      try {
+        const data: RSport[] = (await getApi("sport"))?.data || [];
 
-      setData(data);
-    } catch (error: any) {
-      setError(error);
+        setData(data);
+      } catch (error: any) {
+        setError(error);
+      }
     }
 
     setIsLoaded(true);
