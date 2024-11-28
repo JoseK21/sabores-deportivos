@@ -140,6 +140,7 @@ model League {
   updatedAt  DateTime     @updatedAt @map("updated_at")
   Sport      Sport        @relation(fields: [sportId], references: [id])
   Tournament Tournament[]
+  Team       Team[]
 
   @@unique([name, sportId])
 }
@@ -162,21 +163,25 @@ model Tournament {
 
 model Team {
   id         String   @id @default(cuid())
-  name       String   @unique
-  abbrName   String   @unique
+  name       String
+  abbrName   String
   logoUrl    String
   colors     String[]
+  leagueId   String
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
   awayEvents Event[]  @relation("awayTeamEvents")
   homeEvents Event[]  @relation("homeTeamEvents")
+  League     League   @relation(fields: [leagueId], references: [id])
+
+  @@unique([leagueId, name])
 }
 
 model Event {
   id           String      @id @default(cuid())
   title        String?
   tournamentId String
-  startDate    DateTime
+  dateTime     DateTime
   status       EventStatus
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt @map("updated_at")
@@ -186,7 +191,7 @@ model Event {
   homeTeam     Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
   Tournament   Tournament  @relation(fields: [tournamentId], references: [id])
 
-  @@unique([tournamentId, startDate])
+  @@unique([tournamentId, homeTeamId, awayTeamId, dateTime])
 }
 
 model Forecast {
