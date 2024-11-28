@@ -2,8 +2,6 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -20,6 +18,7 @@ export const TEAMS: Team[] = [
   {
     id: "herediano",
     name: "Herediano",
+    shortName: "Herediano",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/862.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -28,6 +27,7 @@ export const TEAMS: Team[] = [
   {
     id: "san-carlos",
     name: "San Carlos",
+    shortName: "San Carlos",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/859.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -36,6 +36,7 @@ export const TEAMS: Team[] = [
   {
     id: "alajuelense",
     name: "Alajuelense",
+    shortName: "Alajuelense",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2057.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -44,6 +45,7 @@ export const TEAMS: Team[] = [
   {
     id: "municipal-liberia",
     name: "Municipal Liberia",
+    shortName: "Municipal Liberia",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9361.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -52,6 +54,7 @@ export const TEAMS: Team[] = [
   {
     id: "ad-guanacasteca",
     name: "AD Guanacasteca",
+    shortName: "AD Guanacasteca",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20982.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -60,6 +63,7 @@ export const TEAMS: Team[] = [
   {
     id: "saprissa",
     name: "Saprissa",
+    shortName: "Saprissa",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/858.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -68,6 +72,7 @@ export const TEAMS: Team[] = [
   {
     id: "sporting-san-jose",
     name: "Sporting San José",
+    shortName: "Sporting San José",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20705.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -76,6 +81,7 @@ export const TEAMS: Team[] = [
   {
     id: "pere-zeledon",
     name: "Perez Zeledon",
+    shortName: "Perez Zeledon",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7234.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -84,6 +90,7 @@ export const TEAMS: Team[] = [
   {
     id: "cartagines",
     name: "Cartagines",
+    shortName: "Cartagines",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7239.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -92,6 +99,7 @@ export const TEAMS: Team[] = [
   {
     id: "puntarenas",
     name: "Puntarenas",
+    shortName: "Puntarenas",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7237.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -100,6 +108,7 @@ export const TEAMS: Team[] = [
   {
     id: "grecia",
     name: "Grecia",
+    shortName: "Grecia",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18763.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
@@ -108,6 +117,7 @@ export const TEAMS: Team[] = [
   {
     id: "santos",
     name: "Santos",
+    shortName: "Santos",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/913.png&h=200&w=200",
     colors: "#FFF, #AAA888",
     createdAt: new Date(),
