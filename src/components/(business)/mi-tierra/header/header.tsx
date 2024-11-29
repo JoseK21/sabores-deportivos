@@ -93,6 +93,7 @@ export function QuinielaDialog() {
     router.push(`${pathname}?${newSearchParams.toString()}`); // Actualizar la URL
   }, [date]);
 
+  // to call above useEffect
   useEffect(() => {
     setDate(new Date());
   }, []);
@@ -137,7 +138,7 @@ export function QuinielaDialog() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus defaultMonth={date} />
                 </PopoverContent>
               </Popover>
             </div>

@@ -25,12 +25,16 @@ import { Button } from "@/components/ui/button";
 import { REvent } from "@/relatedTypes/event";
 import { getESDate } from "@/utils/date";
 import useFetchSportsData from "@/hooks/useFetchSportsData";
+import { RTournament } from "@/relatedTypes/tournament";
+import { RLeague } from "@/relatedTypes/league";
+import { DateTimePicker } from "@/components/ui/calendar-with-time";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional().nullable(),
   sportId: z.string().min(1, { message: "Deporte requerido" }),
-  tournamentId: z.string().min(1, { message: "Evento requerido" }).nullable(),
+  tournamentId: z.string().optional().nullable(),
+  leagueId: z.string().optional().nullable(),
   dateTime: z.date({ required_error: "Fecha de inicio requerida." }),
   homeTeamId: z.string().min(1, { message: "Equipo Casa requerido" }),
   awayTeamId: z.string().min(1, { message: "Equipo Visita requerido" }),
@@ -48,7 +52,10 @@ export default function FormData({
 }) {
   const { events, setData } = useEventsStore();
 
-  const { tournaments } = useTournamentsStore();
+  // const { tournaments } = useTournamentsStore();
+
+  const tournaments: RTournament[] = [];
+  const leagues: RLeague[] = [];
 
   // NO DEBO LLAAMR A LOS STORES, SOLO LOS FECHTs, ya que a lo interno me obtiene el storage
   const { sports } = useFetchSportsData();
@@ -65,7 +72,8 @@ export default function FormData({
       ? dataFromDB || ({} as REvent)
       : {
           title: "",
-          tournamentId: "",
+          tournamentId: null,
+          leagueId: null,
           dateTime: new Date(),
           status: "",
           sportId: "",
@@ -209,7 +217,7 @@ export default function FormData({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Torneo</FormLabel>
+                  <FormLabel>Torneo (Opcional)</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       // Busca el objeto completo en el arreglo de torneos
@@ -238,6 +246,88 @@ export default function FormData({
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="leagueId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Liga (Opcional)</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      // Busca el objeto completo en el arreglo de torneos
+                      const tournament = leagues.find((t) => t.id === value);
+                      if (tournament) {
+                        // setSelectedTournament(tournament); // Guarda el objeto en el estado
+                        console.log("Objeto completo del torneo:", tournament);
+
+                        // Aquí podrías llamar a la API para obtener equipos según el sportId
+                        // fetchTeamsBySportId(tournament.sportId);
+                      }
+                      field.onChange(value);
+                    }}
+                    defaultValue={field.value ?? undefined}
+                  >
+                    <FormControl>
+                      <SelectTrigger disabled={loading}>
+                        <SelectValue placeholder="Seleccione un torneo" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {leagues.map((league) => (
+                        <SelectItem key={league.id} value={league.id}>
+                          {league.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="dateTime"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha</FormLabel>
+                  <DateTimePicker
+                    hourCycle={24}
+                    value={field.value}
+                    onChange={(v) => {
+                      console.log("🚀 >>  DateTimePicker:", v);
+                      field.onChange(v);
+                    }}
+                  />
+                  {/* <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          disabled={loading}
+                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                        >
+                          {getESDate(field.value, "Fecha")}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        defaultMonth={field.value}
+                        disabled={(date) => date < new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -288,40 +378,6 @@ export default function FormData({
                       ))} */}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="dateTime"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Fecha</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          disabled={loading}
-                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                        >
-                          {getESDate(field.value, "Fecha")}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date < new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}

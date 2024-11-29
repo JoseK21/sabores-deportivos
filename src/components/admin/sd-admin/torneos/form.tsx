@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { useForm } from "react-hook-form";
 import { getApi, postApi, putApi } from "@/lib/api";
@@ -51,8 +51,7 @@ export default function FormData({
 
   const dataFromDB = {
     ...data,
-    startDate: new Date(),
-    // startDate: new Date(data?.startDate || ""),
+    startDate: new Date(data?.startDate || ""),
     endDate: new Date(data?.endDate || ""),
   } as RTournament;
 
@@ -209,6 +208,7 @@ export default function FormData({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
+                        defaultMonth={field.value}
                         // disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                         initialFocus
                       />
@@ -243,6 +243,7 @@ export default function FormData({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
+                        defaultMonth={field.value}
                         // disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                         initialFocus
                       />
@@ -315,7 +316,10 @@ export default function FormData({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Habilitado</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(value === "true")} defaultValue={field.value ? "true" : "false"}>
+                  <Select
+                    onValueChange={(value) => field.onChange(value === "true")}
+                    defaultValue={field.value ? "true" : "false"}
+                  >
                     <FormControl>
                       <SelectTrigger disabled={loading}>
                         <SelectValue placeholder="Habilitado" />

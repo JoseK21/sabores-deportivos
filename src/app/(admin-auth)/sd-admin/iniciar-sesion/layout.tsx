@@ -9,7 +9,7 @@ export default async function AuthAdminRest({ children }: { children: React.Reac
 
   const role: UserRole = session?.user.role ?? UserRole.unknown;
 
-  if (role == UserRole.client || role == UserRole.unknown) {
+  if (role == UserRole.client) {
     redirect("/");
   }
 

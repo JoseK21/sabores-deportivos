@@ -20,7 +20,8 @@ export default function FacebookSignInButton() {
       className="w-full"
       variant="outline"
       type="button"
-      // disabled
+      // SIRVE SOLO EN MODO DESARROLO, OCUPO PEDIR SI O SI EL CORREO, PARA ESTO NECSITO VALIDAR MI PERFIL CON DATOS REALES DEL SITIO WEB
+      disabled
       onClick={() => signIn("facebook", { callbackUrl: callbackUrl ?? "/" })}
     >
       <div className="mr-4">

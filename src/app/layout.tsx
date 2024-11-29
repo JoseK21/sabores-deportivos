@@ -11,6 +11,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Providers from "@/components/saboresdeportivos/layout/providers";
 import { authOptions } from "./api/auth/[...nextauth]/options";
 import { ErrorHandler } from "@/components/saboresdeportivos/_error-handlers";
+import NextTopLoader from "nextjs-toploader";
 
 export const viewport = {
   width: "device-width",
@@ -52,6 +53,19 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${fontSystem.className} antialiased`}>
+        <NextTopLoader
+          color="#3daa47"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={2}
+          crawl={true}
+          showSpinner={true}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+          zIndex={1600}
+          showAtBottom={false}
+        />
         <ErrorHandler />
         <Providers session={session}>
           <Toaster />

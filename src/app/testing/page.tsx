@@ -15,6 +15,7 @@ export default function Page() {
 
   return (
     <main>
+      {/* FIX: use defaultMonth={field.value} */}
       <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
     </main>
   );
