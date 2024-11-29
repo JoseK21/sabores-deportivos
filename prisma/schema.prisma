@@ -137,6 +137,7 @@ model Sport {
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @updatedAt @map("updated_at")
   // Relations
+  Team       Team[]
   League     League[]
   Tournament Tournament[]
 }
@@ -182,13 +183,17 @@ model Team {
   logoUrl        String?
   shortName      String?
   colors         String? //       "#436651, #F40035"
+  sportId        String?
   createdAt      DateTime         @default(now()) @map("created_at")
   updatedAt      DateTime         @updatedAt @map("updated_at")
   // Relations
+  Sport          Sport?           @relation(fields: [sportId], references: [id])
   homeEvents     Event[]          @relation("homeTeamEvents")
   awayEvents     Event[]          @relation("awayTeamEvents")
   TeamTournament TeamTournament[]
   TeamLeague     TeamLeague[]
+
+  @@unique([name, sportId])
 }
 
 model TeamLeague {
