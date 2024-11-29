@@ -11,6 +11,8 @@ import { RTeam } from "@/relatedTypes/team";
 import { RTournament } from "@/relatedTypes/tournament";
 import { RLeague } from "@/relatedTypes/league";
 import { RSport } from "@/relatedTypes/sport";
+import { RTeamTournament } from "@/relatedTypes/teamTournament";
+import { RTeamLeague } from "@/relatedTypes/teamLeague";
 
 export const useAdminsStore = create<{
   admins: User[];
@@ -142,4 +144,40 @@ export const useTeamsStore = create<{
   teams: [],
   setError: (error) => set({ error }),
   setData: (data) => set({ teams: data, error: null }),
+}));
+
+export const useTeamsBySportIdStore = create<{
+  teamsBySportId: RTeam[];
+  errorBySportId: Error | null;
+  setDataBySportId: (newData: RTeam[]) => void;
+  setErrorBySportId: (errorBySportId: Error) => void;
+}>((set) => ({
+  errorBySportId: null,
+  teamsBySportId: [],
+  setErrorBySportId: (errorBySportId) => set({ errorBySportId }),
+  setDataBySportId: (data) => set({ teamsBySportId: data, errorBySportId: null }),
+}));
+
+export const useTeamsTournamentStore = create<{
+  teamsTournament: RTeamTournament[];
+  errorTeamsTournament: Error | null;
+  setDataTeamsTournament: (newData: RTeamTournament[]) => void;
+  setErrorTeamsTournament: (errorTeamsTournament: Error) => void;
+}>((set) => ({
+  errorTeamsTournament: null,
+  teamsTournament: [],
+  setErrorTeamsTournament: (errorTeamsTournament) => set({ errorTeamsTournament }),
+  setDataTeamsTournament: (data) => set({ teamsTournament: data, errorTeamsTournament: null }),
+}));
+
+export const useTeamsLeagueStore = create<{
+  teamsLeague: RTeamLeague[];
+  errorTeamsLeague: Error | null;
+  setDataTeamsLeague: (newData: RTeamLeague[]) => void;
+  setErrorTeamsLeague: (errorTeamsLeague: Error) => void;
+}>((set) => ({
+  errorTeamsLeague: null,
+  teamsLeague: [],
+  setErrorTeamsLeague: (errorTeamsLeague) => set({ errorTeamsLeague }),
+  setDataTeamsLeague: (data) => set({ teamsLeague: data, errorTeamsLeague: null }),
 }));

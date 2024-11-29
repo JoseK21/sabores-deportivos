@@ -57,6 +57,7 @@ const Contact = () => {
         variant: "success",
         description: "Correo enviado con exito!",
       });
+      return;
     } catch (err) {
       setLoading(false);
 
@@ -89,6 +90,7 @@ const Contact = () => {
             variant: "info",
             description: "El correo ya esta subscrito!",
           });
+          return;
         } else {
           throw new Error(`response status: ${response?.error}`);
         }

@@ -1,16 +1,21 @@
 "use client";
 
-import useEventData from "../../../../hooks/useEventsData";
 import { orderBy } from "lodash";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
+import useFetchEventData from "@/hooks/useFetchEventsData";
 
 export default function EventsTable() {
-  const { isLoaded, events } = useEventData();
+  const { isLoaded, events } = useFetchEventData();
 
   if (isLoaded) {
     return (
-      <DataTable searchKey="title" columns={columns} placeholder="Filtro por nombre.." data={orderBy(events, "title")} />
+      <DataTable
+        searchKey="title"
+        columns={columns}
+        placeholder="Filtro por nombre.."
+        data={orderBy(events, "title")}
+      />
     );
   }
 

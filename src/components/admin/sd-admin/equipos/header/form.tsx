@@ -13,16 +13,19 @@ import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
 import { deleteApi, postApi, putApi } from "@/lib/api";
-import { useTeamsStore } from "@/store/sd-admin";
+import { useSportsStore, useTeamsStore } from "@/store/sd-admin";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE, urlToFile } from "@/utils/image";
 import FileInputPreview, { SIZES_UNIT } from "@/components/saboresdeportivos/FileInputPreview";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { RTeam } from "@/relatedTypes/team";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, { message: "Nombre requerido" }),
+  sportId: z.string().min(1, { message: "Deporte requerido" }),
   shortName: z.string().optional().nullable(),
   logoUrl: z
     .any()
@@ -46,6 +49,8 @@ export default function Form_({
 }) {
   const { teams, setData } = useTeamsStore();
 
+  const { sports } = useSportsStore();
+
   const dataFromDB = {
     ...data,
   } as RTeam;
@@ -56,6 +61,7 @@ export default function Form_({
       ? dataFromDB || ({} as RTeam)
       : {
           name: "",
+          sportId: "",
           shortName: "",
           logoUrl: "",
           colors: null,
@@ -247,6 +253,31 @@ export default function Form_({
                 <FormControl>
                   <Input disabled={loading} placeholder="Nombre Corto" {...field} value={field.value ?? undefined} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="sportId"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Deporte</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger disabled={loading}>
+                      <SelectValue placeholder="Seleccione un deporte" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {sports.map((sport) => (
+                      <SelectItem key={sport.id} value={sport.id}>
+                        {sport.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

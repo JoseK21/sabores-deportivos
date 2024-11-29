@@ -35,13 +35,6 @@ const FormSchema = z.object({
   enabled: z.boolean(),
 });
 
-/*
-  sportId    String
-  startDate  DateTime
-  endDate    DateTime
-  enabled    Boolean      @default(true)
-*/
-
 export default function FormData({
   data,
   setOpen,

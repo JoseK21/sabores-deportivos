@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { getApi } from "@/lib/api";
 
-import { REvent } from "@/relatedTypes/event";
+import { RTeam } from "@/relatedTypes/team";
+import { useTeamsStore } from "@/store/sd-admin";
 import { useFetchData } from "@/lib/useFetchData";
-import { useEventsStore } from "@/store/sd-admin";
 
-const useEventData = () => {
-  const { events, setData, setError, error } = useEventsStore();
+const useFetchTeamsData = () => {
+  const { teams, setData, setError, error } = useTeamsStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useFetchData(async () => {
     setIsLoaded(false);
 
-    if (!events.length) {
+    if (!teams.length) {
       try {
-        const data: REvent[] = (await getApi("event"))?.data || [];
+        const data: RTeam[] = (await getApi("team"))?.data || [];
 
         setData(data);
       } catch (error: any) {
@@ -25,7 +25,7 @@ const useEventData = () => {
     setIsLoaded(true);
   });
 
-  return { isLoaded, events, error };
+  return { isLoaded, teams, error };
 };
 
-export default useEventData;
+export default useFetchTeamsData;

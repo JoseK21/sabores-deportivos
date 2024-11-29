@@ -36,7 +36,7 @@ export const CellAction: React.FC<Props> = ({ data }) => {
 
     toast({
       duration: 5000,
-      variant: "success",
+      variant: response.isError ? "destructive" : "success",
       title: response.isError ? "Evento no eliminado!" : "Evento eliminado!",
       description: response.isError ? `${response?.error?.code}` : `Se eliminó el evento ${response.data.name}`,
     });

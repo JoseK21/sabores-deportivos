@@ -4,10 +4,10 @@ import { DataTable } from "@/components/ui/data-table";
 
 import { orderBy } from "lodash";
 import { columns } from "./columns";
-import useTeamsData from "../../../../../hooks/useTeamsData";
+import useFetchTeamsData from "@/hooks/useFetchTeamsData";
 
 export default function TeamTable() {
-  const { isLoaded, teams, error } = useTeamsData();
+  const { isLoaded, teams, error } = useFetchTeamsData();
 
   if (isLoaded) {
     return (

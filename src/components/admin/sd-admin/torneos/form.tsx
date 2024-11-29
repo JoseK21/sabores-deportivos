@@ -269,7 +269,7 @@ export default function FormData({
                   >
                     <FormControl>
                       <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione una liga" />
+                        <SelectValue placeholder="Seleccione un deporte" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

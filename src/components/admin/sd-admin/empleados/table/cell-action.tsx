@@ -35,7 +35,7 @@ export const EmployeeCell: React.FC<Props> = ({ data }) => {
 
     toast({
       duration: 7000,
-      variant: "success",
+      variant: response.isError ? "destructive" : "success",
       title: response.isError ? "Administrador no eliminado!" : "Administrador eliminado!",
       description: response.isError ? `${response?.error?.code}` : `Se eliminó el administrador ${response.data.name}`,
     });

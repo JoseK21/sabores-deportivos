@@ -45,7 +45,7 @@ export const Cell_: React.FC<Props> = ({ data }) => {
 
     toast({
       duration: 7000,
-      variant: "success",
+      variant: response.isError ? "destructive" : "success",
       title: response.isError ? "Comercio no eliminado!" : "Comercio eliminado!",
       description: response.isError ? `${response?.error?.code}` : `Se eliminó el comercio ${response.data.name}`,
     });

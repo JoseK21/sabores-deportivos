@@ -32,6 +32,11 @@ export const columns: ColumnDef<RTeam>[] = [
     cell: ({ row }) => <span>{row.original.shortName ?? "-"}</span>,
   },
   {
+    accessorKey: "sport",
+    header: "Deporte",
+    cell: ({ row }) => <span>{row.original?.Sport?.name ?? "-"}</span>,
+  },
+  {
     id: "actions",
     header: "Acciones",
     cell: ({ row }) => <Cell_ data={row.original} />,

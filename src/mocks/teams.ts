@@ -4,6 +4,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "herediano",
     name: "Herediano",
+    sportId: "",
     shortName: "Herediano",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/862.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -13,6 +14,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "san-carlos",
     name: "San Carlos",
+    sportId: "",
     shortName: "San Carlos",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/859.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -22,6 +24,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "alajuelense",
     name: "Alajuelense",
+    sportId: "",
     shortName: "Alajuelense",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2057.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -31,6 +34,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "municipal-liberia",
     name: "Municipal Liberia",
+    sportId: "",
     shortName: "Municipal Liberia",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9361.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -40,6 +44,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "ad-guanacasteca",
     name: "AD Guanacasteca",
+    sportId: "",
     shortName: "AD Guanacasteca",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20982.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -49,6 +54,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "saprissa",
     name: "Saprissa",
+    sportId: "",
     shortName: "Saprissa",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/858.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -58,6 +64,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "sporting-san-jose",
     name: "Sporting San José",
+    sportId: "",
     shortName: "Sporting San José",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20705.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -67,6 +74,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "pere-zeledon",
     name: "Perez Zeledon",
+    sportId: "",
     shortName: "Perez Zeledon",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7234.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -76,6 +84,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "cartagines",
     name: "Cartagines",
+    sportId: "",
     shortName: "Cartagines",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7239.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -85,6 +94,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "puntarenas",
     name: "Puntarenas",
+    sportId: "",
     shortName: "Puntarenas",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7237.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -94,6 +104,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "grecia",
     name: "Grecia",
+    sportId: "",
     shortName: "Grecia",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18763.png&h=200&w=200",
     colors: "#FFF, #AAA888",
@@ -103,6 +114,7 @@ export const TEAMS: RTeam[] = [
   {
     id: "santos",
     name: "Santos",
+    sportId: "",
     shortName: "Santos",
     logoUrl: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/913.png&h=200&w=200",
     colors: "#FFF, #AAA888",

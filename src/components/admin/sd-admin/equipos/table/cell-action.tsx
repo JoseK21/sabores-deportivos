@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { deleteApi } from "@/lib/api";
 import { Dialog_ } from "../dialog/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useTeamsStore } from "@/store/sd-admin";
 import { AlertModal } from "@/components/saboresdeportivos/general/AlertModal";
-import { Album, Edit, MoreHorizontal, Settings, Trash } from "lucide-react";
+import { Album, Edit, MoreHorizontal, Trash } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -15,10 +15,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
-import { Team } from "@prisma/client";
+import { RTeam } from "@/relatedTypes/team";
 
 interface Props {
-  data: Team;
+  data: RTeam;
 }
 
 export const Cell_: React.FC<Props> = ({ data }) => {
@@ -30,6 +30,7 @@ export const Cell_: React.FC<Props> = ({ data }) => {
   const { teams, setData } = useTeamsStore();
   const [loading, setLoading] = useState(false);
 
+  // TODO Remove image
   const onConfirmRemove = async (id: string) => {
     setLoading(true);
 
@@ -43,7 +44,7 @@ export const Cell_: React.FC<Props> = ({ data }) => {
 
     toast({
       duration: 7000,
-      variant: "success",
+      variant: response.isError ? "destructive" : "success",
       title: response.isError ? "Equipo no eliminado!" : "Equipo eliminado!",
       description: response.isError ? `${response?.error?.code}` : `Se eliminó el equipo ${response.data.name}`,
     });
