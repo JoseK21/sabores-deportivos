@@ -137,6 +137,7 @@ model Sport {
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @updatedAt @map("updated_at")
   // Relations
+  Event      Event[]
   Team       Team[]
   League     League[]
   Tournament Tournament[]
@@ -221,6 +222,7 @@ model TeamTournament {
 model Event {
   id            String      @id @default(cuid())
   title         String?
+  sportId       String
   tournamentId  String?
   leagueId      String?
   dateTime      DateTime
@@ -232,6 +234,7 @@ model Event {
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
   // Relations
+  Sport         Sport       @relation(fields: [sportId], references: [id])
   homeTeam      Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
   awayTeam      Team        @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
   Tournament    Tournament? @relation(fields: [tournamentId], references: [id])

@@ -7,7 +7,9 @@ import { redirect } from "next/navigation";
 export default async function AuthAdminRest({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
 
-  if (session?.user.role == UserRole.client) {
+  const role: UserRole = session?.user.role ?? UserRole.unknown;
+
+  if (role == UserRole.client || role == UserRole.unknown) {
     redirect("/");
   }
 

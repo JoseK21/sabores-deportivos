@@ -20,9 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { es } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { BooleanOption } from "@/app/enum";
 import { getESDate } from "@/utils/date";
 
@@ -48,11 +46,15 @@ export default function FormData({
 
   const { sports } = useSportsStore();
 
+  console.log("🚀 >>  JOSE data:", data);
+
   const dataFromDB = {
     ...data,
-    startDate: new Date(data?.startDate || ""),
+    // startDate: new Date(data?.startDate || ""),
     endDate: new Date(data?.endDate || ""),
   } as RLeague;
+
+  console.log("🚀 >>  JOSE dataFromDB:", dataFromDB);
 
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -257,7 +259,10 @@ export default function FormData({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Habilitado</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(value === "true")} defaultValue="">
+                  <Select
+                    onValueChange={(value) => field.onChange(value === "true")}
+                    defaultValue={field.value ? "true" : "false"}
+                  >
                     <FormControl>
                       <SelectTrigger disabled={loading}>
                         <SelectValue placeholder="Habilitado" />

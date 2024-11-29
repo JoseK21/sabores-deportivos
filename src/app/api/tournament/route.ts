@@ -3,7 +3,7 @@ import { Tournament } from "@prisma/client";
 import { requestMiddleware } from "@/middlewares/requestMiddleware";
 
 export const GET = requestMiddleware(async () => {
-  return await prisma.tournament.findMany({ include: { Sport: true } });
+  return await prisma.tournament.findMany({ include: { Sport: true, League: true } });
 });
 
 export const POST = requestMiddleware(async ({ data }: { data: Tournament }) => {

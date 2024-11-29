@@ -80,3 +80,6 @@ https://motion.dev/docs/react-quick-start
 
 # ACCESS
 https://developers.facebook.com/apps/568706375750796/dashboard/?business_id=1325509422207932
+
+## VER 
+https://www.youtube.com/watch?v=oD0CIe14M5I&ab_channel=MaxProgramming

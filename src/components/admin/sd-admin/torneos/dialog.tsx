@@ -14,7 +14,7 @@ interface Props {
 
 export const FormDialog = ({ open, setOpen, data, isEdition, isShowing = false }: Props) => {
   if (isShowing) {
-    const { name, enabled, League } = data || ({} as RTournament);
+    const { name, enabled, Sport, League } = data || ({} as RTournament);
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -29,7 +29,7 @@ export const FormDialog = ({ open, setOpen, data, isEdition, isShowing = false }
                 <strong>Nombre:</strong> {name}
               </span>
               <span>
-                <strong>Liga:</strong> {League?.name} ({League?.Sport?.name || "-"})
+                <strong>Liga:</strong> {League?.name} - {Sport?.name || ""}
               </span>
               <span>
                 <strong>Estado:</strong> {enabled ? "Habilitado" : "Deshabilitado"}

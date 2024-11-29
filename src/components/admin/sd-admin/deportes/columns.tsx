@@ -11,10 +11,6 @@ export const columns: ColumnDef<RSport>[] = [
     header: "Nombre",
   },
   {
-    accessorKey: "abbrName",
-    header: "Nombre Abreviado",
-  },
-  {
     id: "actions",
     header: "Acciones",
     cell: ({ row }) => <CellAction data={row.original} />,

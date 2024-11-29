@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { getObjectDiff } from "@/utils/object";
 import { useToast } from "@/components/ui/use-toast";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -23,13 +22,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { es } from "date-fns/locale";
 import { REvent } from "@/relatedTypes/event";
 import { getESDate } from "@/utils/date";
+import useFetchSportsData from "@/hooks/useFetchSportsData";
 
 const FormSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional().nullable(),
+  sportId: z.string().min(1, { message: "Deporte requerido" }),
   tournamentId: z.string().min(1, { message: "Evento requerido" }).nullable(),
   dateTime: z.date({ required_error: "Fecha de inicio requerida." }),
   homeTeamId: z.string().min(1, { message: "Equipo Casa requerido" }),
@@ -50,6 +50,9 @@ export default function FormData({
 
   const { tournaments } = useTournamentsStore();
 
+  // NO DEBO LLAAMR A LOS STORES, SOLO LOS FECHTs, ya que a lo interno me obtiene el storage
+  const { sports } = useFetchSportsData();
+
   const dataFromDB = {
     ...data,
     dateTime: new Date(data?.dateTime || ""),
@@ -65,6 +68,7 @@ export default function FormData({
           tournamentId: "",
           dateTime: new Date(),
           status: "",
+          sportId: "",
           homeTeamId: "",
           awayTeamId: "",
         },
@@ -164,6 +168,37 @@ export default function FormData({
                   <FormControl>
                     <Input disabled={loading} placeholder="Titulo" {...field} value={field.value ?? ""} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="sportId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Deporte</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      // TODO call tournamnets or/and leagues
+                      field.onChange(value);
+                    }}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger disabled={loading}>
+                        <SelectValue placeholder="Seleccione un deporte" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {sports.map((sport) => (
+                        <SelectItem key={sport.id} value={sport.id}>
+                          {sport.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

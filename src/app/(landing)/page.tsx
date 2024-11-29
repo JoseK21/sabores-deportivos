@@ -1,17 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-
 import Features from "@/components/pages/home/Features";
 import Testimonials from "@/components/pages/home/Testimonials";
-import { Testimonial } from "@/types/testimonial";
 import { YouTubeEmbed } from "@next/third-parties/google";
 import { Store, MonitorPlayIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function Page() {
-  const [date, setDate] = useState<Date>();
-
   return (
     <main>
       {/* <!-- Start block --> */}

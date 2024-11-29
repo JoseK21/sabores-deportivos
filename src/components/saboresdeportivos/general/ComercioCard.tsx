@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Business } from "@/types/business";
 import { Schedule } from "@/types/schedule";
 import { DAYS_MAP } from "@/utils/date";
-import { generateSlug } from "@/utils/url";
 import { format } from "date-fns";
 import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 import Image from "next/image";

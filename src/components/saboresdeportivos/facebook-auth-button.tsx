@@ -1,10 +1,17 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
 
 export default function FacebookSignInButton() {
+  const pathname = usePathname(); // Obtiene la ruta completa desde el enrutador
+
+  // Separar la ruta en partes
+  const pathParts = pathname.split("/").filter((part) => part);
+
+  console.log("🚀 >>  FacebookSignInButton >>  pathParts:", pathParts);
+
   const searchParams = useSearchParams();
   const callbackUrl = searchParams ? searchParams.get("callbackUrl") : null;
 
@@ -13,7 +20,7 @@ export default function FacebookSignInButton() {
       className="w-full"
       variant="outline"
       type="button"
-      disabled
+      // disabled
       onClick={() => signIn("facebook", { callbackUrl: callbackUrl ?? "/" })}
     >
       <div className="mr-4">

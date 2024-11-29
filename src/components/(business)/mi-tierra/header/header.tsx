@@ -29,7 +29,6 @@ import { signOut } from "next-auth/react";
 import { getFirstChars } from "@/utils/string";
 
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -60,10 +59,6 @@ export function QuinielaDialog() {
   const searchParams = useSearchParams(); // Lee los query params
   const router = useRouter(); // Para actualizar la URL
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    setDate(new Date());
-  }, []);
 
   useEffect(() => {
     if (searchParams.get("modal") === "quiniela") {
@@ -97,6 +92,10 @@ export function QuinielaDialog() {
     }
     router.push(`${pathname}?${newSearchParams.toString()}`); // Actualizar la URL
   }, [date]);
+
+  useEffect(() => {
+    setDate(new Date());
+  }, []);
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

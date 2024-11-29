@@ -52,7 +52,7 @@ export const Dialog_ = ({ open, setOpen, data, isEdition, isShowing = false }: P
                 </span>
               )}
               <span>
-                <strong>Colors:</strong> {colors ?? "N/A"}
+                <strong>Colores:</strong> {colors ?? "N/A"}
               </span>
             </div>
           </div>

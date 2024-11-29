@@ -282,7 +282,7 @@ export default function FormData({
                   <FormLabel>Habilitado</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value === "true")} // Convertir la cadena 'true' a true y 'false' a false
-                    defaultValue=""
+                    defaultValue={field.value ? "true" : "false"}
                   >
                     <FormControl>
                       <SelectTrigger disabled={loading}>

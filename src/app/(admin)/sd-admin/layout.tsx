@@ -11,13 +11,15 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions);
 
+  const role: UserRole = session?.user.role ?? UserRole.unknown;
+
   if (headers().get(ACCESS_HEADER) != "true") {
     redirect("/en-mantenimiento");
   }
 
   if (!session?.user?.email) {
     redirect("/sd-admin/iniciar-sesion");
-  } else if (session?.user.role == UserRole.client) {
+  } else if (role == UserRole.client || role == UserRole.unknown) {
     redirect("/");
   }
 

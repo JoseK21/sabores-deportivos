@@ -7,5 +7,5 @@ export const GET = requestMiddleware(async () => {
 });
 
 export const POST = requestMiddleware(async ({ data }: { data: Team }) => {
-  return await prisma.team.create({ data });
+  return await prisma.team.create({ data, include: { Sport: true } });
 });

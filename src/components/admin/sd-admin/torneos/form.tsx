@@ -9,21 +9,19 @@ import { Input } from "@/components/ui/input";
 import { getObjectDiff } from "@/utils/object";
 import { useToast } from "@/components/ui/use-toast";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { useLeaguesStore, useSportsStore, useTournamentsStore } from "@/store/sd-admin";
+import { useSportsStore, useTournamentsStore } from "@/store/sd-admin";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BOOLEAN_OPTIONS, TOURNAMENT_STATUS } from "@/app/constants";
-import { BooleanOption, TournamentStatus } from "@/app/enum";
+import { BOOLEAN_OPTIONS } from "@/app/constants";
+import { BooleanOption } from "@/app/enum";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { es } from "date-fns/locale";
 import { RTournament } from "@/relatedTypes/tournament";
 import { getESDate } from "@/utils/date";
 import { RLeague } from "@/relatedTypes/league";
@@ -53,7 +51,8 @@ export default function FormData({
 
   const dataFromDB = {
     ...data,
-    startDate: new Date(data?.startDate || ""),
+    startDate: new Date(),
+    // startDate: new Date(data?.startDate || ""),
     endDate: new Date(data?.endDate || ""),
   } as RTournament;
 
@@ -316,7 +315,7 @@ export default function FormData({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Habilitado</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(value === "true")} defaultValue="">
+                  <Select onValueChange={(value) => field.onChange(value === "true")} defaultValue={field.value ? "true" : "false"}>
                     <FormControl>
                       <SelectTrigger disabled={loading}>
                         <SelectValue placeholder="Habilitado" />

@@ -3,6 +3,6 @@ import { RLeague } from "./league";
 import { RSport } from "./sport";
 
 export type RTournament = Tournament & {
-  Sport: RSport;
-  League: RLeague;
+  Sport?: RSport;
+  League?: RLeague;
 };
