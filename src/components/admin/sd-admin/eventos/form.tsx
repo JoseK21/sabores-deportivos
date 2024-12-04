@@ -1,45 +1,67 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { z } from "zod";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { isEmpty } from "lodash";
 import { useForm } from "react-hook-form";
-import { postApi, putApi } from "@/lib/api";
+import { getApi, postApi, putApi } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import { getObjectDiff } from "@/utils/object";
 import { useToast } from "@/components/ui/use-toast";
-import { CalendarIcon } from "lucide-react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogFooter } from "@/components/ui/dialog";
-import { useEventsStore, useTournamentsStore } from "@/store/sd-admin";
+import { useEventsStore } from "@/store/sd-admin";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EVENT_STATUS } from "@/app/constants";
 import { EventStatus } from "@/app/enum";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { REvent } from "@/relatedTypes/event";
-import { getESDate } from "@/utils/date";
 import useFetchSportsData from "@/hooks/useFetchSportsData";
 import { RTournament } from "@/relatedTypes/tournament";
 import { RLeague } from "@/relatedTypes/league";
 import { DateTimePicker } from "@/components/ui/calendar-with-time";
+import AnimateSpin from "@/components/AnimateSpin";
+import { RTeamLeague } from "@/relatedTypes/teamLeague";
+import { RTeamTournament } from "@/relatedTypes/teamTournament";
 
-const FormSchema = z.object({
-  id: z.string().optional(),
-  title: z.string().optional().nullable(),
-  sportId: z.string().min(1, { message: "Deporte requerido" }),
-  tournamentId: z.string().optional().nullable(),
-  leagueId: z.string().optional().nullable(),
-  dateTime: z.date({ required_error: "Fecha de inicio requerida." }),
-  homeTeamId: z.string().min(1, { message: "Equipo Casa requerido" }),
-  awayTeamId: z.string().min(1, { message: "Equipo Visita requerido" }),
-  status: z.string().min(1, { message: "Estado requerido" }),
-});
+const EVENT_TYPES = ["Liga", "Torneo"];
+
+const FormSchema = z
+  .object({
+    id: z.string().optional(),
+    title: z.string().optional().nullable(),
+    sportId: z.string().min(1, { message: "Deporte requerido" }),
+    eventType: z.string().min(1, { message: "Tipo de evento requerido" }),
+    tournamentId: z.string().optional().nullable(),
+    leagueId: z.string().optional().nullable(),
+    dateTime: z.date({ required_error: "Fecha de inicio requerida." }),
+    homeTeamId: z.string().min(1, { message: "Equipo Casa requerido" }),
+    awayTeamId: z.string().min(1, { message: "Equipo Visita requerido" }),
+    status: z.string().min(1, { message: "Estado requerido" }),
+  })
+  .superRefine((data, ctx) => {
+    console.log("🚀 >>  .superRefine >>  data.eventType:", data.eventType);
+    if (data.eventType === EVENT_TYPES[0]) {
+      if (!data.leagueId) {
+        ctx.addIssue({
+          path: ["leagueId"],
+          code: z.ZodIssueCode.custom,
+          message: "La Liga es requerida",
+        });
+      }
+    } else if (data.eventType === EVENT_TYPES[1]) {
+      if (!data.tournamentId) {
+        ctx.addIssue({
+          path: ["tournamentId"],
+          code: z.ZodIssueCode.custom,
+          message: "El torneo es requerido",
+        });
+      }
+    }
+  });
 
 export default function FormData({
   data,
@@ -51,14 +73,8 @@ export default function FormData({
   setOpen: (open: boolean) => void;
 }) {
   const { events, setData } = useEventsStore();
-
-  // const { tournaments } = useTournamentsStore();
-
-  const tournaments: RTournament[] = [];
-  const leagues: RLeague[] = [];
-
   // NO DEBO LLAAMR A LOS STORES, SOLO LOS FECHTs, ya que a lo interno me obtiene el storage
-  const { sports } = useFetchSportsData();
+  const { sports, isLoaded: isLoadedSports } = useFetchSportsData();
 
   const dataFromDB = {
     ...data,
@@ -84,13 +100,84 @@ export default function FormData({
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [eventType, setEventType] = useState(EVENT_TYPES[0]);
+
+  const [loadingLeaguesBySportId, setLoadingLeaguesBySportId] = useState(false);
+  const [leaguesBySportId, setLeaguesBySportId] = useState<RLeague[]>([]);
+
+  const fetchLeaguesBySportId = useCallback(async (sportId: string) => {
+    try {
+      form.setValue("leagueId", null);
+      form.setValue("tournamentId", null);
+      form.setValue("homeTeamId", "");
+      form.setValue("awayTeamId", "");
+      setLoadingLeaguesBySportId(true);
+      setLeaguesBySportId([]);
+
+      const response = await getApi(`league/bySportId/${sportId}`);
+
+      setLeaguesBySportId(response.isError ? [] : response.data);
+      setLoadingLeaguesBySportId(false);
+    } catch (error: any) {
+      setLeaguesBySportId([]);
+      setLoadingLeaguesBySportId(false);
+    }
+  }, []);
+
+  const [loadingTournamentsBySportId, setLoadingTournamentsBySportId] = useState(false);
+  const [tournamentsBySportId, setTournamentsBySportId] = useState<RTournament[]>([]);
+
+  const fetchTournamentBySportId = useCallback(async (sportId: string) => {
+    try {
+      form.setValue("tournamentId", null);
+      form.setValue("leagueId", null);
+      form.setValue("homeTeamId", "");
+      form.setValue("awayTeamId", "");
+
+      setLoadingTournamentsBySportId(true);
+      setTournamentsBySportId([]);
+
+      const response = await getApi(`tournament/bySportId/${sportId}`);
+
+      setTournamentsBySportId(response.isError ? [] : response.data);
+      setLoadingTournamentsBySportId(false);
+    } catch (error: any) {
+      setTournamentsBySportId([]);
+      setLoadingTournamentsBySportId(false);
+    }
+  }, []);
+
+  const [loadingTeamsByLeagueIdOrTournamentId, setLoadingTeamsByLeagueIdOrTournamentId] = useState(false);
+  const [teamsByLeagueIdOrTournamentId, setTeamsByLeagueIdOrTournamentId] = useState<RTeamLeague[] | RTeamTournament[]>(
+    []
+  );
+
+  const fetchTeamsByLeagueIdOrTournamentId = useCallback(async (isLeague: Boolean, id: string) => {
+    try {
+      form.setValue("homeTeamId", "");
+      form.setValue("awayTeamId", "");
+
+      setLoadingTeamsByLeagueIdOrTournamentId(true);
+      setTeamsByLeagueIdOrTournamentId([]);
+
+      const response = await getApi(isLeague ? `team-league/byLeagueId/${id}` : `team-tournament/byTournamentId/${id}`);
+
+      setTeamsByLeagueIdOrTournamentId(response.isError ? [] : response.data);
+      setLoadingTeamsByLeagueIdOrTournamentId(false);
+    } catch (error: any) {
+      setTeamsByLeagueIdOrTournamentId([]);
+      setLoadingTeamsByLeagueIdOrTournamentId(false);
+    }
+  }, []);
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
+    console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
+    return 0;
     try {
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["eventType"]);
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -186,13 +273,15 @@ export default function FormData({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Deporte</FormLabel>
+                  <FormLabel>
+                    Deporte
+                    {!isLoadedSports && <AnimateSpin />}
+                  </FormLabel>
                   <Select
+                    defaultValue={field.value}
                     onValueChange={(value) => {
-                      // TODO call tournamnets or/and leagues
                       field.onChange(value);
                     }}
-                    defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger disabled={loading}>
@@ -213,35 +302,164 @@ export default function FormData({
             />
 
             <FormField
-              name="tournamentId"
-              control={form.control}
+              name="eventType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Torneo (Opcional)</FormLabel>
+                  <FormLabel>Evento de</FormLabel>
                   <Select
                     onValueChange={(value) => {
-                      // Busca el objeto completo en el arreglo de torneos
-                      const tournament = tournaments.find((t) => t.id === value);
-                      if (tournament) {
-                        // setSelectedTournament(tournament); // Guarda el objeto en el estado
-                        console.log("Objeto completo del torneo:", tournament);
-
-                        // Aquí podrías llamar a la API para obtener equipos según el sportId
-                        // fetchTeamsBySportId(tournament.sportId);
-                      }
                       field.onChange(value);
+                      setEventType(value);
+
+                      form.setValue("leagueId", null);
+                      form.setValue("tournamentId", null);
+                      form.setValue("homeTeamId", "");
+                      form.setValue("awayTeamId", "");
+
+                      setLeaguesBySportId([]);
+                      setTournamentsBySportId([]);
+                      setTeamsByLeagueIdOrTournamentId([]);
+
+                      const sportId = form.getValues("sportId");
+
+                      if (sportId) {
+                        if (value == EVENT_TYPES[0]) {
+                          fetchLeaguesBySportId(sportId);
+                        } else if (value == EVENT_TYPES[1]) {
+                          fetchTournamentBySportId(sportId);
+                        }
+                      }
                     }}
-                    defaultValue={field.value ?? undefined}
+                    defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione un torneo" />
+                      <SelectTrigger disabled={loading || !form.getValues("sportId")}>
+                        <SelectValue placeholder="Seleccione un tipo de evento" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {tournaments.map((tournament) => (
-                        <SelectItem key={tournament.id} value={tournament.id}>
-                          {tournament.name}
+                      {EVENT_TYPES.map((eventType) => (
+                        <SelectItem key={eventType} value={eventType}>
+                          {eventType}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {eventType == EVENT_TYPES[0] && (
+              <FormField
+                name="leagueId"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Liga
+                      {loadingLeaguesBySportId && <AnimateSpin />}
+                    </FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        fetchTeamsByLeagueIdOrTournamentId(true, value);
+                        field.onChange(value);
+                      }}
+                      defaultValue={field.value ?? undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger disabled={loading || !form.getValues("eventType") || loadingLeaguesBySportId}>
+                          <SelectValue placeholder="Seleccione una liga" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {leaguesBySportId.map((league) => (
+                          <SelectItem key={league.id} value={league.id}>
+                            {league.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {eventType == EVENT_TYPES[1] && (
+              <FormField
+                name="tournamentId"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Torneo
+                      {loadingTournamentsBySportId && <AnimateSpin />}
+                    </FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        fetchTeamsByLeagueIdOrTournamentId(false, value);
+                        field.onChange(value);
+                      }}
+                      defaultValue={field.value ?? undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          disabled={loading || !form.getValues("eventType") || loadingTournamentsBySportId}
+                        >
+                          <SelectValue placeholder="Seleccione un torneo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {tournamentsBySportId.map((tournament) => (
+                          <SelectItem key={tournament.id} value={tournament.id}>
+                            {tournament.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <FormField
+              name="homeTeamId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Equipo Casa
+                    {loadingTeamsByLeagueIdOrTournamentId && <AnimateSpin />}
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger
+                        disabled={
+                          loading ||
+                          !form.getValues(form.getValues("eventType") == EVENT_TYPES[0] ? "leagueId" : "tournamentId")
+                        }
+                      >
+                        <SelectValue placeholder="Seleccione un equipo casa" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {teamsByLeagueIdOrTournamentId.map((teamLeague) => (
+                        <SelectItem
+                          id={teamLeague?.Team?.id}
+                          key={teamLeague?.Team?.id}
+                          value={`${teamLeague?.Team?.id}`}
+                          disabled={!teamLeague?.Team?.id || teamLeague?.Team?.id === form.getValues("awayTeamId")}
+                        >
+                          <div className="flex gap-2 items-center">
+                            <img
+                              src={teamLeague?.Team?.logoUrl ?? "/assets/default-team.png"}
+                              alt={teamLeague?.Team?.name}
+                              className="w-6 h-6"
+                            />
+                            {teamLeague?.Team?.name}
+                          </div>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -252,35 +470,41 @@ export default function FormData({
             />
 
             <FormField
-              name="leagueId"
+              name="awayTeamId"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Liga (Opcional)</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      // Busca el objeto completo en el arreglo de torneos
-                      const tournament = leagues.find((t) => t.id === value);
-                      if (tournament) {
-                        // setSelectedTournament(tournament); // Guarda el objeto en el estado
-                        console.log("Objeto completo del torneo:", tournament);
-
-                        // Aquí podrías llamar a la API para obtener equipos según el sportId
-                        // fetchTeamsBySportId(tournament.sportId);
-                      }
-                      field.onChange(value);
-                    }}
-                    defaultValue={field.value ?? undefined}
-                  >
+                  <FormLabel>
+                    Equipo Visita
+                    {loadingTeamsByLeagueIdOrTournamentId && <AnimateSpin />}
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione un torneo" />
+                      <SelectTrigger
+                        disabled={
+                          loading ||
+                          !form.getValues(form.getValues("eventType") == EVENT_TYPES[0] ? "leagueId" : "tournamentId")
+                        }
+                      >
+                        <SelectValue placeholder="Seleccione un equipo visita" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {leagues.map((league) => (
-                        <SelectItem key={league.id} value={league.id}>
-                          {league.name}
+                      {teamsByLeagueIdOrTournamentId.map((teamLeague) => (
+                        <SelectItem
+                          id={teamLeague?.Team?.id}
+                          key={teamLeague?.Team?.id}
+                          value={`${teamLeague?.Team?.id}`}
+                          disabled={!teamLeague?.Team?.id || teamLeague?.Team?.id === form.getValues("homeTeamId")}
+                        >
+                          <div className="flex gap-2 items-center">
+                            <img
+                              src={teamLeague?.Team?.logoUrl ?? "/assets/default-team.png"}
+                              alt={teamLeague?.Team?.name}
+                              className="w-6 h-6"
+                            />
+                            {teamLeague?.Team?.name}
+                          </div>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -328,56 +552,6 @@ export default function FormData({
                       />
                     </PopoverContent>
                   </Popover> */}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="homeTeamId"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Equipo Casa</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione un equipo casa" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {/* {tournaments.map((league) => (
-                        <SelectItem key={league.id} value={league.id}>
-                          {league.name}
-                        </SelectItem>
-                      ))} */}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="awayTeamId"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Equipo Visita</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger disabled={loading}>
-                        <SelectValue placeholder="Seleccione un equipo visita" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {/* {tournaments.map((league) => (
-                        <SelectItem key={league.id} value={league.id}>
-                          {league.name}
-                        </SelectItem>
-                      ))} */}
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
