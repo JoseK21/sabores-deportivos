@@ -80,3 +80,8 @@ export enum BusinessScheduleStatus {
   to_close = "to_close",
   closed = "closed",
 }
+
+export enum EventCompetitionType {
+  league = "league",
+  tournament = "tournament",
+}

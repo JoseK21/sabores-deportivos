@@ -220,26 +220,27 @@ model TeamTournament {
 }
 
 model Event {
-  id            String      @id @default(cuid())
-  title         String?
-  sportId       String
-  tournamentId  String?
-  leagueId      String?
-  dateTime      DateTime
-  status        EventStatus
-  homeTeamId    String
-  awayTeamId    String
-  homeTeamScore Int         @default(0)
-  awayTeamScore Int         @default(0)
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
+  id              String               @id @default(cuid())
+  title           String?
+  sportId         String
+  tournamentId    String?
+  leagueId        String?
+  dateTime        DateTime
+  status          EventStatus
+  homeTeamId      String
+  awayTeamId      String
+  competitionType EventCompetitionType
+  homeTeamScore   Int                  @default(0)
+  awayTeamScore   Int                  @default(0)
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
   // Relations
-  Sport         Sport       @relation(fields: [sportId], references: [id])
-  homeTeam      Team        @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
-  awayTeam      Team        @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
-  Tournament    Tournament? @relation(fields: [tournamentId], references: [id])
-  League        League?     @relation(fields: [leagueId], references: [id])
-  Forecast      Forecast[]
+  Sport           Sport                @relation(fields: [sportId], references: [id])
+  HomeTeam        Team                 @relation("homeTeamEvents", fields: [homeTeamId], references: [id])
+  AwayTeam        Team                 @relation("awayTeamEvents", fields: [awayTeamId], references: [id])
+  Tournament      Tournament?          @relation(fields: [tournamentId], references: [id])
+  League          League?              @relation(fields: [leagueId], references: [id])
+  Forecast        Forecast[]
 
   @@unique([homeTeamId, awayTeamId, dateTime])
 }
@@ -425,4 +426,9 @@ enum TournamentStatus {
   ongoing
   completed
   cancelled
+}
+
+enum EventCompetitionType {
+  league
+  tournament
 }

@@ -1,4 +1,4 @@
-import { EventStatus } from "@prisma/client";
+import { EventCompetitionType, EventStatus } from "@prisma/client";
 import {
   BooleanOption,
   BusinessPlan,
@@ -108,6 +108,11 @@ export const EVENT_STATUS: { [key in EventStatus]: string } = {
   [EventStatus.live]: "En Vivo",
   [EventStatus.pending]: "Pendiente",
   [EventStatus.postponed]: "Pospuesto",
+};
+
+export const EVENT_COMPETITION_TYPE: { [key in EventCompetitionType]: string } = {
+  [EventCompetitionType.league]: "Liga",
+  [EventCompetitionType.tournament]: "Torneo",
 };
 
 export const SCHEDULE: {

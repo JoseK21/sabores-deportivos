@@ -38,7 +38,7 @@ export const CellAction: React.FC<Props> = ({ data }) => {
       duration: 5000,
       variant: response.isError ? "destructive" : "success",
       title: response.isError ? "Evento no eliminado!" : "Evento eliminado!",
-      description: response.isError ? `${response?.error?.code}` : `Se eliminó el evento ${response.data.name}`,
+      description: response.isError ? `${response?.error?.code}` : `Se eliminó el evento exitosamente`,
     });
 
     setLoading(false);
@@ -57,11 +57,13 @@ export const CellAction: React.FC<Props> = ({ data }) => {
         textLoading="Eliminando.."
         onClose={() => setOpenRemove(false)}
         onConfirm={() => onConfirmRemove(data.id)}
-        title={`Estas seguro de remove a ${`${`${data.title} `.trim() || ""}${data.homeTeam?.name || '-'} vs ${data.awayTeam?.name || '-'}`}?`}
+        title={`Estas seguro de remove el evento ${data.HomeTeam?.name || "-"} vs ${data.AwayTeam?.name || "-"} ${`${
+          `(${data.title})`.trim() || ""
+        }`}`}
         description="Esta acción no se puede deshacer!"
       />
 
-      <ActionDropdown setOpenShow={setOpenShow} setOpenEdit={setOpenEdit} setOpenRemove={setOpenRemove} />
+      <ActionDropdown setOpenShow={setOpenShow} setOpenEdit={setOpenEdit} setOpenRemove={setOpenRemove} disabledEdit />
     </>
   );
 };

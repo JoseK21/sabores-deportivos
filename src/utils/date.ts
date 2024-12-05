@@ -11,6 +11,14 @@ export const DAYS_MAP: { [key: string]: string } = {
   sunday: "Domingo",
 };
 
-export function getESDate(endDate: Date | null | undefined, fallback: string = "N/A") {
-  return endDate ? format(endDate, "PPP", { locale: es }) : fallback;
+export function getESDate(date: Date | null | undefined, fallback: string = "N/A") {
+  return date ? format(date, "PPP", { locale: es }) : fallback;
+}
+
+export function getShortDate(date: Date | null | undefined, fallback: string = "N/A") {
+  return date ? format(date, "P", { locale: es }) : fallback;
+}
+
+export function getShortDateTime(date: Date | null | undefined, fallback: string = "N/A") {
+  return date ? format(date, "dd/MM/yyyy, p", {}) : fallback;
 }

@@ -14,9 +14,19 @@ interface ActionDropdownProps {
   setOpenShow: (arg: boolean) => void;
   setOpenEdit: (arg: boolean) => void;
   setOpenRemove: (arg: boolean) => void;
+  disabledShow?: boolean;
+  disabledEdit?: boolean;
+  disabledRemove?: boolean;
 }
 
-export const ActionDropdown: React.FC<ActionDropdownProps> = ({ setOpenShow, setOpenEdit, setOpenRemove }) => {
+export const ActionDropdown: React.FC<ActionDropdownProps> = ({
+  setOpenShow,
+  setOpenEdit,
+  setOpenRemove,
+  disabledShow = false,
+  disabledEdit = false,
+  disabledRemove = false,
+}) => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -27,13 +37,13 @@ export const ActionDropdown: React.FC<ActionDropdownProps> = ({ setOpenShow, set
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => setOpenShow(true)}>
+        <DropdownMenuItem disabled={disabledShow} onClick={() => setOpenShow(true)}>
           <Album className="mr-2 h-4 w-4" /> Ver
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setOpenEdit(true)}>
+        <DropdownMenuItem disabled={disabledEdit} onClick={() => setOpenEdit(true)}>
           <Edit className="mr-2 h-4 w-4" /> Actualizar
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setOpenRemove(true)} className=" text-red-400">
+        <DropdownMenuItem disabled={disabledRemove} onClick={() => setOpenRemove(true)} className=" text-red-400">
           <Trash className="mr-2 h-4 w-4" /> Eliminar
         </DropdownMenuItem>
       </DropdownMenuContent>

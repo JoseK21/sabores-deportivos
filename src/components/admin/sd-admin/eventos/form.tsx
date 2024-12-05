@@ -2,7 +2,7 @@
 "use client";
 
 import { z } from "zod";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { useForm } from "react-hook-form";
 import { getApi, postApi, putApi } from "@/lib/api";
@@ -16,7 +16,7 @@ import { useEventsStore } from "@/store/sd-admin";
 import ButtonLoadingSubmit from "@/components/saboresdeportivos/ButtonLoadingSubmit";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EVENT_STATUS } from "@/app/constants";
+import { EVENT_COMPETITION_TYPE, EVENT_STATUS } from "@/app/constants";
 import { EventStatus } from "@/app/enum";
 import { REvent } from "@/relatedTypes/event";
 import useFetchSportsData from "@/hooks/useFetchSportsData";
@@ -26,15 +26,15 @@ import { DateTimePicker } from "@/components/ui/calendar-with-time";
 import AnimateSpin from "@/components/AnimateSpin";
 import { RTeamLeague } from "@/relatedTypes/teamLeague";
 import { RTeamTournament } from "@/relatedTypes/teamTournament";
-
-const EVENT_TYPES = ["Liga", "Torneo"];
+import { EventCompetitionType } from "@prisma/client";
+import { useFetchData } from "@/lib/useFetchData";
 
 const FormSchema = z
   .object({
     id: z.string().optional(),
     title: z.string().optional().nullable(),
     sportId: z.string().min(1, { message: "Deporte requerido" }),
-    eventType: z.string().min(1, { message: "Tipo de evento requerido" }),
+    competitionType: z.string().min(1, { message: "Tipo de competición requerida" }),
     tournamentId: z.string().optional().nullable(),
     leagueId: z.string().optional().nullable(),
     dateTime: z.date({ required_error: "Fecha de inicio requerida." }),
@@ -43,8 +43,7 @@ const FormSchema = z
     status: z.string().min(1, { message: "Estado requerido" }),
   })
   .superRefine((data, ctx) => {
-    console.log("🚀 >>  .superRefine >>  data.eventType:", data.eventType);
-    if (data.eventType === EVENT_TYPES[0]) {
+    if (data.competitionType === EventCompetitionType.league) {
       if (!data.leagueId) {
         ctx.addIssue({
           path: ["leagueId"],
@@ -52,7 +51,7 @@ const FormSchema = z
           message: "La Liga es requerida",
         });
       }
-    } else if (data.eventType === EVENT_TYPES[1]) {
+    } else if (data.competitionType === EventCompetitionType.tournament) {
       if (!data.tournamentId) {
         ctx.addIssue({
           path: ["tournamentId"],
@@ -91,6 +90,7 @@ export default function FormData({
           tournamentId: null,
           leagueId: null,
           dateTime: new Date(),
+          competitionType: undefined,
           status: "",
           sportId: "",
           homeTeamId: "",
@@ -100,7 +100,6 @@ export default function FormData({
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [eventType, setEventType] = useState(EVENT_TYPES[0]);
 
   const [loadingLeaguesBySportId, setLoadingLeaguesBySportId] = useState(false);
   const [leaguesBySportId, setLeaguesBySportId] = useState<RLeague[]>([]);
@@ -171,13 +170,14 @@ export default function FormData({
   }, []);
 
   async function onSubmit(dataForm: z.infer<typeof FormSchema>) {
-    console.log("🚀 >>  onSubmit >>  dataForm:", dataForm);
-    return 0;
     try {
       setLoading(true);
 
       if (isEdition) {
-        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues, ["eventType"]);
+        let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
+        console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
+
+        return 0;
 
         if (isEmpty(dataToEdit)) {
           setLoading(false);
@@ -213,7 +213,7 @@ export default function FormData({
           title: response.isError ? "Evento no actualizado!" : "Evento actualizado!",
           description: response.isError
             ? "Hubo un error interno en el servidor"
-            : `Se actualizó el evento ${dataForm.title ?? "N/A"}`,
+            : `Se actualizó el evento exitosamente`,
         });
         setLoading(false);
       } else {
@@ -231,9 +231,7 @@ export default function FormData({
           duration: 5000,
           variant: response.isError ? "destructive" : "success",
           title: response.isError ? "Evento no agregado!" : "Nuevo Evento agregado!",
-          description: response.isError
-            ? "Hubo un error interno en el servidor"
-            : `Se agregó el evento ${dataForm.title ?? "N/A"}`,
+          description: response.isError ? "Hubo un error interno en el servidor" : `Se agregó el evento exitosamente`,
         });
         setLoading(false);
       }
@@ -248,6 +246,27 @@ export default function FormData({
       });
     }
   }
+
+  useFetchData(
+    isEdition
+      ? () => {
+          const sportId = form.getValues("sportId");
+          const competitionType = form.getValues("competitionType");
+          const leagueId = form.getValues("leagueId");
+          const tournamentId = form.getValues("tournamentId");
+
+          if (sportId) {
+            if (competitionType == EventCompetitionType.league && leagueId) {
+              fetchLeaguesBySportId(sportId);
+              fetchTeamsByLeagueIdOrTournamentId(true, leagueId);
+            } else if (competitionType == EventCompetitionType.tournament && tournamentId) {
+              fetchTournamentBySportId(sportId);
+              fetchTeamsByLeagueIdOrTournamentId(false, tournamentId);
+            }
+          }
+        }
+      : () => {}
+  );
 
   return (
     <>
@@ -302,14 +321,13 @@ export default function FormData({
             />
 
             <FormField
-              name="eventType"
+              name="competitionType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Evento de</FormLabel>
+                  <FormLabel>Tipo de Competición</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      setEventType(value);
 
                       form.setValue("leagueId", null);
                       form.setValue("tournamentId", null);
@@ -323,9 +341,9 @@ export default function FormData({
                       const sportId = form.getValues("sportId");
 
                       if (sportId) {
-                        if (value == EVENT_TYPES[0]) {
+                        if (value == EventCompetitionType.league) {
                           fetchLeaguesBySportId(sportId);
-                        } else if (value == EVENT_TYPES[1]) {
+                        } else if (value == EventCompetitionType.tournament) {
                           fetchTournamentBySportId(sportId);
                         }
                       }
@@ -338,9 +356,9 @@ export default function FormData({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {EVENT_TYPES.map((eventType) => (
-                        <SelectItem key={eventType} value={eventType}>
-                          {eventType}
+                      {Object.keys(EVENT_COMPETITION_TYPE).map((key) => (
+                        <SelectItem key={key} value={key} id={key}>
+                          {EVENT_COMPETITION_TYPE[key as EventCompetitionType]}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -350,7 +368,7 @@ export default function FormData({
               )}
             />
 
-            {eventType == EVENT_TYPES[0] && (
+            {form.getValues("competitionType") == EventCompetitionType.league && (
               <FormField
                 name="leagueId"
                 control={form.control}
@@ -368,7 +386,9 @@ export default function FormData({
                       defaultValue={field.value ?? undefined}
                     >
                       <FormControl>
-                        <SelectTrigger disabled={loading || !form.getValues("eventType") || loadingLeaguesBySportId}>
+                        <SelectTrigger
+                          disabled={loading || !form.getValues("competitionType") || loadingLeaguesBySportId}
+                        >
                           <SelectValue placeholder="Seleccione una liga" />
                         </SelectTrigger>
                       </FormControl>
@@ -386,7 +406,7 @@ export default function FormData({
               />
             )}
 
-            {eventType == EVENT_TYPES[1] && (
+            {form.getValues("competitionType") == EventCompetitionType.tournament && (
               <FormField
                 name="tournamentId"
                 control={form.control}
@@ -405,7 +425,7 @@ export default function FormData({
                     >
                       <FormControl>
                         <SelectTrigger
-                          disabled={loading || !form.getValues("eventType") || loadingTournamentsBySportId}
+                          disabled={loading || !form.getValues("competitionType") || loadingTournamentsBySportId}
                         >
                           <SelectValue placeholder="Seleccione un torneo" />
                         </SelectTrigger>
@@ -424,6 +444,26 @@ export default function FormData({
               />
             )}
 
+            {!form.getValues("competitionType") && (
+              <FormField
+                name="league/tournament"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Liga/Torneo</FormLabel>
+                    <Select>
+                      <FormControl>
+                        <SelectTrigger disabled={true}>
+                          <SelectValue placeholder="Seleccione una liga o torneo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent />
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <FormField
               name="homeTeamId"
               control={form.control}
@@ -435,12 +475,7 @@ export default function FormData({
                   </FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger
-                        disabled={
-                          loading ||
-                          !form.getValues(form.getValues("eventType") == EVENT_TYPES[0] ? "leagueId" : "tournamentId")
-                        }
-                      >
+                      <SelectTrigger disabled={loading}>
                         <SelectValue placeholder="Seleccione un equipo casa" />
                       </SelectTrigger>
                     </FormControl>
@@ -480,12 +515,7 @@ export default function FormData({
                   </FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger
-                        disabled={
-                          loading ||
-                          !form.getValues(form.getValues("eventType") == EVENT_TYPES[0] ? "leagueId" : "tournamentId")
-                        }
-                      >
+                      <SelectTrigger disabled={loading}>
                         <SelectValue placeholder="Seleccione un equipo visita" />
                       </SelectTrigger>
                     </FormControl>
@@ -520,38 +550,7 @@ export default function FormData({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Fecha</FormLabel>
-                  <DateTimePicker
-                    hourCycle={24}
-                    value={field.value}
-                    onChange={(v) => {
-                      console.log("🚀 >>  DateTimePicker:", v);
-                      field.onChange(v);
-                    }}
-                  />
-                  {/* <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          disabled={loading}
-                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                        >
-                          {getESDate(field.value, "Fecha")}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        defaultMonth={field.value}
-                        disabled={(date) => date < new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover> */}
+                  <DateTimePicker hourCycle={24} disabled={loading} value={field.value} onChange={field.onChange} />
                   <FormMessage />
                 </FormItem>
               )}

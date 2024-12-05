@@ -7,20 +7,19 @@ export function getObjectDiff<T extends object>(updated: T, original: T, exclude
   keys1.forEach((key) => {
     const keyStr = key as keyof T;
 
+    const updatedValue = updated[keyStr];
+    const originalValue = original[keyStr];
+
     if (
       keyStr === "id" ||
       excludeKeys.includes(`${keyStr as string}`) ||
       (imagesKeys.includes(`${keyStr as string}`) &&
-        updated[keyStr] &&
-        (updated[keyStr] as any).type === "application/octet-stream")
+        updatedValue &&
+        (updatedValue as any).type === "application/octet-stream")
     ) {
       return; // Omitir la propiedad 'image' si su tipo MIME es 'application/octet-stream'
     }
 
-    const updatedValue = updated[keyStr];
-    const originalValue = original[keyStr];
-
-    // Comparar fechas correctamente
     const isDateComparison = updatedValue instanceof Date && originalValue instanceof Date;
 
     if (isDateComparison) {
@@ -32,6 +31,5 @@ export function getObjectDiff<T extends object>(updated: T, original: T, exclude
     }
   });
 
-  console.log("🚀 >> getObjectDiff:", diff);
   return diff;
 }
