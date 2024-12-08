@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
-import TeamInfo from "./TeamInfo";
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -14,15 +13,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RTeam } from "@/relatedTypes/team";
+import TeamInfo from "./TeamInfo";
 
 interface Props {
   team1: RTeam;
   team2: RTeam;
+  isUserLogged?: boolean;
+  onClickDisabled?: () => void;
 }
 
-const EventCard = ({ team1, team2 }: Props) => {
+const EventCard = ({ team1, team2, onClickDisabled, isUserLogged = false }: Props) => {
   return (
-    <Card className=" w-auto min-w-72">
+    <Card className=" w-auto min-w-72 shadow-sm">
       <CardHeader>
         <CardDescription className="flex justify-between">
           <span>3:00PM</span>
@@ -38,11 +40,22 @@ const EventCard = ({ team1, team2 }: Props) => {
       </CardContent>
       <CardFooter>
         <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="default" className="w-full">
+          {isUserLogged ? (
+            <DialogTrigger asChild>
+              <Button variant="default" className="w-full">
+                Pronosticar
+              </Button>
+            </DialogTrigger>
+          ) : (
+            <Button
+              variant="outline"
+              className="w-full cursor-not-allowed opacity-50"
+              onClick={() => (onClickDisabled ? onClickDisabled() : null)}
+            >
               Pronosticar
             </Button>
-          </DialogTrigger>
+          )}
+
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Pronostico</DialogTitle>

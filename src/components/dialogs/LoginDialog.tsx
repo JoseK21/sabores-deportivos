@@ -156,7 +156,7 @@ export function LoginDialog({ className }: { className?: string }) {
   };
 
   useEffect(() => {
-    if (searchParams.get("modal") === "login") {
+    if (searchParams.get("modal-login") === "true") {
       setIsModalOpen(true);
     }
   }, [searchParams]);
@@ -164,11 +164,11 @@ export function LoginDialog({ className }: { className?: string }) {
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString()); // Crear una copia de los parámetros actuales
     if (isModalOpen) {
-      newSearchParams.set("modal", "login"); // Agregar el nuevo query param
+      newSearchParams.set("modal-login", "true"); // Agregar el nuevo query param
       router.push(`${pathname}?${newSearchParams.toString()}`); // Actualizar la URL
     } else {
       setShowLogin(true);
-      newSearchParams.delete("modal"); // Eliminar el query param
+      newSearchParams.delete("modal-login"); // Eliminar el query param
       router.push(`${pathname}`); // Actualizar la URL
     }
   }, [isModalOpen]);

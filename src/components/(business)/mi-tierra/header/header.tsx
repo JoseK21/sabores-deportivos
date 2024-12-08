@@ -10,7 +10,9 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-import { LogOut } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+import { LogOut, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -35,7 +37,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { CalendarIcon, Star } from "lucide-react";
 import EventCard from "@/components/saboresdeportivos/general/EventCard";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { LoginDialog } from "@/components/dialogs/LoginDialog";
 
@@ -51,8 +53,11 @@ const itemsMenu = [
 import { getESDate } from "@/utils/date";
 import { LEAGUES } from "@/mocks/leagues";
 import { TEAMS } from "@/mocks/teams";
+import isEmpty from "lodash/isEmpty";
 
-export function QuinielaDialog() {
+export function QuinielaDialog({ session }: { session: Session | null }) {
+  const { user } = session || ({} as Session);
+
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const pathname = usePathname(); // Obtiene la ruta actual
@@ -60,8 +65,10 @@ export function QuinielaDialog() {
   const router = useRouter(); // Para actualizar la URL
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const isUserLogged = !isEmpty(user);
+
   useEffect(() => {
-    if (searchParams.get("modal") === "quiniela") {
+    if (searchParams.get("modal-quiniela") === "true") {
       setIsModalOpen(true);
     }
   }, [searchParams]);
@@ -69,10 +76,10 @@ export function QuinielaDialog() {
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString()); // Crear una copia de los parámetros actuales
     if (isModalOpen) {
-      newSearchParams.set("modal", "quiniela"); // Agregar el nuevo query param
+      newSearchParams.set("modal-quiniela", "true"); // Agregar el nuevo query param
       router.push(`${pathname}?${newSearchParams.toString()}`); // Actualizar la URL
     } else {
-      newSearchParams.delete("modal"); // Eliminar el query param
+      newSearchParams.delete("modal-quiniela"); // Eliminar el query param
       router.push(`${pathname}`); // Actualizar la URL
     }
   }, [isModalOpen]);
@@ -98,6 +105,12 @@ export function QuinielaDialog() {
     setDate(new Date());
   }, []);
 
+  const openLoginModal = useCallback(() => {
+    const newSearchParams = new URLSearchParams(searchParams.toString()); // Crear una copia de los parámetros actuales
+    newSearchParams.set("modal-login", "true"); // Agregar el nuevo query param
+    router.push(`${pathname}?${newSearchParams.toString()}`); // Actualizar la URL
+  }, []);
+
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
@@ -109,57 +122,112 @@ export function QuinielaDialog() {
       <DialogContent className="max-w-90 h-5/6 overflow-auto">
         <DialogHeader>
           <DialogTitle>Quiniela Deportiva</DialogTitle>
-          <DialogDescription>Puntos Actuales: 0 pts.</DialogDescription>
         </DialogHeader>
         <section>
-          <div className="flex justify-end mb-8">
-            <Select>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={LEAGUES[0]} />
-              </SelectTrigger>
-              <SelectContent>
-                {LEAGUES.map((value, index) => (
-                  <SelectItem key={`${value}-${index}`} value={value}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex justify-between mb-8">
+            <div>
+              {isUserLogged ? (
+                <DialogDescription>Puntos Actuales: X pts.</DialogDescription>
+              ) : (
+                <Alert className="border-yellow-500 text-yellow-600 cursor-pointer shadow-md" onClick={openLoginModal}>
+                  <AlertDescription className="gap-4 items-center flex">
+                    <p>
+                      Inicia sesión para poder <strong>Pronosticar</strong> y unirte a la emoción del evento deportivo.
+                    </p>
+                    <SquareArrowOutUpRight size={18} />
+                  </AlertDescription>
+                </Alert>
+              )}
+            </div>
+            <div className="flex items-end">
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder={LEAGUES[0]} />
+                </SelectTrigger>
+                <SelectContent>
+                  {LEAGUES.map((value, index) => (
+                    <SelectItem key={`${value}-${index}`} value={value}>
+                      {value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-            <div className="ml-4">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn("w-[280px] justify-start text-left font-normal", !date && "text-muted-foreground")}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {getESDate(date, "Fecha")}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus defaultMonth={date} />
-                </PopoverContent>
-              </Popover>
+              <div className="ml-4">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn("w-[280px] justify-start text-left font-normal", !date && "text-muted-foreground")}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {getESDate(date, "Fecha")}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar mode="single" selected={date} onSelect={setDate} initialFocus defaultMonth={date} />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
           </div>
           <div>
             <div className="mb-8">
               <span className="font-bold text-3xl">Concacaf Primera Division</span>
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
-                <EventCard team1={TEAMS[0]} team2={TEAMS[1]} />
-                <EventCard team1={TEAMS[2]} team2={TEAMS[3]} />
-                <EventCard team1={TEAMS[4]} team2={TEAMS[5]} />
-                <EventCard team1={TEAMS[6]} team2={TEAMS[7]} />
-                <EventCard team1={TEAMS[8]} team2={TEAMS[9]} />
+                <EventCard
+                  team1={TEAMS[0]}
+                  team2={TEAMS[1]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
+                <EventCard
+                  team1={TEAMS[2]}
+                  team2={TEAMS[3]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
+                <EventCard
+                  team1={TEAMS[4]}
+                  team2={TEAMS[5]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
+                <EventCard
+                  team1={TEAMS[6]}
+                  team2={TEAMS[7]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
+                <EventCard
+                  team1={TEAMS[8]}
+                  team2={TEAMS[9]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
               </div>
             </div>
             <div className="mb-8">
               <span className="font-bold text-3xl">Copa del Mundo 2026</span>
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
-                <EventCard team1={TEAMS[6]} team2={TEAMS[1]} />
-                <EventCard team1={TEAMS[4]} team2={TEAMS[6]} />
-                <EventCard team1={TEAMS[3]} team2={TEAMS[8]} />
+                <EventCard
+                  team1={TEAMS[6]}
+                  team2={TEAMS[1]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
+                <EventCard
+                  team1={TEAMS[4]}
+                  team2={TEAMS[6]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
+                <EventCard
+                  team1={TEAMS[3]}
+                  team2={TEAMS[8]}
+                  isUserLogged={isUserLogged}
+                  onClickDisabled={openLoginModal}
+                />
               </div>
             </div>
           </div>
@@ -195,7 +263,7 @@ const HeaderMiTierra = ({ session }: { session: Session | null }) => {
           </ul>
         </nav>
         <div className="flex gap-4 ml-4 items-center border-l border-l-slate-700">
-          <QuinielaDialog />
+          <QuinielaDialog session={session} />
           {user ? (
             <DropdownMenu open={openDM} onOpenChange={setOpenDM}>
               <DropdownMenuTrigger asChild>

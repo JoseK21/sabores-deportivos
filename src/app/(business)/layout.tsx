@@ -10,10 +10,6 @@ export default async function BusinessLayout({ children }: { children: React.Rea
 
   const session = await getServerSession(authOptions);
 
-  console.log("🚀 >>  BusinessLayout >>  url:", url);
-
-  console.log("🚀 >>  BusinessLayout >>  session?.user.role:", session?.user.role);
-
   if (!(!session?.user.role || session?.user.role == UserRole.client || session?.user.role == UserRole.unknown)) {
     redirect("/");
   }

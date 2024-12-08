@@ -4,10 +4,11 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const BANNER_KEY = "banner_last_shown";
 const currentTime = new Date().getTime(); // Tiempo actual en milisegundos
-const FOUR_HOURS = 4 * 3600000; // 4 horas en milisegundos
+const FOUR_HOURS = 0 // 4 * 3600000; // 4 horas en milisegundos
 
 export function BannerDialog({ url }: { url: string | null }) {
   const [open, setOpen] = useState(false);
@@ -19,8 +20,6 @@ export function BannerDialog({ url }: { url: string | null }) {
       const lastShown = Number.isFinite(bannerKeyValue) ? bannerKeyValue : 1;
 
       const displayBanner = !lastShown || currentTime - lastShown > FOUR_HOURS;
-
-      console.log("🚀 >>  setTimeout >>  displayBanner:", displayBanner);
 
       if (displayBanner) {
         setOpen(true);
@@ -46,13 +45,13 @@ export function BannerDialog({ url }: { url: string | null }) {
             alt="Publicidad"
             className="w-full h-full object-cover rounded-lg"
           />
-          <button
+          <Button
             onClick={closeBanner}
-            className="absolute top-4 right-4 bg-black/50 text-white rounded-xl p-2 hover:bg-black flex gap-2 items-center"
+            className="absolute top-4 right-4 bg-black/50 text-white rounded-xl p-2 hover:bg-black flex gap-2"
           >
             <span className="">Cerrar</span>
             <X className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

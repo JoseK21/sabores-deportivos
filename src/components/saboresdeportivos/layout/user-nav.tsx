@@ -63,10 +63,12 @@ export function UserNav({ session }: { session: Session }) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => {}} className="flex gap-2 items-center">
-            <Star size={18} />
-            Ver Puntos
-          </DropdownMenuItem>
+          {!ALLOWER_ROLES_TO_BUSINESS_LOGIC.includes(user?.role)&& (
+            <DropdownMenuItem onClick={() => {}} className="flex gap-2 items-center">
+              <Star size={18} />
+              Ver Puntos
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             className="flex gap-2 items-center"
             onClick={() =>
