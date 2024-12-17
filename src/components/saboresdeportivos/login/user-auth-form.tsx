@@ -6,7 +6,7 @@ import { getApi } from "@/lib/api";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +23,12 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
+  const pathname = usePathname(); // Obtiene la ruta actual (ej: "/mi-tierra")
+  const searchParams = useSearchParams(); // Obtiene los parámetros de búsqueda
+
+  // Construimos la URL sin el origin
+  const callbackUrl = `${pathname}${searchParams.toString().length > 0 ? `?${searchParams.toString()}`: ''}`;
+  
   const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState<String | null>(null);
@@ -148,7 +154,7 @@ export default function UserAuthForm() {
           </Button>
         </form>
 
-        <span className="text-sm text-muted-foreground text-center">
+        <span className="text-sm text-muted-foreground text-center cursor-pointer text-primary-500">
           No tienes una cuenta?
           <NewUserAuthDialog />
         </span>
@@ -163,9 +169,9 @@ export default function UserAuthForm() {
         </div>
       </div>
       <div className="space-y-2 w-full">
-        <GoogleSignInButton />
+        <GoogleSignInButton disabled={loading || redirecting} callbackUrl={callbackUrl} />
 
-        <FacebookSignInButton />
+        <FacebookSignInButton disabled={loading || redirecting} callbackUrl={callbackUrl} />
       </div>
     </>
   );

@@ -246,13 +246,13 @@ export default function FormData({
                   <FormLabel>Puntos Requeridos</FormLabel>
                   <FormControl>
                     <Input
+                      placeholder="Puntos Requeridos"
                       disabled={loading}
                       type="number"
-                      placeholder="Puntos Requeridos"
                       {...field}
-                      value={field.value} // Asegurarse de que el valor sea un número
+                      value={field.value}
                       onChange={(e) => {
-                        field.onChange(Number(parseFloat(e.target.value))); // Actualizar el valor del campo con el número
+                        field.onChange(Number(parseFloat(e.target.value)));
                       }}
                     />
                   </FormControl>

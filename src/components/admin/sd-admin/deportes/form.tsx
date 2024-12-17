@@ -62,8 +62,6 @@ export default function FormData({
 
         const response = await putApi(`sport/${dataForm.id}`, dataToEdit);
 
-        console.log("🚀 >>  onSubmit >>  response:", response);
-
         setOpen(response.isError);
 
         if (response.data) {
@@ -90,11 +88,7 @@ export default function FormData({
       } else {
         const updateDataForm = dataForm;
 
-        console.log("🚀 >>  onSubmit >>  updateDataForm:", updateDataForm);
-
         const response = await postApi("sport", updateDataForm);
-
-        console.log("🚀 >>  onSubmit >>  response:", response);
 
         setOpen(response.isError);
 

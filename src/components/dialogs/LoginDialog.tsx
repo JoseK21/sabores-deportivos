@@ -51,6 +51,8 @@ type UserFormValue = z.infer<typeof formSchema>;
 export function LoginDialog({ className }: { className?: string }) {
   const pathname = usePathname(); // Obtiene la ruta actual
   const searchParams = useSearchParams(); // Lee los query params
+  const callbackUrl = `${pathname}${searchParams.toString().length > 0 ? `?${searchParams.toString()}`: ''}`;
+
   const router = useRouter(); // Para actualizar la URL
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
@@ -269,7 +271,7 @@ export function LoginDialog({ className }: { className?: string }) {
                   onClick={() => {
                     setShowLogin(false);
                   }}
-                  className="text-sm text-muted-foreground text-center"
+                  className="text-sm text-muted-foreground text-center cursor-pointer text-primary-500"
                 >
                   No tienes una cuenta?
                 </span>
@@ -284,9 +286,8 @@ export function LoginDialog({ className }: { className?: string }) {
                 </div>
               </div>
               <div className="space-y-2 w-full">
-                <GoogleSignInButton />
-
-                <FacebookSignInButton />
+                <GoogleSignInButton disabled={loading} callbackUrl={callbackUrl} />
+                <FacebookSignInButton disabled={loading} callbackUrl={callbackUrl} />
               </div>
             </>
             <p className="px-8 text-center text-sm text-muted-foreground">
@@ -442,7 +443,7 @@ export function LoginDialog({ className }: { className?: string }) {
               onClick={() => {
                 setShowLogin(true);
               }}
-              className="text-sm text-muted-foreground text-center"
+              className="text-sm text-muted-foreground text-center cursor-pointer text-primary-500"
             >
               Ya tengo una cuenta!
             </span>

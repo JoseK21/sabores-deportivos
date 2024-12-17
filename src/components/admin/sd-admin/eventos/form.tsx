@@ -176,7 +176,6 @@ export default function FormData({
       if (isEdition) {
         let dataToEdit = getObjectDiff(dataForm, form.control._defaultValues);
         console.log("🚀 >>  onSubmit >>  dataToEdit:", dataToEdit);
-
         return 0;
 
         if (isEmpty(dataToEdit)) {

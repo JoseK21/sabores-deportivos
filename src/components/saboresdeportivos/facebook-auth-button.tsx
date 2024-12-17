@@ -4,24 +4,14 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
 
-export default function FacebookSignInButton() {
-  const pathname = usePathname(); // Obtiene la ruta completa desde el enrutador
-
-  // Separar la ruta en partes
-  const pathParts = pathname.split("/").filter((part) => part);
-
-  console.log("🚀 >>  FacebookSignInButton >>  pathParts:", pathParts);
-
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams ? searchParams.get("callbackUrl") : null;
-
+export default function FacebookSignInButton({ disabled, callbackUrl }: { disabled: boolean; callbackUrl?: string }) {
   return (
     <Button
       className="w-full"
       variant="outline"
       type="button"
       // SIRVE SOLO EN MODO DESARROLO, OCUPO PEDIR SI O SI EL CORREO, PARA ESTO NECSITO VALIDAR MI PERFIL CON DATOS REALES DEL SITIO WEB
-      disabled
+      disabled={disabled}
       onClick={() => signIn("facebook", { callbackUrl: callbackUrl ?? "/" })}
     >
       <div className="mr-4">

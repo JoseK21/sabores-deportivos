@@ -54,11 +54,16 @@ import { getESDate } from "@/utils/date";
 import { LEAGUES } from "@/mocks/leagues";
 import { TEAMS } from "@/mocks/teams";
 import isEmpty from "lodash/isEmpty";
+import useFetchSportsData from "@/hooks/useFetchSportsData";
+import useUserPointsData from "@/hooks/useUserPointsData";
 
 export function QuinielaDialog({ session }: { session: Session | null }) {
   const { user } = session || ({} as Session);
-
   const [date, setDate] = useState<Date | undefined>(new Date());
+
+  const { sports, isLoaded: isLoadedSports } = useFetchSportsData();
+
+  const points = useUserPointsData(user?.email);
 
   const pathname = usePathname(); // Obtiene la ruta actual
   const searchParams = useSearchParams(); // Lee los query params
@@ -127,7 +132,7 @@ export function QuinielaDialog({ session }: { session: Session | null }) {
           <div className="flex justify-between mb-8">
             <div>
               {isUserLogged ? (
-                <DialogDescription>Puntos Actuales: X pts.</DialogDescription>
+                <DialogDescription>Puntos Actuales: {points.userPoint.totalPoints - points.userPoint.claimedPoints} pts.</DialogDescription>
               ) : (
                 <Alert className="border-yellow-500 text-yellow-600 cursor-pointer shadow-md" onClick={openLoginModal}>
                   <AlertDescription className="gap-4 items-center flex">
@@ -140,14 +145,18 @@ export function QuinielaDialog({ session }: { session: Session | null }) {
               )}
             </div>
             <div className="flex items-end">
-              <Select>
+              <Select
+                onValueChange={(v) => {
+                  console.log("V:", v);
+                }}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder={LEAGUES[0]} />
                 </SelectTrigger>
                 <SelectContent>
-                  {LEAGUES.map((value, index) => (
-                    <SelectItem key={`${value}-${index}`} value={value}>
-                      {value}
+                  {sports.map((value, index) => (
+                    <SelectItem key={`${value}-${index}`} value={value.id}>
+                      {value.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

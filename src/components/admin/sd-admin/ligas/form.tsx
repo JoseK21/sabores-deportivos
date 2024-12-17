@@ -46,15 +46,11 @@ export default function FormData({
 
   const { sports } = useSportsStore();
 
-  console.log("🚀 >>  JOSE data:", data);
-
   const dataFromDB = {
     ...data,
     // startDate: new Date(data?.startDate || ""),
     endDate: new Date(data?.endDate || ""),
   } as RLeague;
-
-  console.log("🚀 >>  JOSE dataFromDB:", dataFromDB);
 
   // Usar setLoading si ocupo cargar algo aqui desde el api
   const form = useForm<z.infer<typeof FormSchema>>({

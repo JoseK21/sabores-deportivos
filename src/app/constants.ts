@@ -110,6 +110,8 @@ export const EVENT_STATUS: { [key in EventStatus]: string } = {
   [EventStatus.postponed]: "Pospuesto",
 };
 
+export const ALLOW_FORCAST_EVENT_STATUS = [EventStatus.incoming]
+
 export const EVENT_COMPETITION_TYPE: { [key in EventCompetitionType]: string } = {
   [EventCompetitionType.league]: "Liga",
   [EventCompetitionType.tournament]: "Torneo",

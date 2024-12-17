@@ -26,8 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Req from "@/components/saboresdeportivos/general/Req";
 import { BOOLEAN_OPTIONS } from "@/app/constants";
 import { BooleanOption } from "@/app/enum";
-
-const exceptThisSymbols = ["e", "E", "+", "-", ".", ","];
+import { EXCEPT_SYMBOLS_INPUT_NUMBER } from "@/constants/constants-system";
 
 const FormSchema = z.object({
   id: z.string().optional(),
@@ -71,8 +70,6 @@ export default function FormData({
       ? data || ({} as Product)
       : { name: "", description: "", productTypeId: "", image: "", price: 0, idBusiness, enabled: true },
   });
-
-  console.log("🚀 >>  data:", data);
 
   useFetchData(async () => {
     if (isEdition && data?.image) {
@@ -278,11 +275,11 @@ export default function FormData({
                 <FormLabel>Precio</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
                     type="number"
+                    disabled={loading}
                     placeholder="Precio"
                     {...field}
-                    onKeyDown={(e) => exceptThisSymbols.includes(e.key) && e.preventDefault()}
+                    onKeyDown={(e) => EXCEPT_SYMBOLS_INPUT_NUMBER.includes(e.key) && e.preventDefault()}
                     value={field.value}
                     onChange={(e) => {
                       field.onChange(Number(parseFloat(e.target.value)));

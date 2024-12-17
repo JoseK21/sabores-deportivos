@@ -20,4 +20,27 @@ const ButtonLoadingSubmit = ({ loading, isEdition }: { loading: boolean; isEditi
   );
 };
 
+export const CustomButtonLoadingSubmit = ({
+  text,
+  textLoading,
+  textEdit,
+  textLoadingEdit,
+  loading,
+  isEdition,
+}: {
+  text: string;
+  textLoading: string;
+  textEdit: string;
+  textLoadingEdit: string;
+  loading: boolean;
+  isEdition: boolean;
+}) => {
+  return (
+    <Button type="submit" disabled={loading}>
+      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {isEdition ? (loading ? textLoadingEdit : textEdit) : (loading ? textLoading : text)}
+    </Button>
+  );
+};
+
 export default ButtonLoadingSubmit;

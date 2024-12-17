@@ -13,6 +13,7 @@ import { RLeague } from "@/relatedTypes/league";
 import { RSport } from "@/relatedTypes/sport";
 import { RTeamTournament } from "@/relatedTypes/teamTournament";
 import { RTeamLeague } from "@/relatedTypes/teamLeague";
+import { UserPoint } from "@/types/user-points";
 
 export const useAdminsStore = create<{
   admins: User[];
@@ -180,4 +181,17 @@ export const useTeamsLeagueStore = create<{
   teamsLeague: [],
   setErrorTeamsLeague: (errorTeamsLeague) => set({ errorTeamsLeague }),
   setDataTeamsLeague: (data) => set({ teamsLeague: data, errorTeamsLeague: null }),
+}));
+
+//
+export const useUserPointsStore = create<{
+  userPoint: UserPoint;
+  errorUserPoint: Error | null;
+  setDataUserPoint: (newData: UserPoint) => void;
+  setErrorUserPoint: (errorUserPoint: Error) => void;
+}>((set) => ({
+  errorUserPoint: null,
+  userPoint: {} as UserPoint,
+  setErrorUserPoint: (errorUserPoint) => set({ errorUserPoint }),
+  setDataUserPoint: (data) => set({ userPoint: data, errorUserPoint: null }),
 }));

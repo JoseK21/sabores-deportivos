@@ -3,14 +3,14 @@
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
 
-export default function GoogleSignInButton() {
+export default function GoogleSignInButton({ disabled, callbackUrl }: { disabled: boolean; callbackUrl?: string }) {
   return (
     <Button
-      className="w-full"
-      variant="outline"
       type="button"
-      onClick={() => signIn("google", { callbackUrl: "/" })}
-      // onClick={() => signIn("google", { callbackUrl: callbackUrl ?? "/auth/login" })}
+      variant="outline"
+      className="w-full"
+      disabled={disabled}
+      onClick={() => signIn("google", { callbackUrl: callbackUrl ?? "/" })}
     >
       <div className="mr-4">
         <svg viewBox="0 0 48 48" width="24" height="24" preserveAspectRatio="xMidYMid meet">
