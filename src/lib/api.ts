@@ -10,9 +10,15 @@ interface ApiResponse {
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
-export const getApi = async (url: string, cancelToken?: CancelToken): Promise<ApiResponse> => {
+export const getApi = async (
+  url: string,
+  cancelToken?: CancelToken
+): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.get(`${API_URL}${url}`, { cancelToken });
+    console.log("🚀 ~ API_URL:", API_URL);
+    console.log("🚀 ~ url:", url);
+    console.log("🚀 ~ getApi ~ `${API_URL}${url}`:", `${API_URL}${url}`);
+    const response: AxiosResponse = await axios.get(`${url}`, { cancelToken });
 
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
@@ -21,10 +27,18 @@ export const getApi = async (url: string, cancelToken?: CancelToken): Promise<Ap
   }
 };
 
-export const postApi = async (url: string, data: any, cancelToken?: CancelToken): Promise<ApiResponse> => {
+export const postApi = async (
+  url: string,
+  data: any,
+  cancelToken?: CancelToken
+): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.post(`${API_URL}${url}`, data, { headers: HEADERS, cancelToken });
+    const response: AxiosResponse = await axios.post(`${API_URL}${url}`, data, {
+      headers: HEADERS,
+      cancelToken,
+    });
 
+    console.log("🚀 ~ postApi ~ `${API_URL}${url}`:", `${API_URL}${url}`);
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
     console.error("🚀 >>  postApi >>  error:", error);
@@ -32,10 +46,18 @@ export const postApi = async (url: string, data: any, cancelToken?: CancelToken)
   }
 };
 
-export const putApi = async (url: string, data: any, cancelToken?: CancelToken): Promise<ApiResponse> => {
+export const putApi = async (
+  url: string,
+  data: any,
+  cancelToken?: CancelToken
+): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.put(`${API_URL}${url}`, data, { headers: HEADERS, cancelToken });
+    const response: AxiosResponse = await axios.put(`${API_URL}${url}`, data, {
+      headers: HEADERS,
+      cancelToken,
+    });
 
+    console.log("🚀 ~ putApi ~ `${API_URL}${url}`:", `${API_URL}${url}`);
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
     console.error("🚀 >>  putApi >>  error:", error);
@@ -43,10 +65,18 @@ export const putApi = async (url: string, data: any, cancelToken?: CancelToken):
   }
 };
 
-export const deleteApi = async (url: string, cancelToken?: CancelToken): Promise<ApiResponse> => {
+export const deleteApi = async (
+  url: string,
+  cancelToken?: CancelToken
+): Promise<ApiResponse> => {
   try {
-    const response: AxiosResponse = await axios.delete(`${API_URL}${url}`, { headers: HEADERS, data: {}, cancelToken });
+    const response: AxiosResponse = await axios.delete(`${API_URL}${url}`, {
+      headers: HEADERS,
+      data: {},
+      cancelToken,
+    });
 
+    console.log("🚀 ~ deleteApi ~ `${API_URL}${url}`:", `${API_URL}${url}`);
     return { isError: false, error: "", data: response.data?.data || null };
   } catch (error: any) {
     console.error("🚀 >>  deleteApi >>  error:", error);

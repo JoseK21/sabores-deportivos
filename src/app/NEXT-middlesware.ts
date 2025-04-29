@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const allowedOrigins = ["https://www.saboresdeportivos.com", "https://saboresdeportivos.com", "http://localhost:3000"];
+const allowedOrigins = [
+  "https://www.saboresdeportivos.com",
+  "https://saboresdeportivos.com",
+  "https://www.saboresdeportivos.vercel.app",
+  "http://www.saboresdeportivos.vercel.app",
+  "http://localhost:3000",
+];
 
 const corsOptions = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -10,7 +16,9 @@ const corsOptions = {
 export function middleware(request: NextRequest) {
   // Check the origin from the request
   const origin = request.headers.get("origin") ?? "";
+  console.log("🚀 ~ middleware ~ origin:", origin);
   const isAllowedOrigin = allowedOrigins.includes(origin);
+  console.log("🚀 ~ middleware ~ isAllowedOrigin:", isAllowedOrigin);
 
   // Handle preflighted requests
   const isPreflight = request.method === "OPTIONS";
